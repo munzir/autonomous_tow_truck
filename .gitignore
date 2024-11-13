@@ -1,0 +1,8 @@
+build/
+install/
+log/
+
+src/basic_mobile_robot/maps/automatic_addison_world_map.pgm
+src/basic_mobile_robot/maps/automatic_addison_world_map.yaml
+
+*.swp
