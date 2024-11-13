@@ -1,0 +1,15 @@
+digraph G {
+"base_link" -> "drivewhl_l_link"[label=" Broadcaster: default_authority\nAverage rate: 18.576\nBuffer length: 4.522\nMost recent transform: 134.606\nOldest transform: 130.084\n"];
+"base_footprint" -> "base_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "drivewhl_r_link"[label=" Broadcaster: default_authority\nAverage rate: 18.576\nBuffer length: 4.522\nMost recent transform: 134.606\nOldest transform: 130.084\n"];
+"odom" -> "base_footprint"[label=" Broadcaster: default_authority\nAverage rate: 11.31\nBuffer length: 4.421\nMost recent transform: 134.546\nOldest transform: 130.125\n"];
+"base_link" -> "front_caster"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "gps_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "imu_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "lidar_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"map" -> "odom"[label=" Broadcaster: default_authority\nAverage rate: 5.219\nBuffer length: 4.407\nMost recent transform: 135.496\nOldest transform: 131.089\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1630872555.0696962"[ shape=plaintext ] ;
+}->"map";
+}
