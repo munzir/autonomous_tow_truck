@@ -22,7 +22,7 @@
   <xacro:property name="wheel_xoff" value="0.221"/>
 
   <!-- Position the caster wheel along the x-axis -->
-  <xacro:property name="caster_xoff" value="0.217"/>
+  <xacro:property name="steering_wheel_xoff" value="0.217"/>
 
   <!-- Define intertial property macros  -->
   <xacro:macro name="box_inertia" params="m w h d">
@@ -128,40 +128,64 @@
   <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="1" />
   <xacro:wheel prefix="drivewhl_r" x_reflect="-1" y_reflect="-1" />
 
-  <!-- *********************** CASTER WHEEL ******************************  -->
-  <!-- We add a caster wheel. It will be modeled as sphere.
-       We define the wheel’s geometry, material and the joint to connect it to 
-       base_link at the appropriate location. -->
-  <link name="front_caster">
+  <!-- *********************** STEERING WHEEL ******************************  -->
+  <link name="steering_link"/>
+
+  <!-- Munzir- this is a fixed hook to position the steering links -->
+  <!-- could have done without it, but trying to be consistent with Ailiya's SDF -->
+  <joint name="steering_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="steering_link"/>
+    <origin xyz="${steering_wheel_xoff} 0 -${wheel_zoff}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="steering_wheel_link">
+    <collision>
+      <geometry>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+      </geometry>
+    </collision>
+    <xacro:cylinder_inertia m="110.5" r="${wheel_radius}" h="${wheel_width}"/>
+  </link>
+
+  <joint name="steering_wheel_joint" type="revolute">
+    <parent link="steering_link"/>
+    <child link="steering_wheel_link"/>
+    <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+    <limit upper="1.047" lower="-1.047" effort="10" velocity="1.0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="front_steering_wheel_link">
     <visual>
       <geometry>
-        <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
       </geometry>
       <material name="White">
         <color rgba="${255/255} ${255/255} ${255/255} 1.0"/>
       </material>
     </visual>
+    
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
+        <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
       </geometry>
     </collision>
-    <xacro:sphere_inertia m="10.05" r="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
+    <xacro:cylinder_inertia m="110.5" r="${wheel_radius}" h="${wheel_width}"/>
   </link>
 
-  <gazebo reference="front_caster">
-    <mu1>0.01</mu1>
-    <mu2>0.01</mu2>
+  <gazebo reference="front_steering_wheel_link">
     <material>Gazebo/White</material>
   </gazebo>
 
-  <joint name="caster_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="front_caster"/>
-    <origin xyz="${caster_xoff} 0.0 ${-(base_height/2)}" rpy="0 0 0"/>
+  <joint name="front_steering_wheel_joint" type="revolute">
+    <parent link="steering_wheel_link"/>
+    <child link="front_steering_wheel_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <limit upper="3.1415" lower="-3.1415" effort="10" velocity="1.0"/>
+    <axis xyz="0 0 1"/>
   </joint>
-  
+
   <!-- *********************** IMU SETUP *********************************  -->
   <!-- Each sensor must be attached to a link.                              --> 
   
