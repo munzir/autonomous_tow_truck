@@ -385,7 +385,7 @@
       because we want transforms to now be updated by ekf node
       the plugin had no elegant config parameter to achieve this
       When not doing ekf, need to comment this out-->
-      <!--remapping>tf:=kachra</remapping -->
+      <remapping>tf:=kachra</remapping>
     </ros>
   
     <!-- wheels -->
