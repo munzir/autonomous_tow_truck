@@ -194,7 +194,7 @@
       <ray>
         <scan>
           <horizontal>
-            <samples>360</samples>
+            <samples>120</samples>
             <resolution>1.000000</resolution>
             <min_angle>0</min_angle>
             <max_angle>6.283185</max_angle>
@@ -268,11 +268,11 @@
  
   <!-- *********************** STEERING WHEEL ******************************  -->
   <link name="steering_link">
-    <pose>0.217 0 -0.1 0 1.570796 1.570796</pose>
+    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
   </link>
 
   <link name="steering_wheel_link">
-    <pose>0.217 0 -0.1 0 1.570796 1.570796</pose>
+    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
     <geometry>
       <cylinder>
         <radius>0.14</radius>
@@ -282,7 +282,7 @@
   </link>
   
   <link name="front_steering_wheel_link">
-    <pose>0.217 0 -0.1 0 1.570796 1.570796</pose>
+    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
     
     <collision name="front_steering_wheel_collision">
       <geometry>
@@ -374,53 +374,59 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
- <!-- *********************** WHEEL ODOMETRY ***************************    -->
-  <plugin name="basic_mobile_bot_diff_drive" filename="libgazebo_ros_diff_drive.so">
-
-    <update_rate>30</update_rate>
-
+  <!-- *********************** WHEEL ODOMETRY ***************************    -->
+  <plugin name='tricycle_drive' filename='libgazebo_ros_tricycle_drive.so'>
+  
+    <ros>
+      <namespace></namespace>
+      <remapping>cmd_vel:=cmd_vel</remapping>
+      <remapping>odom:=wheel/odometry</remapping>
+      <!-- this is to turn off publishing to tf when enabling ekf
+      because we want transforms to now be updated by ekf node
+      the plugin had no elegant config parameter to achieve this
+      When not doing ekf, need to comment this out-->
+      <!--remapping>tf:=kachra</remapping -->
+    </ros>
+  
     <!-- wheels -->
-    <left_joint>drivewhl_l_joint</left_joint>
-    <right_joint>drivewhl_r_joint</right_joint>
-
+    <steering_joint>steering_wheel_joint</steering_joint>
+    <actuated_wheel_joint>front_steering_wheel_joint</actuated_wheel_joint>
+    <encoder_wheel_left_joint>drivewhl_l_joint</encoder_wheel_left_joint>
+    <encoder_wheel_right_joint>drivewhl_r_joint</encoder_wheel_right_joint>
+  
     <!-- kinematics -->
     <wheel_separation>0.52</wheel_separation>
-    <wheel_diameter>0.28</wheel_diameter>
-
+    <encoder_wheel_diameter>0.28</encoder_wheel_diameter>
+    <actuated_wheel_diameter>0.28</actuated_wheel_diameter>
+  
     <!-- limits -->
     <max_wheel_torque>20</max_wheel_torque>
-    <max_wheel_acceleration>1.0</max_wheel_acceleration>
-
+    <max_wheel_acceleration>5.0</max_wheel_acceleration>
+    <max_steering_speed>1.0</max_steering_speed>
+    
+    <!-- Changes made -->
     <!-- Receive velocity commands on this ROS topic -->
     <command_topic>cmd_vel</command_topic>
-
+  
     <!-- output -->
-    <!-- When false, publish no wheel odometry data to a ROS topic -->
     <publish_odom>true</publish_odom>
-
     <!-- When true, publish coordinate transform from odom to base_footprint -->
     <!-- I usually use the robot_localization package to publish this transform -->   
-    <publish_odom_tf>false</publish_odom_tf>
-    
-    <!-- When true, publish coordinate transform from base_link to the wheels -->
-    <!-- The robot_state_publisher package is often used to publish this transform -->   
-    <publish_wheel_tf>false</publish_wheel_tf>
-
+    <publish_wheel_tf>false</publish_wheel_tf> 
+    <publish_wheel_joint_state>true</publish_wheel_joint_state>
+   
+    <!-- Changes made -->
     <odometry_topic>odom</odometry_topic>
+  
     <odometry_frame>odom</odometry_frame>
     <robot_base_frame>base_footprint</robot_base_frame>
-
-    <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD -->
-    <odometry_source>1</odometry_source>
-
-    <!-- Change the ROS topic we will publish the odometry data to -->
-    <ros>
-      <remapping>odom:=wheel/odometry</remapping>
-      <remapping>tf:=kachra</remapping>
-    </ros>
-
+  
+   <!-- Odometry source, 0 for ENCODER, 1 for WORLD, defaults to WORLD -->
+   <odometry_source>0</odometry_source>     
+  
   </plugin>
 
+  
  <!-- *********************** JOINT STATE PUBLISHER *********************   -->
   
   <plugin name="basic_mobile_bot_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
@@ -430,6 +436,9 @@
     <update_rate>30</update_rate>
     <joint_name>drivewhl_l_joint</joint_name>
     <joint_name>drivewhl_r_joint</joint_name>
+    <joint_name>steering_joint</joint_name>
+    <joint_name>steering_wheel_joint</joint_name>
+    <joint_name>front_steering_wheel_joint</joint_name>
   </plugin>   
   
   </model>
