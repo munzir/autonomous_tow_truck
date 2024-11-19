@@ -222,6 +222,10 @@
   </link>
   
   <!-- *********************** DRIVE WHEELS ******************************  -->
+  <link name="rear_axle_link">
+    <pose>-0.221 0 -0.05 0 1.570796 1.570796</pose>
+  </link>
+
   <link name="drivewhl_l_link">
     <pose>-0.221 0.23 -0.05 0 1.570796 1.570796</pose>
     
@@ -313,22 +317,25 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
-  <joint name="drivewhl_l_joint" type="revolute">
-    <parent>base_link</parent>
-    <child>drivewhl_l_link</child>
-    <pose>0 0 0 0 0 0</pose>
-    <axis>
-      <xyz>0 0 1</xyz>
-    </axis>
+  <joint name="rear_axle_joint" type="revolute">
+   <parent>base_link</parent>
+   <child>rear_axle_link</child>
+   <pose>0 0 0 0 0 0</pose>
+   <axis>
+     <xyz>0 0 1</xyz>
+   </axis>
   </joint>
 
-  <joint name="drivewhl_r_joint" type="revolute">
-    <parent>base_link</parent>
+  <joint name="drivewhl_l_joint" type="fixed">
+    <parent>rear_axle_link</parent>
+    <child>drivewhl_l_link</child>
+    <pose>0 0 0 0 0 0</pose>
+  </joint>
+
+  <joint name="drivewhl_r_joint" type="fixed">
+    <parent>rear_axle_link</parent>
     <child>drivewhl_r_link</child>
     <pose>0 0 0 0 0 0</pose>
-    <axis>
-      <xyz>0 0 1</xyz>
-    </axis>
   </joint>
  
   <joint name="steering_joint" type="fixed">
@@ -336,7 +343,6 @@
    <child>steering_link</child>
    <pose>0 0 0 0 0 0</pose>
   </joint>
-
 
   <joint name="steering_wheel_joint" type="revolute">
    <parent>steering_link</parent>
@@ -391,8 +397,8 @@
     <!-- wheels -->
     <steering_joint>steering_wheel_joint</steering_joint>
     <actuated_wheel_joint>front_steering_wheel_joint</actuated_wheel_joint>
-    <encoder_wheel_left_joint>drivewhl_l_joint</encoder_wheel_left_joint>
-    <encoder_wheel_right_joint>drivewhl_r_joint</encoder_wheel_right_joint>
+    <encoder_wheel_left_joint>rear_axle_joint</encoder_wheel_left_joint>
+    <encoder_wheel_right_joint>rear_axle_joint</encoder_wheel_right_joint>
   
     <!-- kinematics -->
     <wheel_separation>0.52</wheel_separation>
@@ -434,6 +440,7 @@
       <remapping>~/out:=joint_states</remapping>
     </ros>
     <update_rate>30</update_rate>
+    <joint_name>rear_axle_joint</joint_name>
     <joint_name>drivewhl_l_joint</joint_name>
     <joint_name>drivewhl_r_joint</joint_name>
     <joint_name>steering_joint</joint_name>
