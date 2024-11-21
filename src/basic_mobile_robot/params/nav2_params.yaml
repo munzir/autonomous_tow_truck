@@ -28,7 +28,7 @@ amcl:
     recovery_alpha_slow: 0.0
     resample_interval: 1
     #robot_model_type: "differential"
-    motion_model_type: "nav2_amcl::DifferentialMotionModel" 
+    # motion_model_type: "nav2_amcl::DifferentialMotionModel" 
     save_pose_rate: 0.5
     set_initial_pose: False
     sigma_hit: 0.2
@@ -269,7 +269,7 @@ planner_server:
   ros__parameters:
     use_sim_time: True
     planner_plugins: ["GridBased"]
-    expected_planner_frequency: 2.0
+    expected_planner_frequency: 1.0
 
     GridBased:
       plugin: "nav2_smac_planner/SmacPlannerHybrid"
@@ -298,6 +298,14 @@ planner_server:
       allow_reverse_expansion: False
       smooth_path: True
       debug_visualizations: True
+
+    smoother:
+      max_iterations: 1000                # iterations for path smoothing
+      w_smooth: 0.3                       # smoothing weight
+      w_data: 0.2                         # data weight
+      tolerance: 1.0e-10                  # smoothing tolerance
+      do_refinement: true                 # refine the smoothed path
+  
 
 planner_server_rclcpp_node:
   ros__parameters:
