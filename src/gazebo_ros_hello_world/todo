@@ -1,0 +1,3 @@
+- after we are done with building
+and we source the install/local_step.bash
+we need to echo $GAZEBO_RESOURCE_PATH and $GAZEBO_PLUGIN_PATH to make sure that the plugin path point to the plugin lib in the local folder and resource path points to the share/<package_name> path in the local folder

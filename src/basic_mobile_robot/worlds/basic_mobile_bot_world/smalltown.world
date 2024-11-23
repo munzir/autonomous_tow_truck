@@ -4080,5 +4080,6 @@
       <!-- basic_mobile_robot -->
       <uri>model://basic_mobile_bot_description</uri>
     </include>
+    <plugin name="gazebo_ros_hello_world" filename="libgazebo_ros_hello_world.so"/>
   </world>
 </sdf>

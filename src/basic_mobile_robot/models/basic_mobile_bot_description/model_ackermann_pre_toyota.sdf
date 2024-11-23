@@ -358,28 +358,25 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
-  <joint name="rear_axle_joint" type="fixed">
+  <joint name="rear_axle_joint" type="revolute">
    <parent>base_link</parent>
    <child>rear_axle_link</child>
    <pose>0 0 0 0 0 0</pose>
+   <axis>
+     <xyz>0 0 1</xyz>
+   </axis>
   </joint>
 
-  <joint name="drivewhl_l_joint" type="revolute">
+  <joint name="drivewhl_l_joint" type="fixed">
     <parent>rear_axle_link</parent>
     <child>drivewhl_l_link</child>
     <pose>0 0 0 0 0 0</pose>
-    <axis>
-      <xyz>0 0 1</xyz>
-    </axis>
   </joint>
 
-  <joint name="drivewhl_r_joint" type="revolute">
+  <joint name="drivewhl_r_joint" type="fixed">
     <parent>rear_axle_link</parent>
     <child>drivewhl_r_link</child>
     <pose>0 0 0 0 0 0</pose>
-    <axis>
-      <xyz>0 0 1</xyz>
-    </axis>
   </joint>
  
   <joint name="left_steering_joint" type="fixed">
@@ -403,7 +400,7 @@
    <child>left_steering_wheel_link</child>
    <pose>0 0 0 0 0 0</pose>
    <axis>
-     <xyz>-1 0 0</xyz>
+     <xyz>1 0 0</xyz>
    </axis>
   </joint>
 	  
@@ -427,7 +424,7 @@
    <child>right_steering_wheel_link</child>
    <pose>0 0 0 0 0 0</pose>
    <axis>
-     <xyz>-1 0 0</xyz>
+     <xyz>1 0 0</xyz>
    </axis>
   </joint>
 	  
@@ -459,7 +456,6 @@
   </joint>
 
   <!-- *********************** WHEEL ODOMETRY ***************************    -->
-  <plugin name="dummy_plugin" filename="libgazebo_ros_hello_world_model_plugin.so"/>
   <plugin name="gazebo_ros_ackermann_drive_debug" filename="libgazebo_ros_ackermann_drive_debug.so">
     <ros>
       <namespace></namespace>
@@ -473,13 +469,12 @@
       <!-- remapping>tf:=kachra</remapping -->
     </ros>
 
-    <rear_left_joint>drivewhl_l_joint</rear_left_joint>
-    <rear_right_joint>drivewhl_r_joint</rear_right_joint>
+    <rear_left_joint>rear_axle_joint</rear_left_joint>
+    <rear_right_joint>rear_axle_joint</rear_right_joint>
     <left_steering_joint>right_steering_wheel_joint</left_steering_joint>
     <right_steering_joint>left_steering_wheel_joint</right_steering_joint>
     <steering_wheel_joint>steering_wheel_joint</steering_wheel_joint>
-    <front_right_joint>front_right_steering_wheel_joint</front_right_joint>
-    <front_left_joint>front_left_steering_wheel_joint</front_left_joint>
+    <front_left_joint>front_right_steering_wheel_joint</front_left_joint>
 
     <update_rate>100.0</update_rate>
 
@@ -514,7 +509,6 @@
     <!-- odometry_topic>odom</odometry_topic -->
     <!-- odometry_source>0</odometry_source -->     
   </plugin> 
-
 
  <!-- *********************** JOINT STATE PUBLISHER *********************   -->
   
