@@ -271,12 +271,17 @@
   </link>
  
   <!-- *********************** STEERING WHEEL ******************************  -->
-  <link name="steering_link">
-    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
-  </link>
-
+  <!-- dummy link created to keep ackermann happy -->
   <link name="steering_wheel_link">
     <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
+  </link>
+  
+  <link name="left_steering_link">
+    <pose>0.217 0.1 -0.05 0 1.570796 1.570796</pose>
+  </link>
+
+  <link name="left_steering_wheel_link">
+    <pose>0.217 0.1 -0.05 0 1.570796 1.570796</pose>
     <geometry>
       <cylinder>
         <radius>0.14</radius>
@@ -285,10 +290,10 @@
     </geometry>
   </link>
   
-  <link name="front_steering_wheel_link">
-    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
+  <link name="front_left_steering_wheel_link">
+    <pose>0.217 0.1 -0.05 0 1.570796 1.570796</pose>
     
-    <collision name="front_steering_wheel_collision">
+    <collision name="front_left_steering_wheel_collision">
       <geometry>
         <cylinder>
           <radius>0.14</radius>
@@ -297,7 +302,43 @@
       </geometry>
     </collision>
 
-    <visual name="front_steering_wheel_visual">
+    <visual name="front_left_steering_wheel_visual">
+      <geometry>
+        <cylinder>
+          <radius>0.14</radius>
+          <length>0.06</length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+ <link name="right_steering_link">
+    <pose>0.217 -0.1 -0.05 0 1.570796 1.570796</pose>
+  </link>
+
+  <link name="right_steering_wheel_link">
+    <pose>0.217 -0.1 -0.05 0 1.570796 1.570796</pose>
+    <geometry>
+      <cylinder>
+        <radius>0.14</radius>
+        <length>0.06</length>
+      </cylinder>
+    </geometry>
+  </link>
+  
+  <link name="front_right_steering_wheel_link">
+    <pose>0.217 -0.1 -0.05 0 1.570796 1.570796</pose>
+    
+    <collision name="front_right_steering_wheel_collision">
+      <geometry>
+        <cylinder>
+          <radius>0.14</radius>
+          <length>0.06</length>
+        </cylinder>
+      </geometry>
+    </collision>
+
+    <visual name="front_right_steering_wheel_visual">
       <geometry>
         <cylinder>
           <radius>0.14</radius>
@@ -341,30 +382,58 @@
     </axis>
   </joint>
  
-  <joint name="steering_joint" type="fixed">
+  <joint name="left_steering_joint" type="fixed">
    <parent>base_link</parent>
-   <child>steering_link</child>
+   <child>left_steering_link</child>
    <pose>0 0 0 0 0 0</pose>
   </joint>
-
+ 
+  <!-- Dummy joint created to keep ackermann happy -->
   <joint name="steering_wheel_joint" type="revolute">
-   <parent>steering_link</parent>
+   <parent>base_link</parent>
    <child>steering_wheel_link</child>
    <pose>0 0 0 0 0 0</pose>
    <axis>
+     <xyz>1 0 0</xyz>
+   </axis>
+  </joint>
+
+  <joint name="left_steering_wheel_joint" type="revolute">
+   <parent>left_steering_link</parent>
+   <child>left_steering_wheel_link</child>
+   <pose>0 0 0 0 0 0</pose>
+   <axis>
      <xyz>-1 0 0</xyz>
-    <limit>
-      <lower>-1.047</lower> <!-- Lower limit for position in meters -->
-      <upper>1.047</upper> <!-- Upper limit for position in meters -->
-      <effort>10</effort>
-      <velocity>1.0</velocity>
-    </limit>
    </axis>
   </joint>
 	  
-  <joint name="front_steering_wheel_joint" type="revolute">
-   <parent>steering_wheel_link</parent>
-   <child>front_steering_wheel_link</child>
+  <joint name="front_left_steering_wheel_joint" type="revolute">
+   <parent>left_steering_wheel_link</parent>
+   <child>front_left_steering_wheel_link</child>
+   <pose>0 0 0 0 0 0</pose>
+   <axis>
+     <xyz>0 0 1</xyz>
+   </axis>
+  </joint>
+
+  <joint name="right_steering_joint" type="fixed">
+   <parent>base_link</parent>
+   <child>right_steering_link</child>
+   <pose>0 0 0 0 0 0</pose>
+  </joint>
+
+  <joint name="right_steering_wheel_joint" type="revolute">
+   <parent>right_steering_link</parent>
+   <child>right_steering_wheel_link</child>
+   <pose>0 0 0 0 0 0</pose>
+   <axis>
+     <xyz>-1 0 0</xyz>
+   </axis>
+  </joint>
+	  
+  <joint name="front_right_steering_wheel_joint" type="revolute">
+   <parent>right_steering_wheel_link</parent>
+   <child>front_right_steering_wheel_link</child>
    <pose>0 0 0 0 0 0</pose>
    <axis>
      <xyz>0 0 1</xyz>
@@ -390,7 +459,8 @@
   </joint>
 
   <!-- *********************** WHEEL ODOMETRY ***************************    -->
-  <plugin name="gazebo_ros_ackermann_drive" filename="libgazebo_ros_ackermann_drive_debug.so">
+  <plugin name="dummy_plugin" filename="libgazebo_ros_hello_world_model_plugin.so"/>
+  <plugin name="gazebo_ros_ackermann_drive_debug" filename="libgazebo_ros_ackermann_drive_debug.so">
     <ros>
       <namespace></namespace>
       <remapping>cmd_vel:=cmd_vel</remapping>
@@ -405,10 +475,11 @@
 
     <rear_left_joint>drivewhl_l_joint</rear_left_joint>
     <rear_right_joint>drivewhl_r_joint</rear_right_joint>
-    <left_steering_joint>steering_wheel_joint</left_steering_joint>
-    <right_steering_joint>steering_wheel_joint</right_steering_joint>
-    <front_right_joint>front_steering_wheel_joint</front_right_joint>
-    <front_left_joint>front_steering_wheel_joint</front_left_joint>
+    <left_steering_joint>right_steering_wheel_joint</left_steering_joint>
+    <right_steering_joint>left_steering_wheel_joint</right_steering_joint>
+    <steering_wheel_joint>steering_wheel_joint</steering_wheel_joint>
+    <front_right_joint>front_right_steering_wheel_joint</front_right_joint>
+    <front_left_joint>front_left_steering_wheel_joint</front_left_joint>
 
     <update_rate>100.0</update_rate>
 
@@ -444,7 +515,7 @@
     <!-- odometry_source>0</odometry_source -->     
   </plugin> 
 
-  
+
  <!-- *********************** JOINT STATE PUBLISHER *********************   -->
   
   <plugin name="basic_mobile_bot_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
@@ -455,9 +526,13 @@
     <joint_name>rear_axle_joint</joint_name>
     <joint_name>drivewhl_l_joint</joint_name>
     <joint_name>drivewhl_r_joint</joint_name>
-    <joint_name>steering_joint</joint_name>
+    <joint_name>left_steering_joint</joint_name>
+    <joint_name>left_steering_wheel_joint</joint_name>
+    <joint_name>front_left_steering_wheel_joint</joint_name>
+    <joint_name>right_steering_joint</joint_name>
+    <joint_name>right_steering_wheel_joint</joint_name>
+    <joint_name>front_right_steering_wheel_joint</joint_name>
     <joint_name>steering_wheel_joint</joint_name>
-    <joint_name>front_steering_wheel_joint</joint_name>
   </plugin>   
   
   </model>
