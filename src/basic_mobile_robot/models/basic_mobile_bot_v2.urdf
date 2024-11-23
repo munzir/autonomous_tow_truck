@@ -89,12 +89,10 @@
 
   <link name="rear_axle_link"/>
 
-  <joint name="rear_axle_joint" type="revolute">
+  <joint name="rear_axle_joint" type="fixed">
     <parent link="base_link"/>
     <child link="rear_axle_link"/>
     <origin xyz="${-wheel_xoff} 0 ${-wheel_zoff}" rpy="0 0 0"/>
-    <limit upper="3.1415" lower="-3.1415" effort="30" velocity="5.0"/>
-    <axis xyz="0 1 0"/>
   </joint>
 
   <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
@@ -123,10 +121,12 @@
     <!-- Connect the wheels to the base_link at the appropriate location, and 
          define a continuous joint to allow the wheels to freely rotate about
          an axis -->
-    <joint name="${prefix}_joint" type="fixed">
+    <joint name="${prefix}_joint" type="revolute">
       <parent link="rear_axle_link"/>
       <child link="${prefix}_link"/>
       <origin xyz="0 ${y_reflect*(base_width/2+wheel_ygap)} 0" rpy="0 0 0"/>
+      <limit upper="3.1415" lower="-3.1415" effort="30" velocity="5.0"/>
+      <axis xyz="0 1 0"/>
     </joint>
   </xacro:macro>
 
@@ -161,7 +161,7 @@
     <child link="steering_wheel_link"/>
     <origin xyz="0 0 0" rpy="0 ${pi/2} ${pi/2}"/>
     <limit upper="1.047" lower="-1.047" effort="10" velocity="1.0"/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="-1 0 0"/>
   </joint>
 
   <link name="front_steering_wheel_link">
