@@ -586,10 +586,14 @@ void GazeboRosAckermannDrivePrivate::OnUpdate(const gazebo::common::UpdateInfo &
 
   double tanSteer = tan(target_rot);
 
+  //auto target_left_steering =
+  //  atan2(tanSteer, 1.0 - wheel_separation_ / 2.0 / wheel_base_ * tanSteer);
+  //auto target_right_steering =
+  //  atan2(tanSteer, 1.0 + wheel_separation_ / 2.0 / wheel_base_ * tanSteer);
   auto target_left_steering =
-    atan2(tanSteer, 1.0 - wheel_separation_ / 2.0 / wheel_base_ * tanSteer);
+    atan2(target_rot * wheel_base_, target_linear);
   auto target_right_steering =
-    atan2(tanSteer, 1.0 + wheel_separation_ / 2.0 / wheel_base_ * tanSteer);
+    atan2(target_rot * wheel_base_, target_linear);
 
   auto left_steering_angle = joints_[STEER_LEFT]->Position(0);
   auto right_steering_angle = joints_[STEER_RIGHT]->Position(0);
@@ -616,9 +620,11 @@ void GazeboRosAckermannDrivePrivate::OnUpdate(const gazebo::common::UpdateInfo &
   }
 
   if(debug) RCLCPP_WARN(ros_node_->get_logger(), 
-		  "sttering command: target_rot=%f, wheel_separation_=%f, tanSteer=%f, "
+		  "steering command: target_linear=%f, target_rot_=%f, "
+		  "target_rot=%f, wheel_separation_=%f, tanSteer=%f, "
 		  "target_left_steering=%f, left_steering_angle=%f, "
 		  "left_steering_diff=%f, left_steering_cmd=%f", 
+		  target_linear, target_rot_, 
 		  target_rot, wheel_separation_, tanSteer, target_left_steering, 
 		  left_steering_angle, left_steering_diff, left_steering_cmd);
   if(debug) RCLCPP_WARN(ros_node_->get_logger(), 
@@ -633,7 +639,9 @@ void GazeboRosAckermannDrivePrivate::OnUpdate(const gazebo::common::UpdateInfo &
   joints_[REAR_LEFT]->SetForce(0, linear_cmd);
 
   if (joints_.size() == 7) {
-    joints_[STEER_WHEEL]->SetPosition(0, steer_wheel_angle);
+    // joints_[STEER_WHEEL]->SetPosition(0, steer_wheel_angle);
+    if(debug) RCLCPP_WARN(ros_node_->get_logger(), "setting steering angle position\n");
+
   }
 
   last_update_time_ = _info.simTime;
@@ -647,6 +655,7 @@ void GazeboRosAckermannDrivePrivate::OnCmdVel(const geometry_msgs::msg::Twist::S
   std::lock_guard<std::mutex> scoped_lock(lock_);
   target_linear_ = _msg->linear.x;
   target_rot_ = _msg->angular.z;
+  //if(debug) RCLCPP_WARN(ros_node_->get_logger(), "target_linear=%f, target_rot_=%f",target_linear_,target_rot_);
 }
 
 double GazeboRosAckermannDrivePrivate::CollisionRadius(const gazebo::physics::CollisionPtr & _coll)
