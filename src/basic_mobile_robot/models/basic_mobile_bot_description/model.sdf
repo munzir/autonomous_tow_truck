@@ -359,6 +359,9 @@
       <effort>10</effort>
       <velocity>1.0</velocity>
     </limit>
+    <dynamics>
+      <damping>1.0</damping>
+    </dynamics>
    </axis>
   </joint>
 	  
@@ -423,9 +426,9 @@
     <max_speed>20</max_speed>
   
     <!-- PID tuning -->
-    <left_steering_pid_gain>150 0 1</left_steering_pid_gain>
+    <left_steering_pid_gain>1500 0 1</left_steering_pid_gain>
     <left_steering_i_range>0 0</left_steering_i_range>
-    <right_steering_pid_gain>150 0 1</right_steering_pid_gain>
+    <right_steering_pid_gain>1500 0 1</right_steering_pid_gain>
     <right_steering_i_range>0 0</right_steering_i_range>
     <linear_velocity_pid_gain>1000 0 1</linear_velocity_pid_gain>
     <linear_velocity_i_range>0 0</linear_velocity_i_range>
@@ -437,7 +440,7 @@
     <publish_distance>true</publish_distance>
   
     <odometry_frame>odom</odometry_frame>
-    <robot_base_frame>base_footprint</robot_base_frame>
+    <robot_base_frame>base_link</robot_base_frame>
 
     <!-- just imitated the params of tricycle plugin. not sure if the following two params exist in this plugin -->
     <!-- odometry_topic>odom</odometry_topic -->
