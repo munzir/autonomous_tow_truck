@@ -22,7 +22,7 @@ def generate_launch_description():
     nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
     behavior_tree_xml_path = os.path.join(nav2_bt_path, 'behavior_trees', 'navigate_w_replanning_and_recovery.xml')
     imu_launch_path = os.path.join(pkg_share, 'launch', 'imu.launch.py')  # Added IMU launch path
-    odometry_launch_path = os.path.join(pkg_share, 'launch', 'odometry.launch.py')  # Path to pose launch file
+    # odometry_launch_path = os.path.join(pkg_share, 'launch', 'odometry.launch.py')  # Path to pose launch file
     # lidar_launch_path = os.path.join(pkg_share, 'launch', 'lasers.launch.py')  # Added LiDAR launch path
     # Launch configuration variables
     autostart = LaunchConfiguration('autostart')

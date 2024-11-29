@@ -14,11 +14,6 @@ def generate_launch_description():
     return LaunchDescription([
         # Arguments to configure the IMU driver
         DeclareLaunchArgument(
-            name='serial_port',
-            default_value='/dev/ttyUSB0',
-            description='Serial port for the UM7 sensor'
-        ),
-        DeclareLaunchArgument(
             name='baudrate',
             default_value='115200',
             description='Baudrate for the UM7 communication'
@@ -35,7 +30,6 @@ def generate_launch_description():
             executable='um7_driver',  
             output='screen',
             parameters=[{
-                'port': LaunchConfiguration('serial_port'),
                 'baudrate': LaunchConfiguration('baudrate'),
                 'frame_id': LaunchConfiguration('frame_id'),
             }]
