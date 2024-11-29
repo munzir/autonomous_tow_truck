@@ -12,7 +12,7 @@ def generate_launch_description():
 
     # .................. Configurable Arguments .....................
 
-    use_sim_time = True
+    use_sim_time = False #was true
     map_saver_params_file = 'map_saver_params.yaml'
     # ...............................................................
 

@@ -144,8 +144,7 @@ def generate_launch_description():
 
     start_lidar_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(lidar_launch_path),
-        launch_arguments={'serial_port': '/dev/ttyUSB0',
-        'use_sim_time': use_sim_time}.items()
+        launch_arguments={'use_sim_time': use_sim_time}.items()
     )
 
     # #Include odometry 

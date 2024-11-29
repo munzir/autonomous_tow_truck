@@ -1,6 +1,6 @@
 amcl:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     alpha1: 0.002
     alpha2: 0.002
     alpha3: 0.002
@@ -28,7 +28,7 @@ amcl:
     recovery_alpha_slow: 0.0
     resample_interval: 1
     #robot_model_type: "differential"
-    motion_model_type: "nav2_amcl::DifferentialMotionModel" 
+    motion_model_type: "nav2_amcl::DifferentialMotionModel"  #check if commenting this will work
     save_pose_rate: 0.5
     set_initial_pose: true
     sigma_hit: 0.2
@@ -44,15 +44,15 @@ amcl:
 
 amcl_map_client:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
 amcl_rclcpp_node:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
 bt_navigator:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     global_frame: map
     robot_base_frame: base_link
     odom_topic: /odometry/filtered
@@ -88,11 +88,11 @@ bt_navigator:
 
 bt_navigator_rclcpp_node:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
 controller_server:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     controller_frequency: 2.0
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.5
@@ -158,7 +158,7 @@ controller_server:
 
 controller_server_rclcpp_node:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
 local_costmap:
   local_costmap:
@@ -167,7 +167,7 @@ local_costmap:
       publish_frequency: 2.0
       global_frame: odom
       robot_base_frame: base_link
-      use_sim_time: True
+      use_sim_time: False
       rolling_window: true
       width: 10
       height: 10
@@ -199,10 +199,10 @@ local_costmap:
       always_send_full_costmap: True
   local_costmap_client:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
   local_costmap_rclcpp_node:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
 
 global_costmap:
   global_costmap:
@@ -211,7 +211,7 @@ global_costmap:
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_link
-      use_sim_time: True
+      use_sim_time: False
       robot_radius: 0.75
       resolution: 0.05
       track_unknown_space: true
@@ -236,39 +236,79 @@ global_costmap:
       always_send_full_costmap: True
   global_costmap_client:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
   global_costmap_rclcpp_node:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
 
 map_server:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     yaml_filename: "turtlebot3_world.yaml"
 
 map_saver:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     save_map_timeout: 5000
     free_thresh_default: 0.25
     occupied_thresh_default: 0.65
     map_subscribe_transient_local: False
     save_map_timeout: 5000
 
+# planner_server:
+#   ros__parameters:
+#     expected_planner_frequency: 2.0
+#     use_sim_time: False
+#     planner_plugins: ["GridBased"]
+#     GridBased:
+#       plugin: "nav2_navfn_planner/NavfnPlanner"
+#       tolerance: 0.5
+#       use_astar: false
+#       allow_unknown: true
 planner_server:
   ros__parameters:
-    expected_planner_frequency: 2.0
     use_sim_time: True
     planner_plugins: ["GridBased"]
-    GridBased:
-      plugin: "nav2_navfn_planner/NavfnPlanner"
-      tolerance: 0.5
-      use_astar: false
-      allow_unknown: true
+    expected_planner_frequency: 1.0
 
+    GridBased:
+      plugin: "nav2_smac_planner/SmacPlannerHybrid"
+      tolerance: 0.5
+      downsample_costmap: True
+      downsampling_factor: 2
+      allow_unknown: True
+      max_iterations: 1000000
+      max_on_approach_iterations: 1000
+      terminal_checking_interval: 5000
+      max_planning_time: 5.0
+      motion_model_for_search: "DUBIN"
+      cost_travel_multiplier: 2.5
+      angle_quantization_bins: 64
+      analytic_expansion_ratio: 3.5
+      analytic_expansion_max_length: 3.0
+      minimum_turning_radius: 1.60
+      reverse_penalty: 100.0
+      change_penalty: 0.5
+      non_straight_penalty: 1.5
+      cost_penalty: 2.0
+      retrospective_penalty: 0.025
+      rotation_penalty: 10.0
+      lookup_table_size: 20.0
+      cache_obstacle_heuristic: True
+      allow_reverse_expansion: False
+      smooth_path: True
+      debug_visualizations: True
+
+    smoother:
+      max_iterations: 1000                # iterations for path smoothing
+      w_smooth: 0.3                       # smoothing weight
+      w_data: 0.2                         # data weight
+      tolerance: 1.0e-10                  # smoothing tolerance
+      do_refinement: true                 # refine the smoothed path
+  
 planner_server_rclcpp_node:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
 
 behaviors_server:
   ros__parameters:
@@ -285,7 +325,7 @@ behaviors_server:
     global_frame: odom
     robot_base_frame: base_link
     transform_timeout: 0.1
-    use_sim_time: true
+    use_sim_time: False
     simulate_ahead_time: 2.0
     max_rotational_vel: 1.0
     min_rotational_vel: 0.4
@@ -293,7 +333,7 @@ behaviors_server:
 
 robot_state_publisher:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: False
     
 slam_toolbox:
   ros__parameters:
