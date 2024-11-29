@@ -29,7 +29,7 @@ def generate_launch_description():
   static_map_path = os.path.join(pkg_share, 'maps', 'smalltown_world.yaml')
   nav2_params_path = os.path.join(pkg_share, 'params', 'nav2_params.yaml')
   nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
-  behavior_tree_xml_path = os.path.join(nav2_bt_path, 'behavior_trees', 'navigate_w_replanning_and_recovery.xml')
+  # behavior_tree_xml_path = os.path.join(nav2_bt_path, 'behavior_trees', 'navigate_w_replanning_and_recovery.xml')
   
   # Launch configuration variables specific to simulation
   autostart = LaunchConfiguration('autostart')
