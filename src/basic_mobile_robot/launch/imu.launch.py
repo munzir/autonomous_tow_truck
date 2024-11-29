@@ -15,7 +15,7 @@ def generate_launch_description():
         # Arguments to configure the IMU driver
         DeclareLaunchArgument(
             name='serial_port',
-            default_value='/dev/ttyUSB1',
+            default_value='/dev/ttyUSB0',
             description='Serial port for the UM7 sensor'
         ),
         DeclareLaunchArgument(
