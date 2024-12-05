@@ -12,7 +12,7 @@ amcl:
     beam_skip_threshold: 0.3
     do_beamskip: false
     global_frame_id: "map"
-    initial_pose: [0.0, 0.0, 0.0, 0.0]
+    initial_pose: [0.0, 0.0, 0.0, 0.0] #[0.03391672298312187, 0.02754315733909607, 0.0, 2.59]
     lambda_short: 0.1
     laser_likelihood_max_dist: 2.0
     laser_max_range: 100.0
@@ -28,9 +28,9 @@ amcl:
     recovery_alpha_slow: 0.0
     resample_interval: 1
     #robot_model_type: "differential"
-    motion_model_type: "nav2_amcl::DifferentialMotionModel"  #check if commenting this will work
+    # motion_model_type: "nav2_amcl::DifferentialMotionModel"  #check if commenting this will work
     save_pose_rate: 0.5
-    set_initial_pose: true
+    set_initial_pose: false
     sigma_hit: 0.2
     tf_broadcast: true
     transform_tolerance: 1.0
@@ -55,7 +55,7 @@ bt_navigator:
     use_sim_time: False
     global_frame: map
     robot_base_frame: base_link
-    odom_topic: /wheel/odometry #/odometry/filtered
+    odom_topic: /odometry/filtered
     enable_groot_monitoring: True
     groot_zmq_publisher_port: 1666
     groot_zmq_server_port: 1667
