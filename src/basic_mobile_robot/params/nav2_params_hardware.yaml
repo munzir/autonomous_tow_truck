@@ -28,7 +28,7 @@ amcl:
     recovery_alpha_slow: 0.0
     resample_interval: 1
     #robot_model_type: "differential"
-    motion_model_type: "nav2_amcl::DifferentialMotionModel"  #check if commenting this will work
+    # motion_model_type: "nav2_amcl::DifferentialMotionModel"  #check if commenting this will work
     save_pose_rate: 0.5
     set_initial_pose: true
     sigma_hit: 0.2
