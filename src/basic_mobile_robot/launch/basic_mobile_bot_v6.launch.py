@@ -184,11 +184,11 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd) 
 
     # Add any actions
-    ld.add_action(start_robot_localization_cmd)
+    #ld.add_action(start_robot_localization_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(start_rviz_cmd)
     ld.add_action(start_imu_cmd) #imu
     ld.add_action(start_lidar_cmd) #lidar
     ld.add_action(start_ros2_navigation_cmd)
-    # ld.add_action(start_odometry_cmd)
+    ld.add_action(start_odometry_cmd)
     return ld
