@@ -1,4 +1,14 @@
 // Control of EPS motor 
+
+// Timer threshold in clock ticks (16-bit max is 65535)
+const uint16_t TIMER_THRESHOLD = 2000; // ~1ms seconds at 16MHz with prescaler 1024
+volatile bool eventOccurred = false;    // Flag to simulate an event in the loop
+volatile bool timerExpired = false;     // Flag to indicate timer interrupt occurred
+bool ai0_triggered = false;
+bool ai1_triggered = false;
+volatile long edges_0, interesting_edges_0, clockwise_edges_0, anti_clockwise_edges_0 = 0;
+volatile long edges_1, interesting_edges_1, clockwise_edges_1, anti_clockwise_edges_1 = 0;
+
 // Input is Duty cycle which varies from -255 to 255, beyond those values it stops. 0 is unavailable for use
 int RPWM_Output = 5; // Arduino PWM output pin 5; connect to IBT-2 pin 1 (RPWM)
 int LPWM_Output = 6; // Arduino PWM output pin 6; connect to IBT-2 pin 2 (LPWM)
@@ -135,10 +145,23 @@ void setup()
   pinMode(3, INPUT_PULLUP); // internalเป็น pullup input pin 3
   //Setting up interrupt
   //A rising pulse from encodenren activated ai0(). AttachInterrupt 0 is DigitalPin nr 2 on moust Arduino.
-  attachInterrupt(0, ai0, RISING);
+  attachInterrupt(0, ai0, CHANGE);
   
   //B rising pulse from encodenren activated ai1(). AttachInterrupt 1 is DigitalPin nr 3 on moust Arduino.
-  attachInterrupt(1, ai1, RISING);
+  attachInterrupt(1, ai1, CHANGE);
+
+  // Configure Timer1
+  cli();                  // Disable interrupts during configuration
+  TCCR1A = 0;             // Normal mode, no PWM
+  TCCR1B = 0;             // Reset Timer1 configuration
+  TCNT1 = 0;              // Reset the counter
+  OCR1A = TIMER_THRESHOLD; // Set the compare match value (threshold)
+  TCCR1B |= (1 << WGM12); // Enable CTC mode (Clear Timer on Compare Match)
+  TCCR1B |= (1 << CS11);  // Set prescaler to 1024
+
+  // Enable Timer1 compare match interrupt
+  TIMSK1 |= (1 << OCIE1A);
+  sei();                  // Enable global 
 
   lastTime = millis(); 
 }
@@ -148,6 +171,22 @@ void loop()
   // myTime = millis(); 
   if( counter != temp ){
   Serial.println (counter);
+//  Serial.print(", e0: ");
+//  Serial.print(edges_0);
+//  Serial.print(", ie0: ");
+//  Serial.print(interesting_edges_0);
+//  Serial.print(", cwe0: ");
+//  Serial.print(clockwise_edges_0);
+//  Serial.print(", acwe0: ");
+//  Serial.print(anti_clockwise_edges_0);
+//  Serial.print(", e1: ");
+//  Serial.print(edges_1);
+//  Serial.print(", ie1: ");
+//  Serial.print(interesting_edges_1);
+//  Serial.print(", cwe1: ");
+//  Serial.print(clockwise_edges_1);
+//  Serial.print(", acwe1: ");
+//  Serial.println(anti_clockwise_edges_1);
   temp = counter;
   }
 
@@ -278,25 +317,64 @@ void loop()
   // }
 }
 
+void Timer1Reset() {
+  TCNT1 = 0;                 // Reset the timer counter
+  timerExpired = false;      // Reset the flag
+  TCCR1B |= (1 << CS11);     // Restart the timer
+}
 
-void ai0() {
-  if (millis() - lastDebounceTime > debounceDelay) {
-    if (digitalRead(3) == LOW) {
+void ai0_handler() {
+  edges_0++;
+  if (digitalRead(3) == LOW) {
+    interesting_edges_0++;
+    if (digitalRead(2) == HIGH) {
+      anti_clockwise_edges_0++;
       counter++;
     } else {
+      clockwise_edges_0++;
       counter--;
     }
-    lastDebounceTime = millis();
   }
 }
 
-void ai1() {
-  if (millis() - lastDebounceTime > debounceDelay) {
-    if (digitalRead(2) == LOW) {
+void ai1_handler() {
+  edges_1++;
+  if (digitalRead(2) == LOW) {
+    interesting_edges_1++;
+    if (digitalRead(3) == HIGH) {
+      clockwise_edges_1++;
       counter--;
     } else {
+      anti_clockwise_edges_1++;
       counter++;
     }
-    lastDebounceTime = millis();
   }
+}
+
+
+void ai0() {
+  Timer1Reset();
+  ai0_triggered = true;
+}
+
+void ai1() {
+  Timer1Reset();
+  ai1_triggered = true;
+}
+
+// Timer1 Compare Match Interrupt Service Routine
+ISR(TIMER1_COMPA_vect) {
+  timerExpired = true;           // Set the flag to indicate timer expiration
+  TCCR1B &= ~(1 << CS11);        // Stop the timer by clearing the prescaler bits
+
+  if (ai0_triggered) {
+    ai0_handler();
+    ai0_triggered = false;
+  }
+
+  if (ai1_triggered) {
+    ai1_handler();
+    ai1_triggered = false;
+  }
+  
 }
