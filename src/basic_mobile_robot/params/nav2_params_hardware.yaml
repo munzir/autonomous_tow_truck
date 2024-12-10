@@ -30,7 +30,7 @@ amcl:
     #robot_model_type: "differential"
     # motion_model_type: "nav2_amcl::DifferentialMotionModel"  #check if commenting this will work
     save_pose_rate: 0.5
-    set_initial_pose: true
+    set_initial_pose: false
     sigma_hit: 0.2
     tf_broadcast: true
     transform_tolerance: 1.0
