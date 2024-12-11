@@ -1,0 +1,5 @@
+sllidar_params:
+  serial_port: "/dev/ttyUSB0"      # Replace with the correct port
+  serial_baudrate: 115200         # Adjust based on your LiDAR model
+  frame_id: "lidar_link"          # Should match the frame in your URDF
+  scan_mode: "Standard"           # Use the appropriate scan mode for your device
