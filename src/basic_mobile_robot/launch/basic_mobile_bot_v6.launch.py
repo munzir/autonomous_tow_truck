@@ -40,111 +40,111 @@ def generate_launch_description():
 
   # Declare the launch arguments  
   declare_namespace_cmd = DeclareLaunchArgument(
-      name='namespace',
-      default_value='',
-      description='Top-level namespace')
+    name='namespace',
+    default_value='',
+    description='Top-level namespace')
 
   declare_use_namespace_cmd = DeclareLaunchArgument(
-      name='use_namespace',
-      default_value='False',
-      description='Whether to apply a namespace to the navigation stack')
+    name='use_namespace',
+    default_value='False',
+    description='Whether to apply a namespace to the navigation stack')
       
   declare_autostart_cmd = DeclareLaunchArgument(
-      name='autostart', 
-      default_value='true',
-      description='Automatically startup the nav2 stack')
+    name='autostart', 
+    default_value='true',
+    description='Automatically startup the nav2 stack')
 
   declare_bt_xml_cmd = DeclareLaunchArgument(
-      name='default_bt_xml_filename',
-      default_value=behavior_tree_xml_path,
-      description='Full path to the behavior tree xml file to use')
+    name='default_bt_xml_filename',
+    default_value=behavior_tree_xml_path,
+    description='Full path to the behavior tree xml file to use')
       
   declare_map_yaml_cmd = DeclareLaunchArgument(
-      name='map',
-      default_value=static_map_path,
-      description='Full path to map file to load')
+    name='map',
+    default_value=static_map_path,
+    description='Full path to map file to load')
       
   declare_model_path_cmd = DeclareLaunchArgument(
-      name='model', 
-      default_value=default_model_path, 
-      description='Absolute path to robot urdf file')
+    name='model', 
+    default_value=default_model_path, 
+    description='Absolute path to robot urdf file')
   
   declare_params_file_cmd = DeclareLaunchArgument(
-      name='params_file',
-      default_value=nav2_params_path,
-      description='Full path to the ROS2 parameters file to use for all launched nodes')
+    name='params_file',
+    default_value=nav2_params_path,
+    description='Full path to the ROS2 parameters file to use for all launched nodes')
   
   declare_rviz_config_file_cmd = DeclareLaunchArgument(
-      name='rviz_config_file',
-      default_value=default_rviz_config_path,
-      description='Full path to the RVIZ config file to use')
+    name='rviz_config_file',
+    default_value=default_rviz_config_path,
+    description='Full path to the RVIZ config file to use')
 
   declare_slam_cmd = DeclareLaunchArgument(
-      name='slam',
-      default_value='False',
-      description='Whether to run SLAM')
+    name='slam',
+    default_value='False',
+    description='Whether to run SLAM')
   
   declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
-      name='use_robot_state_pub',
-      default_value='True',
-      description='Whether to start the robot state publisher')
+    name='use_robot_state_pub',
+    default_value='True',
+    description='Whether to start the robot state publisher')
 
   declare_use_rviz_cmd = DeclareLaunchArgument(
-      name='use_rviz',
-      default_value='True',
-      description='Whether to start RVIZ')
+    name='use_rviz',
+    default_value='True',
+    description='Whether to start RVIZ')
 
   declare_use_sim_time_cmd = DeclareLaunchArgument(
-      name='use_sim_time',
-      default_value='False',  # Set this to True if you want to use simulation time
-      description='Use simulation (Gazebo) clock if true')
+    name='use_sim_time',
+    default_value='False',  # Set this to True if you want to use simulation time
+    description='Use simulation (Gazebo) clock if true')
 
 
   # Specify the actions
 
   # Start robot localization using an Extended Kalman filter
   start_robot_localization_cmd = Node(
-      package='robot_localization',
-      executable='ekf_node',
-      name='ekf_filter_node',
-      output='screen',
-      parameters=[robot_localization_file_path, 
-                  {'use_sim_time': use_sim_time}])
+    package='robot_localization',
+    executable='ekf_node',
+    name='ekf_filter_node',
+    output='screen',
+    parameters=[robot_localization_file_path, 
+                {'use_sim_time': use_sim_time}])
 
   # Subscribe to the joint states of the robot, and publish the 3D pose of each link.
   start_robot_state_publisher_cmd = Node(
-      condition=IfCondition(use_robot_state_pub),
-      package='robot_state_publisher',
-      executable='robot_state_publisher',
-      namespace=namespace,
-      parameters=[{'use_sim_time': use_sim_time, 
-                   'robot_description': Command(['xacro ', model])}])
+    condition=IfCondition(use_robot_state_pub),
+    package='robot_state_publisher',
+    executable='robot_state_publisher',
+    namespace=namespace,
+    parameters=[{'use_sim_time': use_sim_time, 
+                 'robot_description': Command(['xacro ', model])}])
 
   # Launch RViz
   start_rviz_cmd = Node(
-      condition=IfCondition(use_rviz),
-      package='rviz2',
-      executable='rviz2',
-      name='rviz2',
-      output='screen',
-      arguments=['-d', rviz_config_file])    
+    condition=IfCondition(use_rviz),
+    package='rviz2',
+    executable='rviz2',
+    name='rviz2',
+    output='screen',
+    arguments=['-d', rviz_config_file])    
 
   #  Include the IMU launch file
   start_imu_cmd = IncludeLaunchDescription(
-      PythonLaunchDescriptionSource(imu_launch_path),
-      launch_arguments={'use_sim_time': use_sim_time}.items()
+    PythonLaunchDescriptionSource(imu_launch_path),
+    launch_arguments={'use_sim_time': use_sim_time}.items()
   )
 
   # Include the LiDAR launch file
   lidar_launch_path = os.path.join(
-      FindPackageShare('sllidar_ros2').find('sllidar_ros2'),
-      'launch',
-      'sllidar_a3_launch.py'
+    FindPackageShare('sllidar_ros2').find('sllidar_ros2'),
+    'launch',
+    'sllidar_a3_launch.py'
   )
 
   start_lidar_cmd = IncludeLaunchDescription(
-      PythonLaunchDescriptionSource(lidar_launch_path),
-      launch_arguments={'use_sim_time': use_sim_time}.items()
+    PythonLaunchDescriptionSource(lidar_launch_path),
+    launch_arguments={'use_sim_time': use_sim_time}.items()
   )
 
   # #Include odometry 
@@ -156,15 +156,15 @@ def generate_launch_description():
 
   # Launch the ROS 2 Navigation Stack
   start_ros2_navigation_cmd = IncludeLaunchDescription(
-      PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
-      launch_arguments={'namespace': namespace,
-                        'use_namespace': use_namespace,
-                        'slam': slam,
-                        'map': map_yaml_file,
-                        'use_sim_time': use_sim_time,
-                        'params_file': params_file,
-                        'default_bt_xml_filename': default_bt_xml_filename,
-                        'autostart': autostart}.items())
+    PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
+    launch_arguments={'namespace': namespace,
+                      'use_namespace': use_namespace,
+                      'slam': slam,
+                      'map': map_yaml_file,
+                      'use_sim_time': use_sim_time,
+                      'params_file': params_file,
+                      'default_bt_xml_filename': default_bt_xml_filename,
+                      'autostart': autostart}.items())
 
   # Create the launch description and populate
   ld = LaunchDescription()
