@@ -118,7 +118,8 @@ def generate_launch_description():
     executable='robot_state_publisher',
     namespace=namespace,
     parameters=[{'use_sim_time': use_sim_time,
-    'robot_description': Command(['xacro ', model])}])
+    'robot_description': Command(['xacro ', model])}],
+    arguments=[default_model_path])
 
   # Launch RViz
   start_rviz_cmd = Node(
