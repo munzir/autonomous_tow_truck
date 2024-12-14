@@ -6,7 +6,32 @@ from geometry_msgs.msg import Twist  # Import Twist for cmd_vel topic
 import serial
 import math
 import time
+from enum import Enum
 
+# button mapping on xbox joystick
+class Button(Enum):
+    A = 0
+    B = 1
+    X = 2
+    Y = 3
+    FRONT_LEFT_TOP = 4
+    FRONT_RIGHT_TOP = 5
+    CENTER_LEFT = 6
+    CENTER_RIGHT = 7
+    LEFT_THUMB = 9
+    RIGHT_THUMB = 10
+    CENTER_MIDDLE = 11
+
+# axes mapping in xbox joystick
+class Axis(Enum):
+    LEFT_THUMB_HORIZONTAL = 0
+    LEFT_THUMB_VERTICAL = 1
+    FRONT_LEFT_BOTTOM = 2
+    RIGHT_THUMB_HORIZONTAL = 3
+    RIGHT_THUMB_VERTICAL = 4
+    FRONT_RIGHT_BOTTOM = 5
+    ARROW_LEFT_RIGHT = 6
+    ARROW_UP_DOWN = 7
 
 class JoystickToArduino(Node):
     def __init__(self):
@@ -29,10 +54,17 @@ class JoystickToArduino(Node):
         )
 
         # Serial port initialization for two Arduinos
-        #self.serial_port_1 = serial.Serial('/dev/ttyACM0', 9600, timeout=1)  # Arduino 1
+        self.serial_port_1 = serial.Serial('/dev/ttyACM0', 115200, timeout=5)  # Arduino 1
         #self.serial_port_2 = serial.Serial('/dev/ttyACM1', 9600, timeout=1)  # Arduino 2
         #self.get_logger().info('Joystick to Arduino node initialized.')
 
+        self.timer = self.create_timer(0.2, self.periodic_log_callback)  # Trigger 
+
+        # start_time = time.time()
+        # self.serial_port_2.write(message.encode('utf-8'))
+        # end_time = time.time()
+        # self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
+        
         # State variables
         self.manual_mode = True
         self.teleop_mode = False
@@ -41,23 +73,28 @@ class JoystickToArduino(Node):
         self.reverse_mode = False
         self.auto_steering_angle = 0
         self.auto_speed = 0.0
+        self.debug_mode = False
+        self.reinitialize = False
+        self.steering_angle = 0
         # Previous state of the toggle buttons to detect positive edges
         self.prev_manual_button = 0
         self.prev_reverse_button = 0
+        self.prev_debug_mode_button = 0
 
     def joystick_callback(self, msg):
         try:
             # Button mappings
-            reinit_button = msg.buttons[0]  # Reinitialize all variables
-            manual_button = msg.buttons[7]  # Hold for manual
-            teleop_button = msg.buttons[6]
-            autonom_button = msg.buttons[11]
-            brake_button = msg.buttons[4]   # Brake button
-            reverse_button = msg.buttons[3] # Toggle forward/reverse mode
-            killswitch_button = msg.buttons[6]
+            reinit_button = msg.buttons[Button.A.value]  # Reinitialize all variables
+            manual_button = msg.buttons[Button.CENTER_RIGHT.value]  # Hold for manual
+            teleop_button = msg.buttons[Button.CENTER_LEFT.value]
+            autonom_button = msg.buttons[Button.CENTER_MIDDLE.value]
+            brake_button = msg.buttons[Button.B.value]   # Brake button
+            reverse_button = msg.buttons[Button.FRONT_LEFT_TOP.value] # Toggle forward/reverse mode
+            killswitch_button = msg.buttons[Button.X.value]
+            debug_mode_button = msg.buttons[Button.Y.value] 
 
             # Handle reinitialization
-            reinitialize = reinit_button == 1
+            self.reinitialize = reinit_button == 1
 
             # Handle manual/teleop toggle (positive edge detection)
             if manual_button == 1:
@@ -80,55 +117,76 @@ class JoystickToArduino(Node):
             if reverse_button == 1 and self.prev_reverse_button == 0:
                 self.reverse_mode = not self.reverse_mode
                 self.get_logger().info(f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}")
-
+            
+            
+            # Handle debug_mode toggle (positive edge detection)
+            if debug_mode_button == 1 and self.prev_debug_mode_button == 0:
+                self.debug_mode = not self.debug_mode
+                self.get_logger().info(f"Debug Mode = {'True' if self.debug_mode else 'False'}")
+            
             # Handle brake
             self.brake_active = brake_button == 1
 
             # Map joystick index [4] to Speed between 4.4 and 2.5
-            raw_speed = msg.axes[5]
+            raw_speed = msg.axes[Axis.FRONT_RIGHT_BOTTOM.value]
             if raw_speed == 1:
-                speed = 0
+                self.auto_speed = 0
             else:
-                speed = 4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2)
+                self.auto_speed = 4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2)
 
             # If brake is active, force speed to 0
             if self.brake_active:
-                speed = 0
+                self.auto_speed = 0
 
             # Map joystick index [0] to Steering Angle between -255 and 255
-            raw_steering = msg.axes[0]
+            raw_steering = msg.axes[Axis.LEFT_THUMB_HORIZONTAL.value]
             if (self.autonom_mode == True):
-                steering_angle = self.auto_steering_angle
+                self.steering_angle = self.auto_steering_angle
             else:
-                steering_angle = int(53 - (raw_steering + 1) * ((53 + 53) / 2))
-
-            # Format message with all data
-            message = (
-                f"Reinitialize = {reinitialize}, "
-                f"Mode = {'Manual' if self.manual_mode else 'Teleoperation' if self.teleop_mode else 'Autonomous' if self.autonom_mode else 'Nothing'}, "
-                f"Brake = {self.brake_active}, "
-                f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}, "
-                f"Speed = {speed:.2f}, "
-                f"Steering Angle = {steering_angle}\n"
-            )
-            #time.sleep(1)
-
-            # Send the formatted message to both Arduinos
-            #self.serial_port_1.write(message.encode('utf-8'))
-            #self.serial_port_2.write(message.encode('utf-8'))
-
-            self.get_logger().info(f"Sent to Arduino 1: {message.strip()}")
-            self.get_logger().info(f"Sent to Arduino 2: {message.strip()}")
+                self.steering_angle = int(53 - (raw_steering + 1) * ((53 + 53) / 2))
 
             # Update previous state for next cycle
             self.prev_manual_button = manual_button
             self.prev_reverse_button = reverse_button
+            self.prev_debug_mode_button = debug_mode_button
 
+        except Exception as e:
+            self.get_logger().error(f"Unexpected error: {str(e)}")
+    
+    def periodic_log_callback(self):
+        # Periodic logging of state variables
+        try: 
+             # Format message with all data
+            message = (
+                f"Reinitialize = {self.reinitialize}, "
+                f"Mode = {'Manual' if self.manual_mode else 'Teleoperation' if self.teleop_mode else 'Autonomous' if self.autonom_mode else 'Nothing'}, "
+                f"Brake = {self.brake_active}, "
+                f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}, "
+                f"Speed = {self.auto_speed:.2f}, "
+                f"Steering Angle = {self.steering_angle}\n"
+                f"Debug Mode = {'True' if self.debug_mode else 'False'}, "
+            )
+            #time.sleep(1)
+
+            # Send the formatted message to both Arduinos
+            start_time = time.time()
+            self.serial_port_1.reset_output_buffer()
+            self.serial_port_1.write(message.encode('utf-8'))
+            end_time = time.time()
+            self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
+            self.get_logger().info(f"Sent to Arduino 1: {message.strip()}")
+
+            #self.serial_port_2.write(message.encode('utf-8'))
+            # self.get_logger().info(f"Sent to Arduino 2: {message.strip()}")
+
+   
         except serial.SerialTimeoutException:
             self.get_logger().warn("Serial write timeout occurred.")
         except Exception as e:
             self.get_logger().error(f"Unexpected error: {str(e)}")
-
+    
+    
+    
     def cmd_vel_callback(self, msg):
         # Log linear and angular velocities
         self.get_logger().info(

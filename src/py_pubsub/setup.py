@@ -24,6 +24,7 @@ setup(
                         'listener = py_pubsub.subscriber_member_function:main',
                         'freqnangle = py_pubsub.pose:main',
                         'poser = py_pubsub.pose_pub:main',
+                        'joyard = py_pubsub.joystick_to_arduino:main',
         ],
     },
 )
