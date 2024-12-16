@@ -137,7 +137,7 @@ void setup()
 void loop()
 {
   myTime = millis();
-
+  print(counter);
   // pick input 
 
   // value is in the range -255 to 255
