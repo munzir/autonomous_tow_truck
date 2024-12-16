@@ -188,7 +188,6 @@ void loop()
     Serial.print(", Steering Angle: "); Serial.println(steering_angle);
     Serial.print(", Debug Mode: "); Serial.println(debug);                                                        
     }                                            
-    Serial.flush();
     
   }
   // Compute the PID output (duty cycle)
