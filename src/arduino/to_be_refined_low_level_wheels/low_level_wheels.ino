@@ -6,7 +6,7 @@ float Kp = 0.0050;         // Proportional gain
 float Ki = 0.000628;         // Integral gain
 float Kd = 0.00003;        // Derivative gain
 float alpha = 0.1;//Smooth
-float errorCap = 50;
+float errorCap = 60;
 int idle = 10;
 float receive;
 int flag = 0; // 0 means controlled using the pedal, 1 means control using Arduino
