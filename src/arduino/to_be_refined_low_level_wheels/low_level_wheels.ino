@@ -6,12 +6,16 @@ float Kp = 0.0050;         // Proportional gain
 float Ki = 0.000628;         // Integral gain
 float Kd = 0.00003;        // Derivative gain
 float alpha = 0.1;//Smooth
-float errorCap = 60;
+float errorCap = 50;
 int idle = 10;
 float receive;
+int flag = 0; // 0 means controlled using the pedal, 1 means control using Arduino
+int flagpin = 11;
+
 // these are checked for in the main program
 volatile unsigned long timerCounts; // apparently the volatile keyword is to let the compiler know this can have very sharp changes? other than that, this is self explanatory
 volatile boolean counterReady; // time to calculate after counting
+unsigned long myTime;
 
 float speed = 0;
 float pidOutput = 0;
@@ -133,6 +137,10 @@ float PID(float setpoint, float measuredValue) {
 
     // Calculate the error term
     float error = setpoint - measuredValue;
+    if (abs(error) < errorCap)
+    {
+      error = 0;
+    }
 
     // Proportional term
     float Pout = Kp * error;
@@ -172,17 +180,18 @@ void setup()
   Serial.begin(9600);
   
   
-  dac.begin(0x60);
-  // if (dac.begin(0x60))   // Initialize MCP4725 DAC at default address (0x60)
-  // {
-  //   Serial.println("MCP4725 Initialized Successfully.");
-  // } 
-  // else
-  // {
-  //   Serial.println("Failed.");
-  // }
+  // dac.begin(0x60);
+  if (dac.begin(0x60))   // Initialize MCP4725 DAC at default address (0x60)
+  {
+    Serial.println("MCP4725 Initialized Successfully.");
+  } 
+  else
+  {
+    Serial.println("Failed.");
+  }
   
   pinMode(idle, OUTPUT);
+  pinMode(flagpin,OUTPUT);
   dac.setVoltage(0, false);  // Set DAC output to 0V
   // Serial.println("Frequency Counter"); // to show that we have initialized successfully
   startCounting(200); // Start counting for 10 ms (or another period)
@@ -190,25 +199,48 @@ void setup()
 
 void loop()
 {
+  myTime = millis();
   if (counterReady) {
     // adjust counts by counting interval to give frequency in Hz
     frq = (timerCounts *  1000.0) / timerPeriod; // frequency is obtained by dividing the number of detected pulses by the period, then multiplying by 1000 because the period is in ms
     float speed = ((frq) / 740.0) * (2 * 3.1415 * 0.2032)/0.2;
     pulses += timerCounts; // we may use this to keep track of total distance travelled
     // Send pulses and frequency to serial, separated by a comma
-    
+    // Serial.println(frq);
     // Serial.println(frq, 2);   // 2 decimal places for float
     
     // restart counting
-    startCounting(200); // Continue counting for 10 ms (or another period)
+    startCounting(200); // Continue counting for 10 ms (or another period)
   }
-  if (Serial.available() > 0)
+   if (Serial.available() > 0)
   {
     // Take in Serial input
     receive = Serial.parseFloat();
-    // Serial.println(receive);
   }
-    if (receive == 0)
+    if (receive == -2)
+    {
+      flag = 0;
+      digitalWrite(idle,LOW);
+      dac.setVoltage(0, false);
+      digitalWrite(flagpin, LOW);
+    }
+    if (receive == -1)
+    {
+      flag = 1;
+      digitalWrite(idle,LOW);
+      dac.setVoltage(0, false);
+      digitalWrite(flagpin, HIGH);
+      Serial.println("here");
+      
+    }
+    if (flag == 1)
+    {
+    if (receive == -1)
+    {
+      digitalWrite(idle,LOW);
+      dac.setVoltage(0, false);
+    }
+    else if (receive == 0)
     {
       digitalWrite(idle,LOW);
       dac.setVoltage(0, false);
@@ -217,7 +249,7 @@ void loop()
     else
     {
       digitalWrite(idle,HIGH);
-      // dac.setVoltage(receive*4096/5, false);
+      dac.setVoltage(receive*4096/5, false);
       pidOutput = PID(receive,frq)+2.6;
       if (pidOutput < 1.1)
       {
@@ -227,18 +259,18 @@ void loop()
       {
         vvv = 2.6;
       }
-      else if (pidOutput > 4.4)
+      else if (pidOutput > 4.3)
       {
-        vvv = 4.4;
+        vvv = 4.3;
       }
       else
       {
         vvv = pidOutput;
       }
     
-      dacValue = int(4095 / 5.0 * vvv);  // Convert 0-5V range to 0-4095 range for DAC
-      dac.setVoltage(dacValue, false);            // Send the corresponding voltage to DAC
-      // Serial.println(dacValue);                   // Print the DAC value for debugging
-}
-
+      // dacValue = int(4095 / 5.0 * vvv);  // Convert 0-5V range to 0-4095 range for DAC
+      // dac.setVoltage(dacValue, false);            // Send the corresponding voltage to DAC
+      // Serial.println(dacValue);                   // Print the DAC value for debugging
+      }
+    }
 }
