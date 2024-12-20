@@ -1,27 +1,23 @@
-#include "include/steering_angle_sensing.h"
-#include "include/steering_control.h"
+#include "include/wheels_control.h"
+#include "include/wheels_sensing.h"
 #include "include/joystick.h"
 #include "include/timer2_10ms.h"
 
-int control_timer_ticks = 0;
-int control_timer_period = 40;
-
-void setup()
-{ 
-  steering_control_setup();  
-  joystick_setup();
+void setup() {
+  WheelsSensingSetup(timer2TickPeriod);
+  WheelsControlSetup(timer2TickPeriod);
   Timer2Reset();
+  joystick_setup();
 }
 
-
-void loop()
-{
+void loop() {
   JoystickLoop();  
 
   manual_mode = (mode == "Manual");
+  wheel_speed = ref_speed;
 
-  // Send the value of steering_angle
-  Serial.println (steering_angle);
+  // Send the value of wheel speed
+  Serial.println(frq, 2); // 2 decimal places for float
   if (debug == true){
       Serial.print("Reinitialize: "); Serial.print(reinitialize);
       Serial.print(", Mode: "); Serial.print(mode);
@@ -33,13 +29,11 @@ void loop()
   }
 }
 
+//********
+//  Timer2 Interrupt Service is invoked by hardware Timer 2 every 1 ms = 1000 Hz
+//  16Mhz / 128 / 125 = 1000 Hz
 
 ISR(TIMER2_COMPA_vect) {
-  control_timer_ticks += timer2TickPeriod;
-  if (control_timer_ticks < control_timer_period)
-    return;
-
-  // control logic
-  ControlLoop(ref_steering_angle);
-  control_timer_ticks = 0;
+  SensingLoop();
+  ControlLoop();
 }
