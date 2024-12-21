@@ -1,5 +1,5 @@
-#include "include/wheels_sensing.h"
-#include "include/timer2_10ms.h"
+#include "include/wheels_sensing_robust.h"
+#include "include/timer2_1ms.h"
 /* code for tick period to be 1 ms */
 unsigned long prev_time = 0;
 void setup ()
@@ -12,11 +12,11 @@ void setup ()
 void loop ()
 {
   if (frq_updated){
-    //unsigned long current_time = millis();
-    //unsigned long my_time = current_time - prev_time;
-    //prev_time = current_time;
-    //Serial.print(my_time);
-    //Serial.print(" ms, ");
+    unsigned long current_time = millis();
+    unsigned long my_time = current_time - prev_time;
+    prev_time = current_time;
+    Serial.print(my_time);
+    Serial.print(" ms, ");
     // Send pulses and frequency to serial, separated by a comma
     Serial.println(frq, 2);   // 2 decimal places for float
     

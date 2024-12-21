@@ -1,7 +1,9 @@
-#include "include/wheels_control.h"
-#include "include/wheels_sensing.h"
 #include "include/joystick.h"
-#include "include/timer2_10ms.h"
+#include "include/timer2_1ms.h"
+#include "include/wheels_control.h"
+#include "include/wheels_sensing_robust.h"
+
+unsigned long current_time, prev_time, iter_time = 0;
 
 void setup() {
   WheelsSensingSetup(timer2TickPeriod);
@@ -11,21 +13,41 @@ void setup() {
 }
 
 void loop() {
-  JoystickLoop();  
+  JoystickLoop();
 
-  manual_mode = (mode == "Manual");
+  manual_mode = manual;
   wheel_speed = ref_speed;
 
+  if (ControlLoop()) {
+    if (debug) {
+      current_time = millis();
+      iter_time = current_time - prev_time;
+      prev_time = current_time;
+    }
+  }
+
   // Send the value of wheel speed
-  Serial.println(frq, 2); // 2 decimal places for float
-  if (debug == true){
-      Serial.print("Reinitialize: "); Serial.print(reinitialize);
-      Serial.print(", Mode: "); Serial.print(mode);
-      Serial.print(", Brake: "); Serial.print(brake);
-      Serial.print(", Direction: "); Serial.print(direction);
-      Serial.print(", Speed: "); Serial.print(ref_speed);
-      Serial.print(", Steering Angle: "); Serial.println(ref_steering_angle);
-      Serial.print(", Debug Mode: "); Serial.println(debug);
+  if (frq_updated) {
+    Serial.println(frq, 2);
+    frq_updated = false;
+  } // 2 decimal places for float
+  if (debug == true) {
+    Serial.print("Reinitialize: ");
+    Serial.print(reinitialize);
+    Serial.print(", Manual: ");
+    Serial.print(manual);
+    Serial.print(", Brake: ");
+    Serial.print(brake);
+    Serial.print(", Reverse: ");
+    Serial.print(reverse);
+    Serial.print(", Speed: ");
+    Serial.print(ref_speed);
+    Serial.print(", Steering Angle: ");
+    Serial.print(ref_steering_angle);
+    Serial.print(", Debug Mode: ");
+    Serial.print(debug);
+    Serial.print(", Cycle Time: ");
+    Serial.println(iter_time);
   }
 }
 
@@ -35,5 +57,5 @@ void loop() {
 
 ISR(TIMER2_COMPA_vect) {
   SensingLoop();
-  ControlLoop();
+  ControlTick();
 }
