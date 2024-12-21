@@ -1,7 +1,7 @@
 #include "include/steering_angle_sensing.h"
 #include "include/steering_control.h"
 #include "include/joystick.h"
-#include "include/timer2_10ms.h"
+#include "include/timer2_1ms.h"
 
 int control_timer_ticks = 0;
 int control_timer_period = 40;
@@ -24,9 +24,9 @@ void loop()
   Serial.println (steering_angle);
   if (debug == true){
       Serial.print("Reinitialize: "); Serial.print(reinitialize);
-      Serial.print(", Mode: "); Serial.print(mode);
+      Serial.print(", Manual: "); Serial.print(manual);
       Serial.print(", Brake: "); Serial.print(brake);
-      Serial.print(", Direction: "); Serial.print(direction);
+      Serial.print(", Reverse: "); Serial.print(reverse);
       Serial.print(", Speed: "); Serial.print(ref_speed);
       Serial.print(", Steering Angle: "); Serial.println(ref_steering_angle);
       Serial.print(", Debug Mode: "); Serial.println(debug);

@@ -1,6 +1,6 @@
+#include "include/timer2_1ms.h"
 #include "include/wheels_control.h"
-#include "include/wheels_sensing.h"
-#include "include/timer2_10ms.h"
+#include "include/wheels_sensing_robust.h"
 
 void setup() {
   Serial.begin(9600);
@@ -16,18 +16,20 @@ void loop() {
     wheel_speed = Serial.parseFloat();
     // Serial.println(wheel_speed);
   }
-  Serial.print("Setpoint:");
-  Serial.print(wheel_speed);
-  Serial.print(", Pout:");
-  Serial.print(Pout);
-  Serial.print(", Iout:");
-  Serial.print(Iout);
-  Serial.print(", Dout:");
-  Serial.print(Dout);
-  Serial.print(", PID:");
-  Serial.print(output);
-  Serial.print(", Speed:");
-  Serial.println(frq, 2); // 2 decimal places for float
+  if (ControlLoop()) {
+    Serial.print("Setpt:");
+    Serial.print(wheel_speed);
+    Serial.print(", P:");
+    Serial.print(Pout);
+    Serial.print(", I:");
+    Serial.print(Iout);
+    Serial.print(", D:");
+    Serial.print(Dout);
+    Serial.print(", PID:");
+    Serial.print(output);
+    Serial.print(", Speed:");
+    Serial.println(frq, 2); // 2 decimal places for float
+  }
 }
 
 //********
@@ -36,5 +38,5 @@ void loop() {
 
 ISR(TIMER2_COMPA_vect) {
   SensingLoop();
-  ControlLoop();
+  ControlTick();
 }

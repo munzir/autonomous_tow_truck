@@ -2,7 +2,7 @@
 #ifndef WHEELS_CONTROL_H
 #define WHEELS_CONTROL_H
 
-#include "wheels_sensing.h"
+#include "wheels_sensing_robust.h"
 #include <Adafruit_MCP4725.h>
 #include <Wire.h>
 
@@ -10,6 +10,7 @@ int control_tick_period = 1; // by default the tick period is assumed to be 1ms
 int control_timer_ticks = 0;
 int control_timer_period = 60;
 bool manual_mode = false;
+bool control_updated = false;
 
 Adafruit_MCP4725 dac; // Create an MCP4725 object
 float Kp = 0.0050;    // Proportional gain
@@ -19,7 +20,7 @@ float alpha = 0.1;    // Smooth
 float errorCap = 60;
 int idle_pin = 11;
 int teleop_pin = 10;
-float wheel_speed = 0.0; 
+float wheel_speed = 0.0;
 // these are checked for in the main program
 float Pout;
 float Iout;
@@ -85,46 +86,54 @@ void WheelsControlSetup(int tick_period) {
   // successfully
 }
 
-void ControlLoop() {
+void ControlTick() {
   control_timer_ticks += control_tick_period;
   if (control_timer_ticks < control_timer_period)
     return;
 
-  if (manual_mode) {
-    digitalWrite(teleop_pin, LOW);
-    digitalWrite(idle_pin, LOW);
-    dacValue = 0;
-    //dac.setVoltage(0, false);
-  } else {
-    digitalWrite(teleop_pin, HIGH);
-    if (wheel_speed == 0) {
+  control_timer_ticks = 0;
+  control_updated = true;
+}
+
+bool ControlLoop() {
+  if (control_updated) {
+    control_updated = false;
+    if (manual_mode) {
+      digitalWrite(teleop_pin, LOW);
       digitalWrite(idle_pin, LOW);
       dacValue = 0;
-      //dac.setVoltage(0, false);
-
+      // dac.setVoltage(0, false);
     } else {
-      digitalWrite(idle_pin, HIGH);
-      // dac.setVoltage(wheel_speed*4096/5, false);
-      pidOutput = PID(wheel_speed, frq) + 2.6;
-      if (pidOutput < 1.1) {
-        vvv = 2.5;
-      } else if (pidOutput < 2.6) {
-        vvv = 2.6;
-      } else if (pidOutput > 4.4) {
-        vvv = 4.4;
-      } else {
-        vvv = pidOutput;
-      }
+      digitalWrite(teleop_pin, HIGH);
+      if (wheel_speed == 0) {
+        digitalWrite(idle_pin, LOW);
+        dacValue = 0;
+        // dac.setVoltage(0, false);
 
-      dacValue =
-          int(4095 / 5.0 * vvv); // Convert 0-5V range to 0-4095 range for DAC
-      // Serial.println(dacValue);                   // Print the DAC value for
-      // debugging
+      } else {
+        digitalWrite(idle_pin, HIGH);
+        // dac.setVoltage(wheel_speed*4096/5, false);
+        pidOutput = PID(wheel_speed, frq) + 2.6;
+        if (pidOutput < 1.1) {
+          vvv = 2.5;
+        } else if (pidOutput < 2.6) {
+          vvv = 2.6;
+        } else if (pidOutput > 4.4) {
+          vvv = 4.4;
+        } else {
+          vvv = pidOutput;
+        }
+
+        dacValue =
+            int(4095 / 5.0 * vvv); // Convert 0-5V range to 0-4095 range for DAC
+        // Serial.println(dacValue);                   // Print the DAC value
+        // for debugging
+      }
     }
+    dac.setVoltage(dacValue, false); // Send the corresponding voltage to DAC
+    return true;
   }
-  TWCR = _BV(TWINT) | _BV(TWEA) | _BV(TWEN) | _BV(TWIE);
-  dac.setVoltage(dacValue, false); // Send the corresponding voltage to DAC
-  control_timer_ticks = 0;
+  return false;
 }
 
 #endif // WHEELS_CONTROL_H

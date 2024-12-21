@@ -32,7 +32,7 @@ void PrintHex(char myString[], int length) {
   }
 }
 
-void JoystickLoop() {
+bool JoystickLoop() {
   // Serial.println(steering_angle);
   if (myTransfer.available()) {
     // uint16_t recSize = myTransfer.rxObj(arr, 0, 13);
@@ -123,7 +123,9 @@ void JoystickLoop() {
       Serial.print(", ");
       Serial.println(debug);
     }
+    return true;
   }
+  return false;
 }
 
 #endif // JOYSTICK_H

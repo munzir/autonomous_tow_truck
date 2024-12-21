@@ -2,8 +2,8 @@
 // Author: Nick Gammon
 // Date: 17th January 2012
 
-#ifndef WHEELS_SENSING_H
-#define WHEELS_SENSING_H
+#ifndef WHEELS_SENSING_ROBUST_H
+#define WHEELS_SENSING_ROBUST_H
 
 // Input: Pin D5
 // Note from Shaheer: I do not understand a good portion of this code,
@@ -25,43 +25,53 @@ volatile unsigned long
     timerCounts; // apparently the volatile keyword is to let the compiler know
                  // this can have very sharp changes? other than that, this is
                  // self explanatory
+long tempCounter = 0;
+const uint16_t TIMER_THRESHOLD =
+    500; // ~0.5ms seconds at 16MHz with prescaler 1024
+unsigned int SENSING_LOOP_PERIOD = 50; // ms
 float frq;
 
-// internal to counting routine
-unsigned long overflowCount; // keeps track of overflows for Timer 1. will make
-                             // more sense later
 unsigned int timerTicks;
 unsigned int timerPeriod;
 bool frq_updated = false;
 
 void startCounting(unsigned int ms) {
-  timerPeriod = ms;     // how many 1 ms counts to do
-  timerTicks = 0;       // reset interrupt counter
-  overflowCount = 0;    // no overflows yet
-
-  // reset Timer 1 and Timer 2
-  TCCR1A = 0;
-  TCCR1B = 0;
-
-  // Timer 1 - counts events on pin D5
-  TIMSK1 = bit(TOIE1); // interrupt on Timer 1 overflow
-
-  TCNT1 = 0; // Both counters to zero
-
-  // Reset prescalers
-  GTCCR = bit(PSRASY); // reset prescaler now
-  // start Timer 1
-  // External clock source on T1 pin (D5). Clock on rising edge.
-  TCCR1B = bit(CS10) | bit(CS11) | bit(CS12);
+  timerPeriod = ms; // how many 1 ms counts to do
+  timerTicks = 0;   // reset interrupt counter
+  tempCounter = 0;
 } // end of startCounting
 
-ISR(TIMER1_OVF_vect) {
-  ++overflowCount; // count number of Counter1 overflows
-} // end of TIMER1_OVF_vect
+void Timer1Reset() {
+  TCNT1 = 0;             // Reset the timer counter
+  TCCR1B |= (1 << CS11); // Restart the timer
+}
+
+void ai1() { Timer1Reset(); }
+
+//
+// Timer1 Compare Match Interrupt Service Routine
+ISR(TIMER1_COMPA_vect) {
+  TCCR1B &= ~(1 << CS11); // Stop the timer by clearing the prescaler bits
+  tempCounter++;
+}
 
 void WheelsSensingSetup(int tickPeriod) {
   sensingTickPeriod = tickPeriod;
-  startCounting(200); // Start counting for 10 ms (or another period)
+  startCounting(SENSING_LOOP_PERIOD); // Start counting for 10 ms (or another period)
+  pinMode(3, INPUT);  // internalเป็น pullup input pin 3
+  attachInterrupt(1, ai1, RISING);
+  // Configure Timer1
+  cli();                   // Disable interrupts during configuration
+  TCCR1A = 0;              // Normal mode, no PWM
+  TCCR1B = 0;              // Reset Timer1 configuration
+  TCNT1 = 0;               // Reset the counter
+  OCR1A = TIMER_THRESHOLD; // Set the compare match value (threshold)
+  TCCR1B |= (1 << WGM12);  // Enable CTC mode (Clear Timer on Compare Match)
+  TCCR1B |= (1 << CS11);   // Set prescaler to 1024
+
+  // Enable Timer1 compare match interrupt
+  TIMSK1 |= (1 << OCIE1A);
+  sei(); // Enable global
 } // end of setup
 
 float CalculateAndThresholdFrequency() {
@@ -80,33 +90,17 @@ float CalculateAndThresholdFrequency() {
 }
 
 void SensingLoop() {
-  // grab counter value before it changes any more
-  unsigned int timer1CounterValue;
-  timer1CounterValue =
-      TCNT1; // see datasheet, page 117 (accessing 16-bit registers)
-  unsigned long overflowCopy = overflowCount;
-
   // see if we have reached timing period
   timerTicks += sensingTickPeriod;
   if (timerTicks < timerPeriod)
     return; // not yet
 
-  // if just missed an overflow
-  if ((TIFR1 & bit(TOV1)) && timer1CounterValue < 256)
-    overflowCopy++;
-
-  // end of gate time, measurement ready
-
-  TCCR1A = 0; // stop timer 1
-  TCCR1B = 0;
-  TIMSK1 = 0; // disable Timer1 Interrupt
-
   // calculate total count
-  timerCounts =
-      (overflowCopy << 16) + timer1CounterValue; // each overflow is 65536 more
+  timerCounts = tempCounter;
+  // ======
   frq = CalculateAndThresholdFrequency();
   // restart counting
-  startCounting(200); // Continue counting for 10 ms (or another period)
+  startCounting(SENSING_LOOP_PERIOD); // Continue counting for 10 ms (or another period)
 }
 
-#endif // WHEELS_SENSING_H
+#endif // WHEELS_SENSING_ROBUST_H
