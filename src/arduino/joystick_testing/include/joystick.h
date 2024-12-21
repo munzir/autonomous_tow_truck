@@ -1,55 +1,127 @@
 #ifndef JOYSTICK_H
 #define JOYSTICK_H
+#include "SerialTransfer.h"
 
+SerialTransfer myTransfer;
 bool reinitialize = false;
-String mode = "";
+bool manual = false;
 bool brake = false;
-String direction = "";
+bool reverse = false;
 bool debug = false;
 float ref_speed;
-int ref_steering_angle = 0;
+long ref_steering_angle = 0;
+char arr[13];
+
+bool serial_transfer_debug = false;
 
 void joystick_setup() {
   Serial.begin(115200);
+  myTransfer.begin(Serial, false); // false for silencing debug messages
 }
-   
+
+void PrintHex(char myString[], int length) {
+  // Print the character array in hexadecimal
+  for (int i = 0; i < length; i++) { // Exclude null terminator
+    Serial.print("0x");              // Prefix for hex
+    if ((uint8_t)myString[i] < 16) {
+      Serial.print("0"); // Add leading zero for single-digit hex values
+    }
+    Serial.print((uint8_t)myString[i],
+                 HEX); // Print the ASCII value in hexadecimal
+    Serial.print(" "); // Add a space between hex values
+  }
+}
+
 void JoystickLoop() {
-  //Serial.println(steering_angle);
-  if (Serial.available() > 0)
-  {
-   // Take in Serial input
-    String input = Serial.readStringUntil('\n'); // Read the incoming string until a newline character
+  // Serial.println(steering_angle);
+  if (myTransfer.available()) {
+    // uint16_t recSize = myTransfer.rxObj(arr, 0, 13);
+    // PrintHex(arr, 13);
+    // Serial.println("");
+    uint16_t recSize = 0;
+    char ch;
+    char str[1];
+    char *str1;
+    recSize = myTransfer.rxObj(ch, recSize);
+    reinitialize = (ch == 1);
+    if (serial_transfer_debug) {
+      Serial.print("reinit: ");
+      Serial.print(recSize);
+      Serial.print(", ");
+      str[0] = ch;
+      PrintHex(str, 1);
+      Serial.print(", ");
+      Serial.println(reinitialize);
+    }
 
-    // Split the input into individual parameters
-    int lastIndex = 0;
-    while (lastIndex < input.length()) {
-      // Find the next comma
-      int nextComma = input.indexOf(',', lastIndex);
-      if (nextComma == -1) nextComma = input.length(); // Handle the last parameter
+    recSize = myTransfer.rxObj(ch, recSize);
+    manual = (ch == 1);
+    if (serial_transfer_debug) {
+      Serial.print("manual: ");
+      Serial.print(recSize);
+      Serial.print(", ");
+      str[0] = ch;
+      PrintHex(str, 1);
+      Serial.print(", ");
+      Serial.println(manual);
+    }
 
-      // Extract the key-value pair
-      String pair = input.substring(lastIndex, nextComma);
-      pair.trim(); // Remove any leading/trailing whitespace
+    recSize = myTransfer.rxObj(ch, recSize);
+    brake = (ch == 1);
+    if (serial_transfer_debug) {
+      Serial.print("brake: ");
+      Serial.print(recSize);
+      Serial.print(", ");
+      str[0] = ch;
+      PrintHex(str, 1);
+      Serial.print(", ");
+      Serial.println(brake);
+    }
 
-      // Parse the key-value pair
-      if (pair.startsWith("Reinitialize = ")) {
-        reinitialize = pair.substring(15).equalsIgnoreCase("True");
-      } else if (pair.startsWith("Mode = ")) {
-        mode = pair.substring(7);
-      } else if (pair.startsWith("Brake = ")) {
-        brake = pair.substring(8).equalsIgnoreCase("True");
-      } else if (pair.startsWith("Direction = ")) {
-        direction = pair.substring(12);
-      } else if (pair.startsWith("Speed = ")) {
-        ref_speed = pair.substring(8).toFloat();
-      } else if (pair.startsWith("Steering Angle = ")) {
-        ref_steering_angle = pair.substring(17).toInt();
-      } else if (pair.startsWith("Debug Mode = ")){
-        debug = pair.substring(13).equalsIgnoreCase("True");        
-      }
+    recSize = myTransfer.rxObj(ch, recSize);
+    reverse = (ch == 1);
+    if (serial_transfer_debug) {
+      Serial.print("reverse: ");
+      Serial.print(recSize);
+      Serial.print(", ");
+      str[0] = ch;
+      PrintHex(str, 1);
+      Serial.print(", ");
+      Serial.println(reverse);
+    }
 
-      // Move to the next key-value pair
-      lastIndex = nextComma + 1;
+    recSize = myTransfer.rxObj(ref_speed, recSize);
+    if (serial_transfer_debug) {
+      Serial.print("ref speed: ");
+      Serial.print(recSize);
+      Serial.print(", ");
+      str1 = (char *)&ref_speed;
+      PrintHex(str1, 4);
+      Serial.print(", ");
+      Serial.println(ref_speed);
+    }
+
+    recSize = myTransfer.rxObj(ref_steering_angle, recSize);
+    if (serial_transfer_debug) {
+      Serial.print("ref steering angle: ");
+      Serial.print(recSize);
+      Serial.print(", ");
+      str1 = (char *)&ref_steering_angle;
+      PrintHex(str1, 4);
+      Serial.print(", ");
+      Serial.println(ref_steering_angle);
+    }
+
+    recSize = myTransfer.rxObj(ch, recSize);
+    debug = (ch == 1);
+    if (serial_transfer_debug) {
+      Serial.print("debug: ");
+      Serial.print(recSize);
+      Serial.print(", ");
+      str[0] = ch;
+      PrintHex(str, 1);
+      Serial.print(", ");
+      Serial.println(debug);
     }
   }
 }

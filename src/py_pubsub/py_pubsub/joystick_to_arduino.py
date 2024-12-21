@@ -7,6 +7,7 @@ import serial
 import math
 import time
 from enum import Enum
+from pySerialTransfer import pySerialTransfer as txfer
 
 # button mapping on xbox joystick
 class Button(Enum):
@@ -54,7 +55,9 @@ class JoystickToArduino(Node):
         )
 
         # Serial port initialization for two Arduinos
-        self.serial_port_1 = serial.Serial('/dev/ttyACM0', 115200, timeout=5)  # Arduino 1
+        self.link = txfer.SerialTransfer('/dev/ttyACM0', baud=115200)
+        
+        self.link.open()
         #self.serial_port_2 = serial.Serial('/dev/ttyACM1', 9600, timeout=1)  # Arduino 2
         #self.get_logger().info('Joystick to Arduino node initialized.')
 
@@ -155,8 +158,43 @@ class JoystickToArduino(Node):
     
     def periodic_log_callback(self):
         # Periodic logging of state variables
-        try: 
+        try:
+            send_size = 0
+            char_reinitialize = chr(1 if self.reinitialize else 0)
+            this_send_size = self.link.tx_obj(char_reinitialize)
+            send_size += this_send_size
+                
+            char_manual = chr(1 if self.manual_mode else 0)
+            this_send_size = self.link.tx_obj(char_manual, send_size) - send_size
+            send_size += this_send_size
+            
+            char_brake = chr(1 if self.brake_active else 0)
+            this_send_size = self.link.tx_obj(char_brake, send_size) - send_size
+            send_size += this_send_size
+            
+            char_reverse = chr(1 if self.reverse_mode else 0)
+            this_send_size = self.link.tx_obj(char_reverse, send_size) - send_size
+            send_size += this_send_size
+            
+            this_send_size = self.link.tx_obj(self.auto_speed, send_size) - send_size
+            send_size += this_send_size
+            
+            this_send_size = self.link.tx_obj(self.steering_angle, send_size) - send_size
+            send_size += this_send_size
+            
+            char_debug = chr(1 if self.debug_mode else 0)
+            this_send_size = self.link.tx_obj(char_debug, send_size) - send_size
+            send_size += this_send_size
+            self.get_logger().info(f"Send size:  {send_size}")
+            ###################################################################
+            # Transmit all the data to send in a single packet
+            ###################################################################
+            start_time = time.time()
+            self.link.send(send_size)
+            end_time = time.time()
+            self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
              # Format message with all data
+            
             message = (
                 f"Reinitialize = {self.reinitialize}, "
                 f"Mode = {'Manual' if self.manual_mode else 'Teleoperation' if self.teleop_mode else 'Autonomous' if self.autonom_mode else 'Nothing'}, "
@@ -165,23 +203,15 @@ class JoystickToArduino(Node):
                 f"Speed = {self.auto_speed:.2f}, "
                 f"Steering Angle = {self.steering_angle}\n"
                 f"Debug Mode = {'True' if self.debug_mode else 'False'}, "
-            )
+            )           
             #time.sleep(1)
-
-            # Send the formatted message to both Arduinos
-            start_time = time.time()
-            self.serial_port_1.reset_output_buffer()
-            self.serial_port_1.write(message.encode('utf-8'))
-            end_time = time.time()
-            self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
             self.get_logger().info(f"Sent to Arduino 1: {message.strip()}")
+            # Send the formatted message to both Arduinos
 
             #self.serial_port_2.write(message.encode('utf-8'))
             # self.get_logger().info(f"Sent to Arduino 2: {message.strip()}")
 
    
-        except serial.SerialTimeoutException:
-            self.get_logger().warn("Serial write timeout occurred.")
         except Exception as e:
             self.get_logger().error(f"Unexpected error: {str(e)}")
     
@@ -207,6 +237,7 @@ class JoystickToArduino(Node):
         else:
             self.auto_steering_angle = 0  # If linear speed is 0, assume no steering is need 
             #establish a relation between speed and voltage here TO DO
+            self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
         # Log the computed steering angle
         self.get_logger().info(f"Computed Steering Angle (degrees): {self.auto_steering_angle:.4f}")
 
@@ -224,6 +255,10 @@ class JoystickToArduino(Node):
         #    self.serial_port_1.close()
         #if self.serial_port_2.is_open:
         #    self.serial_port_2.close()
+        try:
+            self.link.close()
+        except:
+            pass
         super().destroy_node()
 
 
