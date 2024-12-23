@@ -13,10 +13,12 @@ unsigned long myTime;
 float setpoint = 0;
 int dutyCycle = 0;
 // Define PID control constants
-const float Kp = -17.6248105119647; // Proportional gain
+
+
+const float Kp = -8.68368161935867; // Proportional gain
 // const float Ki = -3.8004976592663; // Integral gain
 const float Ki = 0; // Integral gain
-const float Kd = -0.361308615495277;  // Derivative gain
+const float Kd = -0.178015473196853; // Derivative gain
 // const float N = 14.908;    // Filter coefficient
 
 // Time variables
@@ -31,8 +33,8 @@ float output = 0;
 float pidOutput = 0;
 // 
 // Integral clamping limits
-const float integratorMin = -abs(255.0/Ki); // Minimum integrator limit (adjust as needed)
-const float integratorMax = abs(255.0/Ki);  // Maximum integrator limit (adjust as needed)
+const float integratorMin = -abs(7/Ki); // Minimum integrator limit (adjust as needed)
+const float integratorMax = abs(7/Ki);  // Maximum integrator limit (adjust as needed)
 
 // Function to compute the PID control
 float computePID(float setpoint, float angle) {
@@ -109,13 +111,13 @@ int clampSetpoint(float setpoint)
 int clampDutyCycle(int dutyCycle)
 {
  dutyCycle = constrain(dutyCycle, -255, 255);
- if ((dutyCycle < -17) && (dutyCycle >-175))
+ if ((dutyCycle < -17) && (dutyCycle >-177))
   {
-    dutyCycle = -175;
+    dutyCycle = -177;
   }
-  else if ((dutyCycle > 17) && (dutyCycle < 175))
+  else if ((dutyCycle > 17) && (dutyCycle < 177))
   {
-    dutyCycle = 175;
+    dutyCycle = 177;
   }
   return dutyCycle;
 }
