@@ -18,7 +18,7 @@ void loop()
 {
   JoystickLoop();  
 
-  manual_mode = (mode == "Manual");
+  manual_mode = (manual == true);
 
   // Send the value of steering_angle
   Serial.println (steering_angle);
