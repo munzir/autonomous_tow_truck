@@ -90,7 +90,7 @@ class JoystickToArduino(Node):
         self.brake_active = False
         self.reverse_mode = False
         self.auto_steering_angle = 0
-        self.auto_speed = 0.0
+        self.auto_speed = 0
         self.debug_mode = False
         self.reinitialize = False
         self.steering_angle = 0
@@ -150,8 +150,7 @@ class JoystickToArduino(Node):
             if raw_speed == 1:
                 self.auto_speed = 0
             else:
-                self.auto_speed = 4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2)
-                self.auto_speed = interp(self.auto_speed,[10,1400], [2.5, 4.4])
+                self.auto_speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [10, 600]))
             # If brake is active, force speed to 0
             if self.brake_active:
                 self.auto_speed = 0
