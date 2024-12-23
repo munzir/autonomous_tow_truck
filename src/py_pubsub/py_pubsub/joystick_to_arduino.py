@@ -8,6 +8,7 @@ import math
 import time
 from enum import Enum
 from pySerialTransfer import pySerialTransfer as txfer
+from numpy import interp
 
 # button mapping on xbox joystick
 class Button(Enum):
@@ -53,11 +54,25 @@ class JoystickToArduino(Node):
             self.cmd_vel_callback,
             10
         )
-
-        # Serial port initialization for two Arduinos
-        self.link = txfer.SerialTransfer('/dev/ttyACM0', baud=115200)
         
-        self.link.open()
+        # Serial port initialization for two Arduinos
+        port_list = ['/dev/ttyACM0','/dev/ttyACM1', '/dev/ttyACM2']
+        self.link = None
+        for port in port_list:
+            try:
+                self.link = txfer.SerialTransfer(port, baud=115200)
+                self.link.open()
+                self.get_logger().info(f"Successfully connected to {port}")
+                break
+            except Exception as e:
+                self.get_logger().warning(f"Failed to connect to {port}: {str(e)}")
+
+        # If no connection was successful, raise an error
+        if self.link is None:
+            raise RuntimeError("Unable to connect to any available port (ACM0 or ACM1).")
+        # self.link1 = txfer.SerialTransfer('/dev/ttyACM1', baud=115200) # for frequency
+        
+        # self.link1.open()
         #self.serial_port_2 = serial.Serial('/dev/ttyACM1', 9600, timeout=1)  # Arduino 2
         #self.get_logger().info('Joystick to Arduino node initialized.')
 
@@ -136,7 +151,7 @@ class JoystickToArduino(Node):
                 self.auto_speed = 0
             else:
                 self.auto_speed = 4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2)
-
+                self.auto_speed = interp(self.auto_speed,[10,1400], [2.5, 4.4])
             # If brake is active, force speed to 0
             if self.brake_active:
                 self.auto_speed = 0
@@ -159,6 +174,7 @@ class JoystickToArduino(Node):
     def periodic_log_callback(self):
         # Periodic logging of state variables
         try:
+            # Arduino ACM0
             send_size = 0
             char_reinitialize = chr(1 if self.reinitialize else 0)
             this_send_size = self.link.tx_obj(char_reinitialize)
@@ -185,15 +201,38 @@ class JoystickToArduino(Node):
             char_debug = chr(1 if self.debug_mode else 0)
             this_send_size = self.link.tx_obj(char_debug, send_size) - send_size
             send_size += this_send_size
-            self.get_logger().info(f"Send size:  {send_size}")
-            ###################################################################
-            # Transmit all the data to send in a single packet
-            ###################################################################
-            start_time = time.time()
-            self.link.send(send_size)
-            end_time = time.time()
-            self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
-             # Format message with all data
+            self.get_logger().info(f"Send size for ACM0:  {send_size}")
+            
+            # Arduino ACM1
+#            send_size = 0
+#            char_reinitialize = chr(1 if self.reinitialize else 0)
+#            this_send_size = self.link1.tx_obj(char_reinitialize)
+#            send_size += this_send_size
+#                
+#            char_manual = chr(1 if self.manual_mode else 0)
+#            this_send_size = self.link1.tx_obj(char_manual, send_size) - send_size
+#            send_size += this_send_size
+#            
+#            char_brake = chr(1 if self.brake_active else 0)
+#            this_send_size = self.link1.tx_obj(char_brake, send_size) - send_size
+#            send_size += this_send_size
+#            
+#            char_reverse = chr(1 if self.reverse_mode else 0)
+#            this_send_size = self.link1.tx_obj(char_reverse, send_size) - send_size
+#            send_size += this_send_size
+#            
+#            this_send_size = self.link1.tx_obj(self.auto_speed, send_size) - send_size
+#            send_size += this_send_size
+#            
+#            this_send_size = self.link1.tx_obj(self.steering_angle, send_size) - send_size
+#            send_size += this_send_size
+#            
+#            char_debug = chr(1 if self.debug_mode else 0)
+#            this_send_size = self.link1.tx_obj(char_debug, send_size) - send_size
+#            send_size += this_send_size
+#            self.get_logger().info(f"Send size for ACM1:  {send_size}")
+           
+           # Format message with all data
             
             message = (
                 f"Reinitialize = {self.reinitialize}, "
@@ -204,8 +243,26 @@ class JoystickToArduino(Node):
                 f"Steering Angle = {self.steering_angle}\n"
                 f"Debug Mode = {'True' if self.debug_mode else 'False'}, "
             )           
-            #time.sleep(1)
-            self.get_logger().info(f"Sent to Arduino 1: {message.strip()}")
+ 
+            ###################################################################
+            # Transmit all the data to send in a single packet to ACM0
+            ###################################################################
+            start_time = time.time()
+            self.link.send(send_size)
+            end_time = time.time()
+            self.get_logger().info(f"Serial write for ACM0 took {end_time - start_time:.2f} seconds")
+
+            self.get_logger().info(f"Sent to Arduino ACM0: {message.strip()}")
+            ###################################################################
+            # Transmit all the data to send in a single packet to ACM1
+            ###################################################################
+#            start_time = time.time()
+#            self.link1.send(send_size)
+#            end_time = time.time()
+#            self.get_logger().info(f"Serial write for ACM1 took {end_time - start_time:.2f} seconds")
+# 
+#           #time.sleep(1)
+#            self.get_logger().info(f"Sent to Arduino ACM1: {message.strip()}")
             # Send the formatted message to both Arduinos
 
             #self.serial_port_2.write(message.encode('utf-8'))
@@ -257,6 +314,7 @@ class JoystickToArduino(Node):
         #    self.serial_port_2.close()
         try:
             self.link.close()
+            # self.link1.close()
         except:
             pass
         super().destroy_node()
