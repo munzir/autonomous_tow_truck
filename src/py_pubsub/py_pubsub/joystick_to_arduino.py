@@ -72,6 +72,7 @@ class JoystickToArduino(Node):
         self.brake_active = False
         self.reverse_mode = False
         self.auto_steering_angle = 0
+        self.speed = 0
         self.auto_speed = 0
         self.debug_mode = False
         self.reinitialize = False
@@ -129,13 +130,13 @@ class JoystickToArduino(Node):
 
             # Map joystick index [4] to Speed between 4.4 and 2.5
             raw_speed = msg.axes[Axis.FRONT_RIGHT_BOTTOM.value]
-            if raw_speed == 1:
-                self.auto_speed = 0
+            if (self.autonom_mode == True):
+                self.speed = self.auto_speed
             else:
-                self.auto_speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [10, 600]))
+                self.speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [10, 600]))
             # If brake is active, force speed to 0
             if self.brake_active:
-                self.auto_speed = 0
+                self.speed = 0
 
             # Map joystick index [0] to Steering Angle between -255 and 255
             raw_steering = msg.axes[Axis.LEFT_THUMB_HORIZONTAL.value]
@@ -172,7 +173,7 @@ class JoystickToArduino(Node):
             this_send_size = link.tx_obj(char_reverse, send_size) - send_size
             send_size += this_send_size
             
-            this_send_size = link.tx_obj(self.auto_speed, send_size) - send_size
+            this_send_size = link.tx_obj(self.speed, send_size) - send_size
             send_size += this_send_size
             
             this_send_size = link.tx_obj(self.steering_angle, send_size) - send_size
@@ -197,7 +198,7 @@ class JoystickToArduino(Node):
                 f"Mode = {'Manual' if self.manual_mode else 'Teleoperation' if self.teleop_mode else 'Autonomous' if self.autonom_mode else 'Nothing'}, "
                 f"Brake = {self.brake_active}, "
                 f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}, "
-                f"Speed = {self.auto_speed}, "
+                f"Speed = {self.speed}, "
                 f"Steering Angle = {self.steering_angle}\n"
                 f"Debug Mode = {'True' if self.debug_mode else 'False'}, "
             )           
@@ -225,15 +226,20 @@ class JoystickToArduino(Node):
             self.auto_steering_angle = int(180/math.pi * math.atan2(target_rot * wheel_base_, target_linear))
         else:
             self.auto_steering_angle = 0  # If linear speed is 0, assume no steering is need 
-            #establish a relation between speed and voltage here TO DO
-            self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
+
         # Log the computed steering angle
         self.get_logger().info(f"Computed Steering Angle (degrees): {self.auto_steering_angle:.4f}")
 
+       
+        wheel_radius = 0.2032  # Radius of the wheel (meters)
+        pulses_per_revolution = 740*1.1
+        # formula used in sensing code subscriber_member_function.py
+        # self.v = (self.frequency * 2 * math.pi * wheel_radius) / pulses_per_revolution
+        self.auto_speed = target_linear * pulses_per_revolution / \
+                          (2 * math.pi * wheel_radius)
+
         # Send the linear speed and steering angle to the Arduinos
-        message = f"Linear Speed = {target_linear:.2f}, Steering Angle = {self.auto_steering_angle:.4f}\n"
-        #self.serial_port_1.write(message.encode('utf-8'))
-        #self.serial_port_2.write(message.encode('utf-8'))
+        message = f"Linear Speed (pulses per sec) = {self.auto_speed:.2f}, Steering Angle = {self.auto_steering_angle:.4f}\n"
 
         self.get_logger().info(f"Sent to Arduino 1: {message.strip()}")
         self.get_logger().info(f"Sent to Arduino 2: {message.strip()}")
