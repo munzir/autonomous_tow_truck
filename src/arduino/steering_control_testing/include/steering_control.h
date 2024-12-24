@@ -88,6 +88,7 @@ float computePID(float setpoint, float angle) {
   
 void steering_control_setup()
 {
+  Serial.println("restarting");
   steering_angle_sensing_setup();
   pinMode(RPWM_Output, OUTPUT);
   pinMode(LPWM_Output, OUTPUT);

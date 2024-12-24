@@ -3,7 +3,7 @@
 
 void setup()
 {   
-  Serial.begin(9600);    
+  Serial.begin(115200);    
   steering_control_setup();  
 }
 
@@ -52,9 +52,3 @@ void loop()
   // Serial.print(", acwe1: ");
   // Serial.println(anti_clockwise_edges_1);
 }
-
-
-
-
-
-
