@@ -1,11 +1,11 @@
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration
-from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription # type: ignore
+from launch.conditions import IfCondition # type: ignore
+from launch.launch_description_sources import PythonLaunchDescriptionSource # type: ignore
+from launch.substitutions import Command, LaunchConfiguration # type: ignore
+from launch_ros.actions import Node # type: ignore
+from launch_ros.substitutions import FindPackageShare # type: ignore
 
 def generate_launch_description():
 
@@ -118,7 +118,8 @@ def generate_launch_description():
         executable='robot_state_publisher',
         namespace=namespace,
         parameters=[{'use_sim_time': use_sim_time, 
-                     'robot_description': Command(['xacro ', model])}])
+                     'robot_description': Command(['xacro ', model])}],
+                     arguments=[default_model_path])
 
     # Launch RViz
     start_rviz_cmd = Node(

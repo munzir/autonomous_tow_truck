@@ -1,0 +1,98 @@
+transforms:
+- header:
+    stamp:
+      sec: 1735031679
+      nanosec: 136582287
+    frame_id: base_footprint
+  child_frame_id: base_link
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.25
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1735031679
+      nanosec: 136582287
+    frame_id: base_link
+  child_frame_id: gps_link
+  transform:
+    translation:
+      x: 0.1
+      y: 0.0
+      z: 0.05
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1735031679
+      nanosec: 136582287
+    frame_id: base_link
+  child_frame_id: imu_link
+  transform:
+    translation:
+      x: -0.1
+      y: 0.0
+      z: 0.05
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1735031679
+      nanosec: 136582287
+    frame_id: base_link
+  child_frame_id: lidar_link
+  transform:
+    translation:
+      x: 0.65
+      y: 0.0
+      z: 1.9
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1735031679
+      nanosec: 136582287
+    frame_id: base_link
+  child_frame_id: rear_axle_link
+  transform:
+    translation:
+      x: -0.635
+      y: 0.0
+      z: -0.05
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1735031679
+      nanosec: 136582287
+    frame_id: base_link
+  child_frame_id: steering_link
+  transform:
+    translation:
+      x: 0.55
+      y: 0.0
+      z: -0.05
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---

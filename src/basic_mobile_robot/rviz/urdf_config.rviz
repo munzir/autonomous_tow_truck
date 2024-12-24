@@ -67,7 +67,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        front_caster:
+        front_steering_wheel_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -103,7 +103,7 @@ Visualization Manager:
           Value: true
         drivewhl_r_link:
           Value: true
-        front_caster:
+        front_steering_wheel_link:
           Value: true
         gps_link:
           Value: true
@@ -125,7 +125,7 @@ Visualization Manager:
               {}
             drivewhl_r_link:
               {}
-            front_caster:
+            front_steering_wheel_link:
               {}
             gps_link:
               {}
