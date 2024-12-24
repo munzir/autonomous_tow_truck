@@ -1,0 +1,1 @@
+WARNING: topic [/amcl_pose] does not appear to be published yet
