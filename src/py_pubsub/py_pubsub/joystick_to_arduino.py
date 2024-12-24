@@ -54,35 +54,17 @@ class JoystickToArduino(Node):
             self.cmd_vel_callback,
             10
         )
-        
-        # Serial port initialization for two Arduinos
-        port_list = ['/dev/ttyACM0','/dev/ttyACM1', '/dev/ttyACM2']
-        self.link = None
-        for port in port_list:
-            try:
-                self.link = txfer.SerialTransfer(port, baud=115200)
-                self.link.open()
-                self.get_logger().info(f"Successfully connected to {port}")
-                break
-            except Exception as e:
-                self.get_logger().warning(f"Failed to connect to {port}: {str(e)}")
+       
+        self.link_steering = txfer.SerialTransfer('arduino_steering', baud=115200)
+        self.link_steering.open()
+        self.get_logger().info(f"Successfully connected to arduino_steering")
+        self.timer_steering = self.create_timer(0.2, lambda: self.periodic_log_callback(self.link_steering, "arduino_steering"))
 
-        # If no connection was successful, raise an error
-        if self.link is None:
-            raise RuntimeError("Unable to connect to any available port (ACM0 or ACM1).")
-        # self.link1 = txfer.SerialTransfer('/dev/ttyACM1', baud=115200) # for frequency
-        
-        # self.link1.open()
-        #self.serial_port_2 = serial.Serial('/dev/ttyACM1', 9600, timeout=1)  # Arduino 2
-        #self.get_logger().info('Joystick to Arduino node initialized.')
+        self.link_wheels = txfer.SerialTransfer('arduino_wheels', baud=115200)
+        self.link_wheels.open()
+        self.get_logger().info(f"Successfully connected to arduino_wheels")
+        self.timer_wheels = self.create_timer(0.2, lambda: self.periodic_log_callback(self.link_wheels, "arduino_wheels"))
 
-        self.timer = self.create_timer(0.2, self.periodic_log_callback)  # Trigger 
-
-        # start_time = time.time()
-        # self.serial_port_2.write(message.encode('utf-8'))
-        # end_time = time.time()
-        # self.get_logger().info(f"Serial write took {end_time - start_time:.2f} seconds")
-        
         # State variables
         self.manual_mode = True
         self.teleop_mode = False
@@ -160,7 +142,7 @@ class JoystickToArduino(Node):
             if (self.autonom_mode == True):
                 self.steering_angle = self.auto_steering_angle
             else:
-                self.steering_angle = int(53 - (raw_steering + 1) * ((53 + 53) / 2))
+                self.steering_angle = int(53 - (raw_steering + 1) * ((53 + 53) / 2)) * -1
 
             # Update previous state for next cycle
             self.prev_manual_button = manual_button
@@ -170,108 +152,59 @@ class JoystickToArduino(Node):
         except Exception as e:
             self.get_logger().error(f"Unexpected error: {str(e)}")
     
-    def periodic_log_callback(self):
+    def periodic_log_callback(self, link, serial_dev_name):
         # Periodic logging of state variables
         try:
-            # Arduino ACM0
             send_size = 0
             char_reinitialize = chr(1 if self.reinitialize else 0)
-            this_send_size = self.link.tx_obj(char_reinitialize)
+            this_send_size = link.tx_obj(char_reinitialize)
             send_size += this_send_size
                 
             char_manual = chr(1 if self.manual_mode else 0)
-            this_send_size = self.link.tx_obj(char_manual, send_size) - send_size
+            this_send_size = link.tx_obj(char_manual, send_size) - send_size
             send_size += this_send_size
             
             char_brake = chr(1 if self.brake_active else 0)
-            this_send_size = self.link.tx_obj(char_brake, send_size) - send_size
+            this_send_size = link.tx_obj(char_brake, send_size) - send_size
             send_size += this_send_size
             
             char_reverse = chr(1 if self.reverse_mode else 0)
-            this_send_size = self.link.tx_obj(char_reverse, send_size) - send_size
+            this_send_size = link.tx_obj(char_reverse, send_size) - send_size
             send_size += this_send_size
             
-            this_send_size = self.link.tx_obj(self.auto_speed, send_size) - send_size
+            this_send_size = link.tx_obj(self.auto_speed, send_size) - send_size
             send_size += this_send_size
             
-            this_send_size = self.link.tx_obj(self.steering_angle, send_size) - send_size
+            this_send_size = link.tx_obj(self.steering_angle, send_size) - send_size
             send_size += this_send_size
             
             char_debug = chr(1 if self.debug_mode else 0)
-            this_send_size = self.link.tx_obj(char_debug, send_size) - send_size
+            this_send_size = link.tx_obj(char_debug, send_size) - send_size
             send_size += this_send_size
-            self.get_logger().info(f"Send size for ACM0:  {send_size}")
             
-            # Arduino ACM1
-#            send_size = 0
-#            char_reinitialize = chr(1 if self.reinitialize else 0)
-#            this_send_size = self.link1.tx_obj(char_reinitialize)
-#            send_size += this_send_size
-#                
-#            char_manual = chr(1 if self.manual_mode else 0)
-#            this_send_size = self.link1.tx_obj(char_manual, send_size) - send_size
-#            send_size += this_send_size
-#            
-#            char_brake = chr(1 if self.brake_active else 0)
-#            this_send_size = self.link1.tx_obj(char_brake, send_size) - send_size
-#            send_size += this_send_size
-#            
-#            char_reverse = chr(1 if self.reverse_mode else 0)
-#            this_send_size = self.link1.tx_obj(char_reverse, send_size) - send_size
-#            send_size += this_send_size
-#            
-#            this_send_size = self.link1.tx_obj(self.auto_speed, send_size) - send_size
-#            send_size += this_send_size
-#            
-#            this_send_size = self.link1.tx_obj(self.steering_angle, send_size) - send_size
-#            send_size += this_send_size
-#            
-#            char_debug = chr(1 if self.debug_mode else 0)
-#            this_send_size = self.link1.tx_obj(char_debug, send_size) - send_size
-#            send_size += this_send_size
-#            self.get_logger().info(f"Send size for ACM1:  {send_size}")
-           
-           # Format message with all data
+            start_time = time.time()
+            if (link.send(send_size) == False):
+                 link.close()
+                 time.sleep(0.01)
+                 link = txfer.SerialTransfer(serial_dev_name, baud=115200)
+                 link.open()
+
+            end_time = time.time()
             
+            # Format message with all data
             message = (
                 f"Reinitialize = {self.reinitialize}, "
                 f"Mode = {'Manual' if self.manual_mode else 'Teleoperation' if self.teleop_mode else 'Autonomous' if self.autonom_mode else 'Nothing'}, "
                 f"Brake = {self.brake_active}, "
                 f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}, "
-                f"Speed = {self.auto_speed:.2f}, "
+                f"Speed = {self.auto_speed}, "
                 f"Steering Angle = {self.steering_angle}\n"
                 f"Debug Mode = {'True' if self.debug_mode else 'False'}, "
             )           
- 
-            ###################################################################
-            # Transmit all the data to send in a single packet to ACM0
-            ###################################################################
-            start_time = time.time()
-            self.link.send(send_size)
-            end_time = time.time()
-            self.get_logger().info(f"Serial write for ACM0 took {end_time - start_time:.2f} seconds")
-
-            self.get_logger().info(f"Sent to Arduino ACM0: {message.strip()}")
-            ###################################################################
-            # Transmit all the data to send in a single packet to ACM1
-            ###################################################################
-#            start_time = time.time()
-#            self.link1.send(send_size)
-#            end_time = time.time()
-#            self.get_logger().info(f"Serial write for ACM1 took {end_time - start_time:.2f} seconds")
-# 
-#           #time.sleep(1)
-#            self.get_logger().info(f"Sent to Arduino ACM1: {message.strip()}")
-            # Send the formatted message to both Arduinos
-
-            #self.serial_port_2.write(message.encode('utf-8'))
-            # self.get_logger().info(f"Sent to Arduino 2: {message.strip()}")
-
+            self.get_logger().info(f"Sent to {serial_dev_name}: {message.strip()}")
    
         except Exception as e:
             self.get_logger().error(f"Unexpected error: {str(e)}")
-    
-    
     
     def cmd_vel_callback(self, msg):
         # Log linear and angular velocities

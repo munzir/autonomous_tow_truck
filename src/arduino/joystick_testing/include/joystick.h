@@ -8,7 +8,7 @@ bool manual = false;
 bool brake = false;
 bool reverse = false;
 bool debug = false;
-float ref_speed;
+long ref_speed = 0;
 long ref_steering_angle = 0;
 char arr[13];
 
