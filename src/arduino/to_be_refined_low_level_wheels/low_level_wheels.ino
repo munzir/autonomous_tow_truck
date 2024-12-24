@@ -6,30 +6,22 @@ float Kp = 0.0050;         // Proportional gain
 float Ki = 0.000628;         // Integral gain
 float Kd = 0.00003;        // Derivative gain
 float alpha = 0.1;//Smooth
-float errorCap = 50;
+float errorCap = 60;
 int idle = 10;
 float receive;
 int flag = 0; // 0 means controlled using the pedal, 1 means control using Arduino
-int flagpin = 6;
+int flagpin = 11;
 
 // these are checked for in the main program
 volatile unsigned long timerCounts; // apparently the volatile keyword is to let the compiler know this can have very sharp changes? other than that, this is self explanatory
 volatile boolean counterReady; // time to calculate after counting
 unsigned long myTime;
-bool reinitialize = false;
-String mode = "";
-bool brake = false;
-String direction = "";
-int steering_angle = 0;
-String debug = "";
-
 
 float speed = 0;
 float pidOutput = 0;
 float vvv = 0;
 int dacValue = 0;
 float frq = 0;
-float last_frq = 0;
 
 // internal to counting routine
 unsigned long overflowCount; // keeps track of overflows for Timer 1. will make more sense later
@@ -89,7 +81,7 @@ ISR (TIMER1_OVF_vect)
 }  // end of TIMER1_OVF_vect
 
 
-//**********************
+//******************************************************************
 //  Timer2 Interrupt Service is invoked by hardware Timer 2 every 1 ms = 1000 Hz
 //  16Mhz / 128 / 125 = 1000 Hz
 
@@ -164,10 +156,6 @@ float PID(float setpoint, float measuredValue) {
     smoothedDerivative = alpha * rawDerivative + (1 - alpha) * smoothedDerivative;
     float Dout = Kd * smoothedDerivative;
     previousError = error;
-    // Calculate the PID output
-    float output = Pout + Iout + Dout;
-    if (debug == "ON"){
-
     Serial.print("Setpoint:");
     Serial.print(setpoint);
     Serial.print(", Pout:");
@@ -178,13 +166,12 @@ float PID(float setpoint, float measuredValue) {
     Serial.print(Dout);
     
 
-    
+    // Calculate the PID output
+    float output = Pout + Iout + Dout;
     Serial.print(", PID:");
     Serial.print(output);
     Serial.print(", Speed:");
     Serial.println(measuredValue, 2);   // 2 decimal places for float
-    }
-    
     return output;
 }
 
@@ -193,17 +180,18 @@ void setup()
   Serial.begin(9600);
   
   
-  dac.begin(0x60);
-  // if (dac.begin(0x60))   // Initialize MCP4725 DAC at default address (0x60)
-  // {
-  //   Serial.println("MCP4725 Initialized Successfully.");
-  // } 
-  // else
-  // {
-  //   Serial.println("Failed.");
-  // }
+  // dac.begin(0x60);
+  if (dac.begin(0x60))   // Initialize MCP4725 DAC at default address (0x60)
+  {
+    Serial.println("MCP4725 Initialized Successfully.");
+  } 
+  else
+  {
+    Serial.println("Failed.");
+  }
   
   pinMode(idle, OUTPUT);
+  pinMode(flagpin,OUTPUT);
   dac.setVoltage(0, false);  // Set DAC output to 0V
   // Serial.println("Frequency Counter"); // to show that we have initialized successfully
   startCounting(200); // Start counting for 10 ms (or another period)
@@ -218,15 +206,8 @@ void loop()
     float speed = ((frq) / 740.0) * (2 * 3.1415 * 0.2032)/0.2;
     pulses += timerCounts; // we may use this to keep track of total distance travelled
     // Send pulses and frequency to serial, separated by a comma
-    if (abs(last_frq-frq)>900)
-    {
-      frq = last_frq;
-    }
-    else
-    {
-      last_frq = frq;
-    }
-    Serial.println(frq, 2);   // 2 decimal places for float
+    // Serial.println(frq);
+    // Serial.println(frq, 2);   // 2 decimal places for float
     
     // restart counting
     startCounting(200); // Continue counting for 10 ms (or another period)
@@ -234,67 +215,32 @@ void loop()
    if (Serial.available() > 0)
   {
     // Take in Serial input
-    String input = Serial.readStringUntil('\n'); // Read the incoming string until a newline character
-
-    // Split the input into individual parameters
-    int lastIndex = 0;
-    while (lastIndex < input.length()) {
-      // Find the next comma
-      int nextComma = input.indexOf(',', lastIndex);
-      if (nextComma == -1) nextComma = input.length(); // Handle the last parameter
-
-      // Extract the key-value pair
-      String pair = input.substring(lastIndex, nextComma);
-      pair.trim(); // Remove any leading/trailing whitespace
-
-      // Parse the key-value pair
-      if (pair.startsWith("Reinitialize = ")) {
-        reinitialize = pair.substring(15).equalsIgnoreCase("True");
-      } else if (pair.startsWith("Mode = ")) {
-        mode = pair.substring(7);
-      } else if (pair.startsWith("Brake = ")) {
-        brake = pair.substring(8).equalsIgnoreCase("True");
-      } else if (pair.startsWith("Direction = ")) {
-        direction = pair.substring(12);
-      } else if (pair.startsWith("Speed = ")) {
-        receive = pair.substring(8).toFloat();
-      } else if (pair.startsWith("Steering Angle = ")) {
-        steering_angle = pair.substring(17).toInt();
-      } else if (pair.startsWith("DEBUG = ")){
-        debug = pair.substring(8);        
-      }
-
-      // Move to the next key-value pair
-      lastIndex = nextComma + 1;
-    }
-    if (debug == "ON"){
-
-    Serial.print("Reinitialize: "); Serial.print(reinitialize);
-    Serial.print(", Mode: "); Serial.print(mode);
-    Serial.print(", Brake: "); Serial.print(brake);
-    Serial.print(", Direction: "); Serial.print(direction);
-    Serial.print(", Speed: "); Serial.print(receive);
-    Serial.print(", Steering Angle: "); Serial.println(steering_angle);
-    }
+    receive = Serial.parseFloat();
   }
-    if (mode == "Manual")
+    if (receive == -2)
     {
       flag = 0;
       digitalWrite(idle,LOW);
       dac.setVoltage(0, false);
       digitalWrite(flagpin, LOW);
     }
-    else
+    if (receive == -1)
     {
       flag = 1;
       digitalWrite(idle,LOW);
       dac.setVoltage(0, false);
       digitalWrite(flagpin, HIGH);
+      Serial.println("here");
       
     }
     if (flag == 1)
     {
-    if (receive == 0)
+    if (receive == -1)
+    {
+      digitalWrite(idle,LOW);
+      dac.setVoltage(0, false);
+    }
+    else if (receive == 0)
     {
       digitalWrite(idle,LOW);
       dac.setVoltage(0, false);
@@ -303,11 +249,28 @@ void loop()
     else
     {
       digitalWrite(idle,HIGH);
-      // dac.setVoltage(receive*4096/5, false);
+      dac.setVoltage(receive*4096/5, false);
+      pidOutput = PID(receive,frq)+2.6;
+      if (pidOutput < 1.1)
+      {
+        vvv = 2.5;
+      }
+      else if (pidOutput < 2.6)
+      {
+        vvv = 2.6;
+      }
+      else if (pidOutput > 4.3)
+      {
+        vvv = 4.3;
+      }
+      else
+      {
+        vvv = pidOutput;
+      }
     
-      dacValue = int(4095 / 5.0 * receive);  // Convert 0-5V range to 0-4095 range for DAC
-      dac.setVoltage(dacValue, false);            // Send the corresponding voltage to DAC
+      // dacValue = int(4095 / 5.0 * vvv);  // Convert 0-5V range to 0-4095 range for DAC
+      // dac.setVoltage(dacValue, false);            // Send the corresponding voltage to DAC
       // Serial.println(dacValue);                   // Print the DAC value for debugging
       }
-      }
+    }
 }
