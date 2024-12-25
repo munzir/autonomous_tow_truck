@@ -121,7 +121,6 @@ def generate_launch_description():
       parameters=[{'use_sim_time': use_sim_time, 
                    'robot_description': Command(['xacro ', model])}],
                    arguments=[default_model_path])
-
   # Launch RViz
   start_rviz_cmd = Node(
     condition=IfCondition(use_rviz),
