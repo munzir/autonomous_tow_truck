@@ -24,8 +24,8 @@ def generate_launch_description():
   default_rviz_config_path = os.path.join(pkg_share, 'rviz/nav2_config.rviz')
   world_file_name = 'basic_mobile_bot_world/smalltown.world'
   world_path = os.path.join(pkg_share, 'worlds', world_file_name)
-  nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup')
-  nav2_launch_dir = os.path.join(nav2_dir, 'launch')
+  #nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup')
+  #nav2_launch_dir = os.path.join(nav2_dir, 'launch')
   static_map_path = os.path.join(pkg_share, 'maps', 'smalltown_world.yaml')
   nav2_params_path = os.path.join(pkg_share, 'params', 'nav2_params.yaml')
   nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
@@ -177,8 +177,9 @@ def generate_launch_description():
     arguments=['-d', rviz_config_file])
 
   # Launch the ROS 2 Navigation Stack
+  #print(f"nav2_launch_dir is: {nav2_launch_dir}")
   start_ros2_navigation_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
+    PythonLaunchDescriptionSource(os.path.join(default_launch_dir, 'bringup_launch.py')),
     launch_arguments = {'namespace': namespace,
                         'use_namespace': use_namespace,
                         'slam': slam,
