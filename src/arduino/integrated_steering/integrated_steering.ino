@@ -11,12 +11,12 @@ void recalibrate()
 {
   recalibration_completed = false;
   prev_steering_angle = 999;
-  while (abs(steering_angle - prev_steering_angle)>1)
+  while (abs(steering_angle - prev_steering_angle)>0)
   {
     prev_steering_angle = steering_angle;
     digitalWrite(LPWM_Output, 0);
     analogWrite(RPWM_Output, 180);
-    delay(100);
+    delay(200);
   }
   digitalWrite(LPWM_Output, 0);
   digitalWrite(RPWM_Output, 0);
