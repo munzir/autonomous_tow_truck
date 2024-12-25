@@ -11,12 +11,13 @@ def generate_launch_description():
 
   # Set the path to different files and folders.
   pkg_share = FindPackageShare(package='basic_mobile_robot').find('basic_mobile_robot')
+  default_launch_dir = os.path.join(pkg_share, 'launch')
   default_model_path = os.path.join(pkg_share, 'models/basic_mobile_bot_v2.urdf')
   robot_localization_file_path = os.path.join(pkg_share, 'config/ekf.yaml')
   robot_name_in_urdf = 'basic_mobile_bot'
   default_rviz_config_path = os.path.join(pkg_share, 'rviz/nav2_config.rviz')
-  nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup')
-  nav2_launch_dir = os.path.join(nav2_dir, 'launch')
+  #nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup')
+  #nav2_launch_dir = os.path.join(nav2_dir, 'launch')
   static_map_path = os.path.join(pkg_share, 'maps', 'map_name.yaml')
   nav2_params_path = os.path.join(pkg_share, 'params', 'nav2_params_hardware.yaml')
   nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
@@ -137,16 +138,16 @@ def generate_launch_description():
   )
 
   # Include the LiDAR launch file
-  lidar_launch_path = os.path.join(
-    FindPackageShare('sllidar_ros2').find('sllidar_ros2'),
-    'launch',
-    'sllidar_a3_launch.py'
-  )
-
-  start_lidar_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(lidar_launch_path),
-    launch_arguments={'use_sim_time': use_sim_time}.items()
-  )
+#  lidar_launch_path = os.path.join(
+#    FindPackageShare('sllidar_ros2').find('sllidar_ros2'),
+#    'launch',
+#    'sllidar_a3_launch.py'
+#  )
+#
+#  start_lidar_cmd = IncludeLaunchDescription(
+#    PythonLaunchDescriptionSource(lidar_launch_path),
+#    launch_arguments={'use_sim_time': use_sim_time}.items()
+#  )
 
   # #Include odometry
   # start_odometry_cmd = IncludeLaunchDescription(
@@ -157,7 +158,7 @@ def generate_launch_description():
 
   # Launch the ROS 2 Navigation Stack
   start_ros2_navigation_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
+    PythonLaunchDescriptionSource(os.path.join(default_launch_dir, 'bringup_launch.py')),
     launch_arguments = {'namespace': namespace,
                         'use_namespace': use_namespace,
                         'slam': slam,
@@ -189,7 +190,7 @@ def generate_launch_description():
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
   ld.add_action(start_imu_cmd) #imu
-  ld.add_action(start_lidar_cmd) #lidar
+  #ld.add_action(start_lidar_cmd) #lidar
   ld.add_action(start_ros2_navigation_cmd)
   # ld.add_action(start_odometry_cmd)
   return ld
