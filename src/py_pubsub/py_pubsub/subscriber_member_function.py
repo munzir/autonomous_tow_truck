@@ -64,7 +64,7 @@ class KinematicCalculator(Node):  # This class is inheriting from Node, which is
         wheel_radius = 0.2032  # Radius of the wheel (meters)
         wheelbase = 1.17  # Distance between front and back wheels (meters)
         pulses_per_revolution = 740*1.1
-        sampling_time = 0.2  # Sampling time (seconds)
+        sampling_time = 0.05  # Sampling time (seconds)
 
         # Calculate the wheel speed (v)
         self.v = (self.frequency * 2 * math.pi * wheel_radius) / pulses_per_revolution
