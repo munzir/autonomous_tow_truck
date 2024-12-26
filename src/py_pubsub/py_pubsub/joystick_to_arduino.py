@@ -9,6 +9,7 @@ import time
 from enum import Enum
 from pySerialTransfer import pySerialTransfer as txfer
 from numpy import interp
+from collections import deque
 
 # button mapping on xbox joystick
 class Button(Enum):
@@ -58,12 +59,12 @@ class JoystickToArduino(Node):
         self.link_steering = txfer.SerialTransfer('arduino_steering', baud=115200)
         self.link_steering.open()
         self.get_logger().info(f"Successfully connected to arduino_steering")
-        self.timer_steering = self.create_timer(0.2, lambda: self.periodic_log_callback(self.link_steering, "arduino_steering"))
+        self.timer_steering = self.create_timer(self.control_update_period, lambda: self.periodic_log_callback(self.link_steering, "arduino_steering"))
 
         self.link_wheels = txfer.SerialTransfer('arduino_wheels', baud=115200)
         self.link_wheels.open()
         self.get_logger().info(f"Successfully connected to arduino_wheels")
-        self.timer_wheels = self.create_timer(0.2, lambda: self.periodic_log_callback(self.link_wheels, "arduino_wheels"))
+        self.timer_wheels = self.create_timer(self.control_update_period, lambda: self.periodic_log_callback(self.link_wheels, "arduino_wheels"))
 
         # State variables
         self.manual_mode = True
@@ -81,6 +82,11 @@ class JoystickToArduino(Node):
         self.prev_manual_button = 0
         self.prev_reverse_button = 0
         self.prev_debug_mode_button = 0
+
+        self.control_update_period = 0.06
+        steering_angle_time_constant = 0.24
+        steering_angle_window_size = int(steering_angle_time_constant / self.control_update_period)
+        self.steering_angle_window = deque(maxlen=steering_angle_window_size)
 
     def joystick_callback(self, msg):
         try:
@@ -141,9 +147,10 @@ class JoystickToArduino(Node):
             # Map joystick index [0] to Steering Angle between -255 and 255
             raw_steering = msg.axes[Axis.LEFT_THUMB_HORIZONTAL.value]
             if (self.autonom_mode == True):
-                self.steering_angle = self.auto_steering_angle
+                self.steering_angle_window.append(self.auto_steering_angle)
             else:
-                self.steering_angle = int(53 - (raw_steering + 1) * ((53 + 53) / 2)) * -1
+                self.steering_angle_window.append(int(53 - (raw_steering + 1) * ((53 + 53) / 2)) * -1)
+            self.steering_angle = sum(self.steering_angle_window) / len(self.steering_angle_window)
 
             # Update previous state for next cycle
             self.prev_manual_button = manual_button
@@ -215,7 +222,9 @@ class JoystickToArduino(Node):
         )
         
         # Extract the required values
-        target_linear = msg.linear.x  # Linear speed in the x direction
+        # ensuring target linear is always positive. we are not enabling reverse control yet.
+        # allowing negative values on target linear will cause steering angle to jump to 180 which we don't want
+        target_linear = max(0.0, msg.linear.x)  # Linear speed in the x direction
         target_rot = msg.angular.z   # Angular speed about the z-axis
 
         # Define wheel_base_ (distance between front and rear axles, adjust as needed)
