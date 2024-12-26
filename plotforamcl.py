@@ -31,15 +31,15 @@ def plot_positions_line(pos1, pos2):
     # Set plot details
     ax.set_xlabel("X Position (m)")
     ax.set_ylabel("Y Position (m)")
-    ax.set_title("AMCL vs Odometry Position Comparison (Line Graph)")
+    ax.set_title("AMCL vs Odometry Position Comparison (Line Graph mid)")
     ax.legend()
     ax.grid()
 
     plt.show()
 
 # Load data
-file1 = "amcl4sim.txt"  # Replace with the first file's path
-file2 = "whell3sim.txt"  # Replace with the second file's path
+file1 = "amcl26.txt"  # Replace with the first file's path
+file2 = "wheel26.txt"  # Replace with the second file's path
 data1 = load_txt_as_yaml(file1)  # Load all documents for AMCL
 data2 = load_txt_as_yaml(file2)  # Load all documents for Odom
 
