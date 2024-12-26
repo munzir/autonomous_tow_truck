@@ -15,7 +15,7 @@ void recalibrate()
   {
     prev_steering_angle = steering_angle;
     digitalWrite(LPWM_Output, 0);
-    analogWrite(RPWM_Output, 180);
+    analogWrite(RPWM_Output, 220);
     delay(200);
   }
   digitalWrite(LPWM_Output, 0);
