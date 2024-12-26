@@ -56,6 +56,7 @@ class JoystickToArduino(Node):
             10
         )
        
+        self.control_update_period = 0.06
         self.link_steering = txfer.SerialTransfer('arduino_steering', baud=115200)
         self.link_steering.open()
         self.get_logger().info(f"Successfully connected to arduino_steering")
@@ -83,8 +84,7 @@ class JoystickToArduino(Node):
         self.prev_reverse_button = 0
         self.prev_debug_mode_button = 0
 
-        self.control_update_period = 0.06
-        steering_angle_time_constant = 0.24
+        steering_angle_time_constant = 0.06
         steering_angle_window_size = int(steering_angle_time_constant / self.control_update_period)
         self.steering_angle_window = deque(maxlen=steering_angle_window_size)
 
