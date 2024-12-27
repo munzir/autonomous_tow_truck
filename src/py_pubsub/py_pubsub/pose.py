@@ -8,10 +8,10 @@ def restart_serial(node, serial_dev_name, baud_rate):
         # Establish a serial connection to the first Arduino (frequency sensor)
         try:
             serial_handler = serial.Serial(serial_dev_name, baud_rate)  # Update the port as needed
-            node.get_logger().info('Connected to frequency sensor Arduino on /dev/arduino_wheels')
+            node.get_logger().info('Connected to Arduino on {serial_dev_name}')
             device_connected = True
         except serial.SerialException as e:
-            node.get_logger().error(f'Failed to connect to frequency sensor Arduino: {e}')
+            node.get_logger().error(f'Failed to connect to arduino via {serial_dev_name}: {e}')
             
     return serial_handler
 
