@@ -38,24 +38,24 @@ void loop()
   if (dutyCycle  == 0)
   {
     // Serial.println("STOP");
-    digitalWrite(LPWM_Output, 0);
-    digitalWrite(RPWM_Output, 0);
+    digitalWrite(LPWM_Output, 1);
+    digitalWrite(RPWM_Output, 1);
   }
   else if (dutyCycle < 0)
   {
     // reverse rotation
     // Serial.println("reverse");
     int reversePWM = -dutyCycle;
-    digitalWrite(LPWM_Output, 0);
-    analogWrite(RPWM_Output, reversePWM);
+    digitalWrite(LPWM_Output, 1);
+    analogWrite(RPWM_Output, 255-reversePWM);
   }
   else
   {
     // forward rotation
     // Serial.println("frwrd");
     int forwardPWM = dutyCycle;
-    digitalWrite(RPWM_Output, 0);
-    analogWrite(LPWM_Output, forwardPWM);
+    digitalWrite(RPWM_Output, 1);
+    analogWrite(LPWM_Output, 255-forwardPWM);
   }
 
   Serial.print(steering_angle);
