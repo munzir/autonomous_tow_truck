@@ -7,8 +7,8 @@
 bool manual_mode = false;
 
 // Input is Duty cycle which varies from -255 to 255, beyond those values it stops. 0 is unavailable for use
-int RPWM_Output = 5; // Arduino PWM output pin 5; connect to IBT-2 pin 1 (RPWM)
-int LPWM_Output = 6; // Arduino PWM output pin 6; connect to IBT-2 pin 2 (LPWM)
+int RPWM_Output = 6; // Arduino PWM output pin 5; connect to IBT-2 pin 1 (RPWM)
+int LPWM_Output = 5; // Arduino PWM output pin 6; connect to IBT-2 pin 2 (LPWM)
 unsigned long myTime;
 float setpoint = 0;
 int dutyCycle = 0;
@@ -128,24 +128,24 @@ void pwm_output(int dutyCycle)
   if (dutyCycle  == 0)
   {
     // Serial.println("STOP");
-    digitalWrite(LPWM_Output, 0);
-    digitalWrite(RPWM_Output, 0);
+    digitalWrite(LPWM_Output, 1); // set high because optocouplers invert this so the input that drive gets is low
+    digitalWrite(RPWM_Output, 1); // set high because optocouplers invert this so the input that drive gets is low
   }
   else if (dutyCycle < 0)
   {
     // reverse rotation
     // Serial.println("reverse");
     int reversePWM = -dutyCycle;
-    digitalWrite(LPWM_Output, 0);
-    analogWrite(RPWM_Output, reversePWM);
+    digitalWrite(LPWM_Output, 1); // set high because optocouplers invert this so the input that drive gets is low
+    analogWrite(RPWM_Output, 255-reversePWM); // subtracting from 255 because pwm output is inverted due to optocouplers
   }
   else
   {
     // forward rotation
     // Serial.println("frwrd");
     int forwardPWM = dutyCycle;
-    digitalWrite(RPWM_Output, 0);
-    analogWrite(LPWM_Output, forwardPWM);
+    digitalWrite(RPWM_Output, 1); // set high because optocouplers invert this so the input that drive gets is low
+    analogWrite(LPWM_Output, 255-forwardPWM); // subtracting from 255 because pwm output is inverted due to optocouplers
   }
   
   return;
