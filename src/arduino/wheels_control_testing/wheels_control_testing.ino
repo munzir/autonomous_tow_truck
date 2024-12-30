@@ -19,12 +19,6 @@ void loop() {
   if (ControlLoop()) {
     Serial.print("Setpt:");
     Serial.print(wheel_speed);
-    Serial.print(", P:");
-    Serial.print(Pout);
-    Serial.print(", I:");
-    Serial.print(Iout);
-    Serial.print(", D:");
-    Serial.print(Dout);
     Serial.print(", PID:");
     Serial.print(output);
     Serial.print(", Speed:");
