@@ -2,6 +2,7 @@ import rclpy  # Again for ROS 2 usage
 from rclpy.node import Node  # For inheritance
 from std_msgs.msg import Float32  # For publishing frequency and steering angle in this format
 import math  # For trigonometry in general
+import time  # For measuring time differences
 
 class KinematicCalculator(Node):  # This class is inheriting from Node, which is from ROS 2
 
@@ -39,21 +40,25 @@ class KinematicCalculator(Node):  # This class is inheriting from Node, which is
         self.phi = 0.0  # Default steering angle (will be updated by the callback)
         
         self.phi_array = []
-        
+	self.last_time = time.time()  # Initialize with the current time
+
     def steering_angle_callback(self, msg):
         # Append the received phi value to the array
         self.phi = msg.data
         self.phi_array.append(msg.data)
         
     def frequency_callback(self, msg):
+   	current_time = time.time()  # Get the current time
+        sampling_time = current_time - self.last_time  # Calculate time difference
+        self.last_time = current_time  # Update the last time
         self.frequency = msg.data
-        self.calculate_and_publish()
+        self.calculate_and_publish(sampling_time)
 
     #def steering_angle_callback(self, msg):
         #self.phi = msg.data  # Update steering angle with the received data
 	#self.phi_array.append(msg.data)
 	
-    def calculate_and_publish(self):
+    def calculate_and_publish(self,sampling_time):
     	
     	# Calculate average phi if phi_array is not empty
         if self.phi_array:
@@ -64,7 +69,7 @@ class KinematicCalculator(Node):  # This class is inheriting from Node, which is
         wheel_radius = 0.2032  # Radius of the wheel (meters)
         wheelbase = 1.17  # Distance between front and back wheels (meters)
         pulses_per_revolution = 740*1.1
-        sampling_time = 0.05  # Sampling time (seconds)
+        # sampling_time = 0.05  # Sampling time (seconds)
 
         # Calculate the wheel speed (v)
         self.v = (self.frequency * 2 * math.pi * wheel_radius) / pulses_per_revolution
