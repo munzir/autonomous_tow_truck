@@ -137,7 +137,7 @@ class JoystickToArduino(Node):
             # Map joystick index [4] to Speed between 4.4 and 2.5
             raw_speed = msg.axes[Axis.FRONT_RIGHT_BOTTOM.value]
             if (self.autonom_mode == True):
-                self.speed = self.auto_speed
+                self.speed = int(self.auto_speed)
             else:
                 self.speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
             # If brake is active, force speed to 0
@@ -216,10 +216,10 @@ class JoystickToArduino(Node):
     
     def cmd_vel_callback(self, msg):
         # Log linear and angular velocities
-        self.get_logger().info(
-            f"Received /cmd_vel: Linear = {msg.linear.x:.2f}, {msg.linear.y:.2f}, {msg.linear.z:.2f} | "
-            f"Angular = {msg.angular.x:.2f}, {msg.angular.y:.2f}, {msg.angular.z:.2f}"
-        )
+        #self.get_logger().info(
+        #    f"Received /cmd_vel: Linear = {msg.linear.x:.2f}, {msg.linear.y:.2f}, {msg.linear.z:.2f} | "
+        #    f"Angular = {msg.angular.x:.2f}, {msg.angular.y:.2f}, {msg.angular.z:.2f}"
+        #)
         
         # Extract the required values
         # ensuring target linear is always positive. we are not enabling reverse control yet.
@@ -237,7 +237,7 @@ class JoystickToArduino(Node):
             self.auto_steering_angle = 0  # If linear speed is 0, assume no steering is need 
 
         # Log the computed steering angle
-        self.get_logger().info(f"Computed Steering Angle (degrees): {self.auto_steering_angle:.4f}")
+        #self.get_logger().info(f"Computed Steering Angle (degrees): {self.auto_steering_angle:.4f}")
 
        
         wheel_radius = 0.2032  # Radius of the wheel (meters)
@@ -248,10 +248,10 @@ class JoystickToArduino(Node):
                           (2 * math.pi * wheel_radius)
 
         # Send the linear speed and steering angle to the Arduinos
-        message = f"Linear Speed (pulses per sec) = {self.auto_speed:.2f}, Steering Angle = {self.auto_steering_angle:.4f}\n"
+        #message = f"Linear Speed (pulses per sec) = {self.auto_speed:.2f}, Steering Angle = {self.auto_steering_angle:.4f}\n"
 
-        self.get_logger().info(f"Sent to Arduino 1: {message.strip()}")
-        self.get_logger().info(f"Sent to Arduino 2: {message.strip()}")
+        #self.get_logger().info(f"Sent to Arduino 1: {message.strip()}")
+        #self.get_logger().info(f"Sent to Arduino 2: {message.strip()}")
 
     def destroy_node(self):
         """Ensure proper cleanup."""
