@@ -94,7 +94,7 @@ bt_navigator_rclcpp_node:
 controller_server:
   ros__parameters:
     use_sim_time: False
-    controller_frequency: 32.0 
+    controller_frequency: 2.0 
     min_x_velocity_threshold: 0.015
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
@@ -110,22 +110,22 @@ controller_server:
     # Goal checker parameters
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 1.0
-      yaw_goal_tolerance: 7.0
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.25
       stateful: True
     # DWB parameters
     FollowPath:
       plugin: "nav2_mppi_controller::MPPIController"
       time_steps: 56
-      model_dt: 0.03125
+      model_dt: 0.5
       batch_size: 2000
       vx_std: 0.2
       vy_std: 0.2
-      wz_std: 0.4
+      wz_std: 0.03
       vx_max: 0.2
       vx_min: 0.0
       vy_max: 0.5
-      wz_max: 0.5
+      wz_max: 0.09
       iteration_count: 1
       prune_distance: 1.7
       transform_tolerance: 0.1
@@ -153,14 +153,14 @@ controller_server:
         cost_weight: 5.0
         threshold_to_consider: 1.4
       GoalAngleCritic:
-        enabled: false
+        enabled: true
         cost_power: 1
-        cost_weight: 3.0
+        cost_weight: 2.0
         threshold_to_consider: 0.5 
       PreferForwardCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 5.0
+        cost_weight: 6.0
         threshold_to_consider: 0.5
       # Option to replace Cost and use Obstacles instead
       # ObstaclesCritic:
@@ -184,25 +184,25 @@ controller_server:
         PathAlignCritic:
           enabled: true
           cost_power: 1
-          cost_weight: 70.0
+          cost_weight: 14.0
           max_path_occupancy_ratio: 0.05
           trajectory_point_step: 4
-          threshold_to_consider: 0.5
-          offset_from_furthest: 55 
+          threshold_to_consider: 1
+          offset_from_furthest: 20
           use_path_orientations: false
         PathFollowCritic:
           enabled: true
           cost_power: 1
-          cost_weight: 1.0
+          cost_weight: 5.0
           offset_from_furthest: 5
           threshold_to_consider: 1.4
         PathAngleCritic:
           enabled: true
-          cost_power: 1 
+          cost_power: 1
           cost_weight: 2.0
           offset_from_furthest: 4
           threshold_to_consider: 0.5
-          max_angle_to_furthest: 1
+          max_angle_to_furthest: 1.0
           #forward_preference: true
           mode: 0
      # VelocityDeadbandCritic:
