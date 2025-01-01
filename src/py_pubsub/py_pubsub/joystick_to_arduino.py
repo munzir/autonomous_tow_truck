@@ -231,7 +231,7 @@ class JoystickToArduino(Node):
         wheel_base_ = 1.14  # Replace with your actual wheelbase in meters
 
         # Calculate the steering angle in degrees
-        if target_linear != 0:  # Avoid division by zero
+        if abs(target_linear) > 0.02:  # Avoid division by zero
             self.auto_steering_angle = int(180/math.pi * math.atan2(target_rot * wheel_base_, target_linear))
         else:
             self.auto_steering_angle = 0  # If linear speed is 0, assume no steering is need 

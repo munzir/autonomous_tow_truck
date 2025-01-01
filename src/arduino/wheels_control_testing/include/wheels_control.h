@@ -70,15 +70,15 @@ float PID(float setpoint, float measuredValue) {
 void WheelsControlSetup(int tick_period) {
   Serial.println("restarting");
   control_tick_period = tick_period;
-  dac.begin(0x60);
-  // if (dac.begin(0x60))   // Initialize MCP4725 DAC at default address (0x60)
-  // {
-  //   Serial.println("MCP4725 Initialized Successfully.");
-  // }
-  // else
-  // {
-  //   Serial.println("Failed.");
-  // }
+  // dac.begin(0x60);
+  if (dac.begin(0x60))   // Initialize MCP4725 DAC at default address (0x60)
+  {
+    Serial.println("MCP4725 Initialized Successfully.");
+  }
+  else
+  {
+    Serial.println("Failed.");
+  }
   pinMode(idle_pin, OUTPUT);
   pinMode(teleop_pin, OUTPUT);
   dac.setVoltage(0, false); // Set DAC output to 0V
