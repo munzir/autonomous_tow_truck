@@ -127,10 +127,10 @@ controller_server:
       vy_max: 0.5
       wz_max: 0.5
       iteration_count: 1
-      prune_distance: 1.7
+      prune_distance: 0.8
       transform_tolerance: 0.1
-      temperature: 0.2
-      gamma: 0.02
+      temperature: 0.25
+      gamma: 0.03
       motion_model: "Ackermann"
       visualize: false
       TrajectoryVisualizer:
