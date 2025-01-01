@@ -141,7 +141,7 @@ controller_server:
         inversion_xy_tolerance: 0.2
         inversion_yaw_tolerance: 0.4
       AckermannConstraints:
-        min_turning_r: 1.1
+        min_turning_r: 1.6
       critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
       ConstraintCritic:
         enabled: true
