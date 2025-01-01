@@ -129,7 +129,7 @@ controller_server:
       iteration_count: 1
       prune_distance: 1.7
       transform_tolerance: 0.1
-      temperature: 0.3
+      temperature: 0.2
       gamma: 0.02
       motion_model: "Ackermann"
       visualize: false
