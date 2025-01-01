@@ -121,7 +121,7 @@ controller_server:
       batch_size: 2000
       vx_std: 0.2
       vy_std: 0.2
-      wz_std: 0.01
+      wz_std: 0.4
       vx_max: 0.2
       vx_min: 0.0
       vy_max: 0.5
@@ -130,7 +130,7 @@ controller_server:
       prune_distance: 1.7
       transform_tolerance: 0.1
       temperature: 0.3
-      gamma: 0.015
+      gamma: 0.02
       motion_model: "Ackermann"
       visualize: false
       TrajectoryVisualizer:
