@@ -121,15 +121,15 @@ controller_server:
       batch_size: 2000
       vx_std: 0.2
       vy_std: 0.2
-      wz_std: 0.3
-      vx_max: 0.2
+      wz_std: 0.4
+      vx_max: 0.3
       vx_min: 0.0
       vy_max: 0.5
       wz_max: 0.5
       iteration_count: 1
       prune_distance: 0.8
       transform_tolerance: 0.1
-      temperature: 0.22
+      temperature: 0.25
       gamma: 0.03
       motion_model: "Ackermann"
       visualize: false
