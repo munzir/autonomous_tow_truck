@@ -29,6 +29,7 @@ void setup()
   steering_control_setup();  
   joystick_setup();
   Timer2Reset();
+  recalibrate();
 }
 
 
