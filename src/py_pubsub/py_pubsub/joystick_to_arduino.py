@@ -40,13 +40,13 @@ class JoystickToArduino(Node):
     def __init__(self):
         super().__init__('joystick_to_arduino')
 
-        # ROS subscription to joystick topic
-        self.subscription = self.create_subscription(
-            Joy,
-            '/joy',
-            self.joystick_callback,
-            1
-        )
+        #ROS subscription to joystick topic
+        #self.subscription = self.create_subscription(
+        #    Joy,
+        #    '/joy',
+        #    self.joystick_callback,
+        #    1
+        #)
 
         # ROS subscription to cmd_vel topic
         self.cmd_vel_subscription = self.create_subscription(
@@ -68,9 +68,9 @@ class JoystickToArduino(Node):
         self.timer_wheels = self.create_timer(self.control_update_period, lambda: self.periodic_log_callback(self.link_wheels, "arduino_wheels"))
 
         # State variables
-        self.manual_mode = True
+        self.manual_mode = False
         self.teleop_mode = False
-        self.autonom_mode = False
+        self.autonom_mode = True
         self.brake_active = False
         self.reverse_mode = False
         self.auto_steering_angle = 0
@@ -88,74 +88,46 @@ class JoystickToArduino(Node):
         steering_angle_window_size = int(steering_angle_time_constant / self.control_update_period)
         self.steering_angle_window = deque(maxlen=steering_angle_window_size)
 
-    def joystick_callback(self, msg):
+    def joystick_callback(self):
         try:
-            # Button mappings
-            reinit_button = msg.buttons[Button.A.value]  # Reinitialize all variables
-            manual_button = msg.buttons[Button.CENTER_RIGHT.value]  # Hold for manual
-            teleop_button = msg.buttons[Button.CENTER_LEFT.value]
-            autonom_button = msg.buttons[Button.CENTER_MIDDLE.value]
-            brake_button = msg.buttons[Button.B.value]   # Brake button
-            reverse_button = msg.buttons[Button.FRONT_LEFT_TOP.value] # Toggle forward/reverse mode
-            killswitch_button = msg.buttons[Button.X.value]
-            debug_mode_button = msg.buttons[Button.Y.value] 
-
-            # Handle reinitialization
-            self.reinitialize = reinit_button == 1
-
-            # Handle manual/teleop toggle (positive edge detection)
-            if manual_button == 1:
-                self.manual_mode = True
-                self.teleop_mode = False
-                self.autonom_mode = False
-                self.get_logger().info("Manual On!")
-            elif teleop_button == 1:
-                self.manual_mode = False
-                self.teleop_mode = True
-                self.autonom_mode = False
-                self.get_logger().info("Teleoperation On!")
-            elif autonom_button == 1:
-                self.manual_mode = False
-                self.teleop_mode = False
-                self.autonom_mode = True
-                self.get_logger().info("Autonomous On!")
+            self.manual_mode = False
+            self.teleop_mode = False
+            self.autonom_mode = True
+            #self.get_logger().info("Autonomous On!")
             
             # Handle forward/reverse toggle (positive edge detection)
-            if reverse_button == 1 and self.prev_reverse_button == 0:
-                self.reverse_mode = not self.reverse_mode
-                self.get_logger().info(f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}")
+            #if reverse_button == 1 and self.prev_reverse_button == 0:
+            #    self.reverse_mode = not self.reverse_mode
+            #    self.get_logger().info(f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}")
             
             
             # Handle debug_mode toggle (positive edge detection)
-            if debug_mode_button == 1 and self.prev_debug_mode_button == 0:
-                self.debug_mode = not self.debug_mode
-                self.get_logger().info(f"Debug Mode = {'True' if self.debug_mode else 'False'}")
             
             # Handle brake
-            self.brake_active = brake_button == 1
+            #self.brake_active = brake_button == 1
 
             # Map joystick index [4] to Speed between 4.4 and 2.5
-            raw_speed = msg.axes[Axis.FRONT_RIGHT_BOTTOM.value]
+
             if (self.autonom_mode == True):
                 self.speed = int(self.auto_speed)
             else:
-                self.speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
+                self.speed = int(interp(4.4 - (1 + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
             # If brake is active, force speed to 0
             if self.brake_active:
                 self.speed = 0
 
             # Map joystick index [0] to Steering Angle between -255 and 255
-            raw_steering = msg.axes[Axis.LEFT_THUMB_HORIZONTAL.value]
+
             if (self.autonom_mode == True):
                 self.steering_angle_window.append(self.auto_steering_angle)
             else:
-                self.steering_angle_window.append(int(53 - (raw_steering + 1) * ((53 + 53) / 2)) * -1)
+                self.steering_angle_window.append(int(53 - (1 + 1) * ((53 + 53) / 2)) * -1)
             self.steering_angle = sum(self.steering_angle_window) / len(self.steering_angle_window)
 
             # Update previous state for next cycle
-            self.prev_manual_button = manual_button
-            self.prev_reverse_button = reverse_button
-            self.prev_debug_mode_button = debug_mode_button
+            #self.prev_manual_button = manual_button
+            #self.prev_reverse_button = reverse_button
+            #self.prev_debug_mode_button = debug_mode_button
 
         except Exception as e:
             self.get_logger().error(f"Unexpected error: {str(e)}")
@@ -215,6 +187,7 @@ class JoystickToArduino(Node):
             self.get_logger().error(f"Unexpected error: {str(e)}")
     
     def cmd_vel_callback(self, msg):
+        self.joystick_callback()
         # Log linear and angular velocities
         #self.get_logger().info(
         #    f"Received /cmd_vel: Linear = {msg.linear.x:.2f}, {msg.linear.y:.2f}, {msg.linear.z:.2f} | "
