@@ -26,7 +26,7 @@ void loop()
   if (Serial.available() > 0)
   {
     dutyCycle = Serial.parseFloat();
-    Serial.println(dutyCycle);
+    //Serial.println(dutyCycle);
   }
   // Compute the PID output (duty cycle)
 
@@ -59,20 +59,20 @@ void loop()
   }
 
   Serial.print(steering_angle);
-  Serial.print(", e0: ");
-  Serial.print(edges_0);
-  Serial.print(", ie0: ");
-  Serial.print(interesting_edges_0);
-  Serial.print(", cwe0: ");
-  Serial.print(clockwise_edges_0);
-  Serial.print(", acwe0: ");
-  Serial.print(anti_clockwise_edges_0);
-  Serial.print(", e1: ");
-  Serial.print(edges_1);
-  Serial.print(", ie1: ");
-  Serial.print(interesting_edges_1);
-  Serial.print(", cwe1: ");
-  Serial.print(clockwise_edges_1);
-  Serial.print(", acwe1: ");
-  Serial.println(anti_clockwise_edges_1);
+  //Serial.print(", e0: ");
+  //Serial.print(edges_0);
+  //Serial.print(", ie0: ");
+  //Serial.print(interesting_edges_0);
+  //Serial.print(", cwe0: ");
+  //Serial.print(clockwise_edges_0);
+  //Serial.print(", acwe0: ");
+  //Serial.print(anti_clockwise_edges_0);
+  //Serial.print(", e1: ");
+  //Serial.print(edges_1);
+  //Serial.print(", ie1: ");
+  //Serial.print(interesting_edges_1);
+  //Serial.print(", cwe1: ");
+  //Serial.print(clockwise_edges_1);
+  //Serial.print(", acwe1: ");
+  //Serial.println(anti_clockwise_edges_1);
 }

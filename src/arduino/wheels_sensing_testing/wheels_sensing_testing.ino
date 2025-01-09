@@ -15,8 +15,8 @@ void loop ()
     unsigned long current_time = millis();
     unsigned long my_time = current_time - prev_time;
     prev_time = current_time;
-    Serial.print(my_time);
-    Serial.print(" ms, ");
+    //Serial.print(my_time);
+    //Serial.print(" ms, ");
     // Send pulses and frequency to serial, separated by a comma
     Serial.println(frq, 2);   // 2 decimal places for float
     
