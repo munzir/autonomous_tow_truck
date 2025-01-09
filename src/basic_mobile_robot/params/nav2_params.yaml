@@ -535,5 +535,6 @@ slam_toolbox:
     
 waypoint_follower:
   ros__parameters:
-    loop_rate: 1
-    stop_on_failure: false
+    loop_rate: 20
+    stop_on_failure: true
+    # stop_on_reaching_goal: true

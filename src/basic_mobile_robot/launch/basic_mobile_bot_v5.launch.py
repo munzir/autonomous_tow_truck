@@ -133,6 +133,7 @@ def generate_launch_description():
     name='world',
     default_value=world_path,
     description='Full path to the world model file to load')
+  
    
   # Specify the actions
 
@@ -141,6 +142,7 @@ def generate_launch_description():
     PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
     condition=IfCondition(use_simulator),
     launch_arguments={'world': world}.items())
+  
 
   # Start Gazebo client    
   start_gazebo_client_cmd = IncludeLaunchDescription(
@@ -187,7 +189,15 @@ def generate_launch_description():
                         'params_file': params_file,
                         'default_bt_xml_filename': default_bt_xml_filename,
                         'autostart': autostart}.items())
-
+  
+  
+  start_waypoint_follower_cmd = Node(                                                      # changed
+        package='nav2_waypoint_follower',  # Replace with the appropriate package name
+        executable='waypoint_follower',    # The executable for waypoint follower
+        name='waypoint_follower',
+        output='screen',
+        parameters=[{'param_file': nav2_params_path}],  # Include your specific parameters for the waypoint follower
+    )
   # Create the launch description and populate
   ld = LaunchDescription()
 
@@ -215,5 +225,7 @@ def generate_launch_description():
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
   ld.add_action(start_ros2_navigation_cmd)
+  ld.add_action(start_waypoint_follower_cmd)  # Add the waypoint follower node here      # changed
+
 
   return ld
