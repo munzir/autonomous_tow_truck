@@ -35,22 +35,23 @@ def main():
   navigator = BasicNavigator()
  
   # Set the robot's initial pose if necessary
-  # initial_pose = PoseStamped()
-  # initial_pose.header.frame_id = 'map'
-  # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # initial_pose.pose.position.x = 0.0
-  # initial_pose.pose.position.y = 0.0
-  # initial_pose.pose.position.z = 0.0
-  # initial_pose.pose.orientation.x = 0.0
-  # initial_pose.pose.orientation.y = 0.0
-  # initial_pose.pose.orientation.z = 0.0
-  # initial_pose.pose.orientation.w = 1.0
-  # navigator.setInitialPose(initial_pose)
+  initial_pose = PoseStamped()
+  initial_pose.header.frame_id = 'map'
+  initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+  initial_pose.pose.position.x = 0.0747
+  initial_pose.pose.position.y = 0.1021
+  initial_pose.pose.position.z = 0.0
+  initial_pose.pose.orientation.x = 0.0
+  initial_pose.pose.orientation.y = 0.0
+  initial_pose.pose.orientation.z = -0.0013
+  initial_pose.pose.orientation.w = 1.0
+  navigator.setInitialPose(initial_pose)
+
  
   # Activate navigation, if not autostarted. This should be called after setInitialPose()
   # or this will initialize at the origin of the map and update the costmap with bogus readings.
   # If autostart, you should `waitUntilNav2Active()` instead.
-  # navigator.lifecycleStartup()
+  navigator.lifecycleStartup()
  
   # Wait for navigation to fully activate. Use this line if autostart is set to true.
   navigator.waitUntilNav2Active()
@@ -65,78 +66,92 @@ def main():
  
   # Set the robot's goal poses
   goal_poses = []
-   
+
   goal_pose = PoseStamped()
   goal_pose.header.frame_id = 'map'
   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = 1.3
-  goal_pose.pose.position.y = 6.0
+  goal_pose.pose.position.x = 2.0747
+  goal_pose.pose.position.y = 0.1021
   goal_pose.pose.position.z = 0.0
   goal_pose.pose.orientation.x = 0.0
   goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = 0.23
-  goal_pose.pose.orientation.w = 0.97
-  goal_poses.append(goal_pose)
-   
-  goal_pose = PoseStamped()
-  goal_pose.header.frame_id = 'map'
-  goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = 2.0
-  goal_pose.pose.position.y = -3.5
-  goal_pose.pose.position.z = 0.0
-  goal_pose.pose.orientation.x = 0.0
-  goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = 0.707
-  goal_pose.pose.orientation.w = -0.707
-  goal_poses.append(goal_pose)
-   
-  goal_pose = PoseStamped()
-  goal_pose.header.frame_id = 'map'
-  goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = 1.5
-  goal_pose.pose.position.y = -7.7
-  goal_pose.pose.position.z = 0.0
-  goal_pose.pose.orientation.x = 0.0
-  goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = 0.92
-  goal_pose.pose.orientation.w = -0.38
-  goal_poses.append(goal_pose)
-   
-  goal_pose = PoseStamped()
-  goal_pose.header.frame_id = 'map'
-  goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = -1.4
-  goal_pose.pose.position.y = -7.8
-  goal_pose.pose.position.z = 0.0
-  goal_pose.pose.orientation.x = 0.0
-  goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = 0.92
-  goal_pose.pose.orientation.w = 0.38
-  goal_poses.append(goal_pose)
-  
-  goal_pose = PoseStamped()
-  goal_pose.header.frame_id = 'map'
-  goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = -2.6
-  goal_pose.pose.position.y = -4.5
-  goal_pose.pose.position.z = 0.0
-  goal_pose.pose.orientation.x = 0.0
-  goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = 0.38
-  goal_pose.pose.orientation.w = 0.92
-  goal_poses.append(goal_pose)
-   
-  goal_pose = PoseStamped()
-  goal_pose.header.frame_id = 'map'
-  goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = 0.0
-  goal_pose.pose.position.y = 0.0
-  goal_pose.pose.position.z = 0.0
-  goal_pose.pose.orientation.x = 0.0
-  goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = 0.0
+  goal_pose.pose.orientation.z = -0.013
   goal_pose.pose.orientation.w = 1.0
   goal_poses.append(goal_pose)
+
+   
+  goal_pose = PoseStamped()
+  goal_pose.header.frame_id = 'map'
+  goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+  goal_pose.pose.position.x = 8.0834
+  goal_pose.pose.position.y = -5.6043
+  goal_pose.pose.position.z = 0.0
+  goal_pose.pose.orientation.x = 0.0
+  goal_pose.pose.orientation.y = 0.0
+  goal_pose.pose.orientation.z = -0.709
+  goal_pose.pose.orientation.w = 0.7053
+  goal_poses.append(goal_pose)
+
+   
+#   goal_pose = PoseStamped()
+#   goal_pose.header.frame_id = 'map'
+#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+#   goal_pose.pose.position.x = 14.5550
+#   goal_pose.pose.position.y = -8.7250
+#   goal_pose.pose.position.z = 0.0
+#   goal_pose.pose.orientation.x = 0.0
+#   goal_pose.pose.orientation.y = 0.0
+#   goal_pose.pose.orientation.z = 0.0176
+#   goal_pose.pose.orientation.w = -0.9998
+#   goal_poses.append(goal_pose)
+   
+#   goal_pose = PoseStamped()
+#   goal_pose.header.frame_id = 'map'
+#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+#   goal_pose.pose.position.x = 1.5
+#   goal_pose.pose.position.y = -7.7
+#   goal_pose.pose.position.z = 0.0
+#   goal_pose.pose.orientation.x = 0.0
+#   goal_pose.pose.orientation.y = 0.0
+#   goal_pose.pose.orientation.z = 0.92
+#   goal_pose.pose.orientation.w = -0.38
+#   goal_poses.append(goal_pose)
+   
+#   goal_pose = PoseStamped()
+#   goal_pose.header.frame_id = 'map'
+#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+#   goal_pose.pose.position.x = -1.4
+#   goal_pose.pose.position.y = -7.8
+#   goal_pose.pose.position.z = 0.0
+#   goal_pose.pose.orientation.x = 0.0
+#   goal_pose.pose.orientation.y = 0.0
+#   goal_pose.pose.orientation.z = 0.92
+#   goal_pose.pose.orientation.w = 0.38
+#   goal_poses.append(goal_pose)
+  
+#   goal_pose = PoseStamped()
+#   goal_pose.header.frame_id = 'map'
+#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+#   goal_pose.pose.position.x = -2.6
+#   goal_pose.pose.position.y = -4.5
+#   goal_pose.pose.position.z = 0.0
+#   goal_pose.pose.orientation.x = 0.0
+#   goal_pose.pose.orientation.y = 0.0
+#   goal_pose.pose.orientation.z = 0.38
+#   goal_pose.pose.orientation.w = 0.92
+#   goal_poses.append(goal_pose)
+   
+#   goal_pose = PoseStamped()
+#   goal_pose.header.frame_id = 'map'
+#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+#   goal_pose.pose.position.x = 0.0
+#   goal_pose.pose.position.y = 0.0
+#   goal_pose.pose.position.z = 0.0
+#   goal_pose.pose.orientation.x = 0.0
+#   goal_pose.pose.orientation.y = 0.0
+#   goal_pose.pose.orientation.z = 0.0
+#   goal_pose.pose.orientation.w = 1.0
+#   goal_poses.append(goal_pose)
  
   # sanity check a valid path exists
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
