@@ -38,13 +38,13 @@ def main():
   initial_pose = PoseStamped()
   initial_pose.header.frame_id = 'map'
   initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  initial_pose.pose.position.x = 0.0747
-  initial_pose.pose.position.y = 0.1021
+  initial_pose.pose.position.x = 254.60752868652344
+  initial_pose.pose.position.y = 94.49028778076172
   initial_pose.pose.position.z = 0.0
   initial_pose.pose.orientation.x = 0.0
   initial_pose.pose.orientation.y = 0.0
-  initial_pose.pose.orientation.z = -0.0013
-  initial_pose.pose.orientation.w = 1.0
+  initial_pose.pose.orientation.z = -0.9630701472168021
+  initial_pose.pose.orientation.w = 0.269250611029589
   navigator.setInitialPose(initial_pose)
 
  
@@ -67,94 +67,36 @@ def main():
   # Set the robot's goal poses
   goal_poses = []
 
+
+
+  # First goal pose
   goal_pose = PoseStamped()
   goal_pose.header.frame_id = 'map'
   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = 2.0747
-  goal_pose.pose.position.y = 0.1021
+  goal_pose.pose.position.x = 233.3795166015625
+  goal_pose.pose.position.y = 82.65235900878906
   goal_pose.pose.position.z = 0.0
   goal_pose.pose.orientation.x = 0.0
   goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = -0.013
-  goal_pose.pose.orientation.w = 1.0
+  goal_pose.pose.orientation.z = -0.9651533198766835
+  goal_pose.pose.orientation.w = 0.26168505714124446
   goal_poses.append(goal_pose)
 
-   
+  # Second goal pose
   goal_pose = PoseStamped()
   goal_pose.header.frame_id = 'map'
   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  goal_pose.pose.position.x = 8.0834
-  goal_pose.pose.position.y = -5.6043
+  goal_pose.pose.position.x = 202.23220825195312
+  goal_pose.pose.position.y = 63.59389877319336
   goal_pose.pose.position.z = 0.0
   goal_pose.pose.orientation.x = 0.0
   goal_pose.pose.orientation.y = 0.0
-  goal_pose.pose.orientation.z = -0.709
-  goal_pose.pose.orientation.w = 0.7053
+  goal_pose.pose.orientation.z = -0.9725459902971648
+  goal_pose.pose.orientation.w = 0.23271075771632682
   goal_poses.append(goal_pose)
-
-   
-#   goal_pose = PoseStamped()
-#   goal_pose.header.frame_id = 'map'
-#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-#   goal_pose.pose.position.x = 14.5550
-#   goal_pose.pose.position.y = -8.7250
-#   goal_pose.pose.position.z = 0.0
-#   goal_pose.pose.orientation.x = 0.0
-#   goal_pose.pose.orientation.y = 0.0
-#   goal_pose.pose.orientation.z = 0.0176
-#   goal_pose.pose.orientation.w = -0.9998
-#   goal_poses.append(goal_pose)
-   
-#   goal_pose = PoseStamped()
-#   goal_pose.header.frame_id = 'map'
-#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-#   goal_pose.pose.position.x = 1.5
-#   goal_pose.pose.position.y = -7.7
-#   goal_pose.pose.position.z = 0.0
-#   goal_pose.pose.orientation.x = 0.0
-#   goal_pose.pose.orientation.y = 0.0
-#   goal_pose.pose.orientation.z = 0.92
-#   goal_pose.pose.orientation.w = -0.38
-#   goal_poses.append(goal_pose)
-   
-#   goal_pose = PoseStamped()
-#   goal_pose.header.frame_id = 'map'
-#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-#   goal_pose.pose.position.x = -1.4
-#   goal_pose.pose.position.y = -7.8
-#   goal_pose.pose.position.z = 0.0
-#   goal_pose.pose.orientation.x = 0.0
-#   goal_pose.pose.orientation.y = 0.0
-#   goal_pose.pose.orientation.z = 0.92
-#   goal_pose.pose.orientation.w = 0.38
-#   goal_poses.append(goal_pose)
-  
-#   goal_pose = PoseStamped()
-#   goal_pose.header.frame_id = 'map'
-#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-#   goal_pose.pose.position.x = -2.6
-#   goal_pose.pose.position.y = -4.5
-#   goal_pose.pose.position.z = 0.0
-#   goal_pose.pose.orientation.x = 0.0
-#   goal_pose.pose.orientation.y = 0.0
-#   goal_pose.pose.orientation.z = 0.38
-#   goal_pose.pose.orientation.w = 0.92
-#   goal_poses.append(goal_pose)
-   
-#   goal_pose = PoseStamped()
-#   goal_pose.header.frame_id = 'map'
-#   goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-#   goal_pose.pose.position.x = 0.0
-#   goal_pose.pose.position.y = 0.0
-#   goal_pose.pose.position.z = 0.0
-#   goal_pose.pose.orientation.x = 0.0
-#   goal_pose.pose.orientation.y = 0.0
-#   goal_pose.pose.orientation.z = 0.0
-#   goal_pose.pose.orientation.w = 1.0
-#   goal_poses.append(goal_pose)
  
   # sanity check a valid path exists
-  # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
+  path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   nav_start = navigator.get_clock().now()
   navigator.followWaypoints(goal_poses)
@@ -206,7 +148,7 @@ def main():
   else:
     print('Goal has an invalid return status!')
  
-  navigator.lifecycleShutdown()
+  # navigator.lifecycleShutdown()
  
   exit(0)
  
