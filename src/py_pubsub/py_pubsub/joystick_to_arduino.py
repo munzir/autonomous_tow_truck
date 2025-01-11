@@ -122,7 +122,7 @@ class JoystickToArduino(Node):
                 self.steering_angle_window.append(self.auto_steering_angle)
             else:
                 self.steering_angle_window.append(int(53 - (1 + 1) * ((53 + 53) / 2)) * -1)
-            self.steering_angle = sum(self.steering_angle_window) / len(self.steering_angle_window)
+            self.steering_angle = int(sum(self.steering_angle_window) / len(self.steering_angle_window))
 
             # Update previous state for next cycle
             #self.prev_manual_button = manual_button
