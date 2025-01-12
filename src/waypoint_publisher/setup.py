@@ -21,6 +21,9 @@ setup(
     entry_points={
         'console_scripts': [
             'waypoint_publisher_node = waypoint_publisher.waypoint_publisher_node:main',
+            'path_planner = waypoint_publisher.path_planner:main',
+            'static_transform_publisher = waypoint_publisher.static_transform_publisher:main',
+            'path_follower = waypoint_publisher.path_follower:main',
         ],
     },
 )
