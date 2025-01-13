@@ -197,7 +197,18 @@ def generate_launch_description():
         name='waypoint_follower',
         output='screen',
         parameters=[{'param_file': nav2_params_path}],  # Include your specific parameters for the waypoint follower
-    )
+  )
+    
+    # Start your custom node (LoadPrecomputedPath) within the launch file
+  start_load_precomputed_path_node_cmd = Node(
+      package='load_precomputed_path',  # Replace with the correct package name where your custom node is
+      executable='load_precomputed_path_node',  # Replace with the executable name of your custom node
+      name='load_precomputed_path_node',
+      output='screen',
+      parameters=[{'param_file': nav2_params_path}],  # Include any parameters if needed
+      remappings=remappings  # If there are any necessary topic remappings, include them
+  )
+
   # Create the launch description and populate
   ld = LaunchDescription()
 
@@ -205,6 +216,7 @@ def generate_launch_description():
   ld.add_action(declare_namespace_cmd)
   ld.add_action(declare_use_namespace_cmd)
   ld.add_action(declare_autostart_cmd)
+  ld.add_action(start_load_precomputed_path_node_cmd)
   ld.add_action(declare_bt_xml_cmd)
   ld.add_action(declare_map_yaml_cmd)
   ld.add_action(declare_model_path_cmd)
