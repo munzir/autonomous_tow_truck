@@ -29,7 +29,7 @@ def generate_launch_description():
   static_map_path = os.path.join(pkg_share, 'maps', 'map_name.yaml')
   nav2_params_path = os.path.join(pkg_share, 'params', 'nav2_params.yaml')
   nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
-#  behavior_tree_xml_path = os.path.join(nav2_bt_path, 'behavior_trees', 'navigate_w_replanning_only_if_goal_is_updated.xml')
+  # behavior_tree_xml_path = os.path.join(nav2_bt_path, 'behavior_trees', 'navigate_through_poses_w_replanning_and_recovery.xml')
   behavior_tree_xml_path = os.path.join(pkg_share, 'params', 'sadaf_navigate_to_pose_w_replanning_and_recovery.xml')
 
   # Launch configuration variables specific to simulation
@@ -191,13 +191,13 @@ def generate_launch_description():
                         'autostart': autostart}.items())
   
   
-  start_waypoint_follower_cmd = Node(                                                      # changed
-        package='nav2_waypoint_follower',  # Replace with the appropriate package name
-        executable='waypoint_follower',    # The executable for waypoint follower
-        name='waypoint_follower',
-        output='screen',
-        parameters=[{'param_file': nav2_params_path}],  # Include your specific parameters for the waypoint follower
-    )
+  # start_waypoint_follower_cmd = Node(                                                      # changed
+  #       package='nav2_waypoint_follower',  # Replace with the appropriate package name
+  #       executable='waypoint_follower',    # The executable for waypoint follower
+  #       name='waypoint_follower',
+  #       output='screen',
+  #       parameters=[{'param_file': nav2_params_path}],  # Include your specific parameters for the waypoint follower
+  #   )
   # Create the launch description and populate
   ld = LaunchDescription()
 
@@ -225,7 +225,7 @@ def generate_launch_description():
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
   ld.add_action(start_ros2_navigation_cmd)
-  ld.add_action(start_waypoint_follower_cmd)  # Add the waypoint follower node here      # changed
+  # ld.add_action(start_waypoint_follower_cmd)  # Add the waypoint follower node here      # changed
 
 
   return ld
