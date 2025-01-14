@@ -17,15 +17,15 @@ def generate_launch_description():
   # Set the path to different files and folders.
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
   pkg_share = FindPackageShare(package='basic_mobile_robot').find('basic_mobile_robot')
-  default_launch_dir = os.path.join(pkg_share, 'launch')
+  # default_launch_dir = os.path.join(pkg_share, 'launch')
   default_model_path = os.path.join(pkg_share, 'models/basic_mobile_bot_v2.urdf')
   robot_localization_file_path = os.path.join(pkg_share, 'config/ekf.yaml') 
   robot_name_in_urdf = 'basic_mobile_bot'
   default_rviz_config_path = os.path.join(pkg_share, 'rviz/nav2_config.rviz')
   world_file_name = 'basic_mobile_bot_world/smalltown.world'
   world_path = os.path.join(pkg_share, 'worlds', world_file_name)
-  #nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup') 
-  #nav2_launch_dir = os.path.join(nav2_dir, 'launch') 
+  nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup') 
+  nav2_launch_dir = os.path.join(nav2_dir, 'launch') 
   static_map_path = os.path.join(pkg_share, 'maps', 'map_name.yaml')
   nav2_params_path = os.path.join(pkg_share, 'params', 'nav2_params.yaml')
   nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
@@ -180,7 +180,7 @@ def generate_launch_description():
 
   # Launch the ROS 2 Navigation Stack
   start_ros2_navigation_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(default_launch_dir, 'bringup_launch.py')),
+    PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
     launch_arguments = {'namespace': namespace,
                         'use_namespace': use_namespace,
                         'slam': slam,
