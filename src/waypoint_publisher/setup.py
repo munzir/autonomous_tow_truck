@@ -24,7 +24,6 @@ setup(
             'path_planner = waypoint_publisher.path_planner:main',
             'static_transform_publisher = waypoint_publisher.static_transform_publisher:main',
             'path_follower = waypoint_publisher.path_follower:main',
-            'load_precomputed_path = waypoint_publisher.load_precomputed_path:main',
         ],
     },
 )

@@ -14,16 +14,10 @@ import yaml
 
 def save_path_to_file(path, file_path):
     path_dict = {
-        'header': {
-            'frame_id': 'map'  # Ensure the header.frame_id is set for the entire path
-        },
         'poses': []
     }
     for pose_stamped in path.poses:
         pose_data = {
-            'header': {
-                'frame_id': 'map'  # Ensure each pose's header.frame_id is set
-            },
             'position': {
                 'x': pose_stamped.pose.position.x,
                 'y': pose_stamped.pose.position.y,
