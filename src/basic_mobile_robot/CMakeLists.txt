@@ -26,6 +26,16 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+
+# Install Python scripts changed
+install(
+  PROGRAMS
+  scripts/robot_navigator.py
+  scripts/nav_through_poses.py
+  scripts/waypoint_follower.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
