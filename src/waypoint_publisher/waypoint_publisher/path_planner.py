@@ -119,7 +119,8 @@ class WaypointNavigator(Node):
         self.wait_until_nav2_active()
 
         # Load waypoints from CSV
-        waypoints = self.load_waypoints('/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv')
+        waypoints_src = self.load_waypoints('/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv')
+        waypoints = waypoints_src
 
         if not waypoints:
             self.error('No waypoints loaded. Exiting.')
