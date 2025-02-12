@@ -130,8 +130,8 @@ controller_server:
       iteration_count: 1
       prune_distance: 0.65
       transform_tolerance: 0.1
-      temperature: 0.155 
-      gamma: 0.03
+      temperature: 0.1553 
+      gamma: 0.0312
       motion_model: "Ackermann"
       visualize: false
       TrajectoryVisualizer:
@@ -200,10 +200,10 @@ controller_server:
         PathAngleCritic:
           enabled: true
           cost_power: 2
-          cost_weight: 70.0
+          cost_weight: 60.0
           offset_from_furthest: 4
           threshold_to_consider: 0.5
-          max_angle_to_furthest: 1
+          max_angle_to_furthest: 0.7
           #forward_preference: true
           mode: 0
      # VelocityDeadbandCritic:
