@@ -120,17 +120,17 @@ controller_server:
       time_steps: 56
       model_dt: 0.03125
       batch_size: 2000
-      vx_std: 0.2
-      vy_std: 0.2
-      wz_std: 0.6
+      vx_std: 0.3
+      vy_std: 0.3
+      wz_std: 0.7
       vx_max: 0.2
       vx_min: 0.0
       vy_max: 0.5
-      wz_max: 0.6
+      wz_max: 0.7
       iteration_count: 1
-      prune_distance: 0.7
+      prune_distance: 0.65
       transform_tolerance: 0.1
-      temperature: 0.22 
+      temperature: 0.14 
       gamma: 0.03
       motion_model: "Ackermann"
       visualize: false
