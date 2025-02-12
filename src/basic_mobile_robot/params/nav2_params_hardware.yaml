@@ -130,7 +130,7 @@ controller_server:
       iteration_count: 1
       prune_distance: 0.7
       transform_tolerance: 0.1
-      temperature: 0.22
+      temperature: 0.22 
       gamma: 0.03
       motion_model: "Ackermann"
       visualize: false
@@ -185,7 +185,7 @@ controller_server:
         PathAlignCritic:
           enabled: true
           cost_power: 2
-          cost_weight: 100.0
+          cost_weight: 120.0
           max_path_occupancy_ratio: 0.05
           trajectory_point_step: 4
           threshold_to_consider: 0.5
@@ -193,14 +193,14 @@ controller_server:
           use_path_orientations: false
         PathFollowCritic:
           enabled: true
-          cost_power: 12
+          cost_power: 20
           cost_weight: 100.0
           offset_from_furthest: 5
           threshold_to_consider: 1.4
         PathAngleCritic:
           enabled: true
           cost_power: 2
-          cost_weight: 50.0
+          cost_weight: 70.0
           offset_from_furthest: 4
           threshold_to_consider: 0.5
           max_angle_to_furthest: 1

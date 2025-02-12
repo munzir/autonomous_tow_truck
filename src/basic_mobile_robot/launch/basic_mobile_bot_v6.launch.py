@@ -23,8 +23,8 @@ def generate_launch_description():
   nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
   behavior_tree_xml_path = os.path.join(nav2_bt_path, 'behavior_trees', 'sadaf_navigate_through_poses_w_replanning_and_recovery.xml')
   imu_launch_path = os.path.join(pkg_share, 'launch', 'imu.launch.py')  # Added IMU launch path
-  odometry_launch_path = os.path.join(pkg_share, 'launch', 'odometry.launch.py')  # Path to pose launch file
-  lidar_launch_path = os.path.join(pkg_share, 'launch', 'lasers.launch.py')  # Added LiDAR launch path
+  # odometry_launch_path = os.path.join(pkg_share, 'launch', 'odometry.launch.py')  # Path to pose launch file
+  # lidar_launch_path = os.path.join(pkg_share, 'launch', 'lasers.launch.py')  # Added LiDAR launch path
   # Launch configuration variables
   autostart = LaunchConfiguration('autostart')
   default_bt_xml_filename = LaunchConfiguration('default_bt_xml_filename')
@@ -149,10 +149,10 @@ def generate_launch_description():
   )
 
   # #Include odometry
-  start_odometry_cmd = IncludeLaunchDescription(
-      PythonLaunchDescriptionSource(odometry_launch_path),
-      launch_arguments={'use_sim_time': use_sim_time}.items()
-  )
+  # start_odometry_cmd = IncludeLaunchDescription(
+  #     PythonLaunchDescriptionSource(odometry_launch_path),
+  #     launch_arguments={'use_sim_time': use_sim_time}.items()
+  # )
 
 
   # Launch the ROS 2 Navigation Stack
@@ -191,5 +191,5 @@ def generate_launch_description():
   ld.add_action(start_imu_cmd) #imu
   ld.add_action(start_lidar_cmd) #lidar
   ld.add_action(start_ros2_navigation_cmd)
-  ld.add_action(start_odometry_cmd)
+  # ld.add_action(start_odometry_cmd)
   return ld
