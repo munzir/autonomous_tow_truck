@@ -301,11 +301,13 @@ local_costmap:
       height: 10
       resolution: 0.05
       robot_radius: 0.75
-      plugins: ["voxel_layer", "inflation_layer"]
+      plugins: ["voxel_layer", "inflation_layer", "obstacle_layer"]
+
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
         inflation_radius: 0.95
+
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -315,13 +317,47 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan
+        observation_sources: scan camera_obstacles
         scan:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
+        camera_obstacles:
+          topic: /camera_obstacles
+          sensor_frame: camera_link
+          data_type: PointCloud2
+          marking: True
+          clearing: False
+          min_obstacle_height: 0.1
+          max_obstacle_height: 2.0
+          obstacle_range: 5.0
+          raytrace_range: 6.0
+
+      obstacle_layer:  # Added obstacle_layer for better detection
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: True
+        max_obstacle_height: 2.0
+        min_obstacle_height: 0.1
+        observation_sources: scan camera_obstacles
+        scan:
+          topic: /scan
+          data_type: "LaserScan"
+          clearing: True
+          marking: True
+          max_obstacle_height: 2.0
+        camera_obstacles:
+          topic: /camera_obstacles
+          sensor_frame: camera_link
+          data_type: PointCloud2
+          marking: True
+          clearing: False
+          min_obstacle_height: 0.1
+          max_obstacle_height: 2.0
+          obstacle_range: 5.0
+          raytrace_range: 6.0
+
       static_layer:
         map_subscribe_transient_local: True
       always_send_full_costmap: True
@@ -347,13 +383,23 @@ global_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan
+        observation_sources: scan camera_obstacles
         scan:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
+        camera_obstacles:
+          topic: /camera_obstacles
+          sensor_frame: camera_link
+          data_type: PointCloud2
+          marking: True
+          clearing: False
+          min_obstacle_height: 0.1
+          max_obstacle_height: 2.0
+          obstacle_range: 5.0
+          raytrace_range: 6.0
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
