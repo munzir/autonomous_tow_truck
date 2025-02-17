@@ -80,6 +80,8 @@ Visualization Manager:
           Value: true
         lidar_link:
           Value: true
+        camera_link:
+          Value: true
         map:
           Value: true
         odom:
