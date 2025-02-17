@@ -106,6 +106,9 @@ Visualization Manager:
                   {}
                 lidar_link:
                   {}
+                camera_link:
+                  camera_link_optical:
+                    {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -342,11 +345,36 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_link_optical:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Alpha: 1
+      Class: rviz_default_plugins/Image
+      Enabled: true
+      Name: Camera
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /camera/image_raw  
+      Queue Size: 5
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
+
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
