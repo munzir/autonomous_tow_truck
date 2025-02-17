@@ -145,10 +145,13 @@ def generate_launch_description():
     'sllidar_a3_launch.py'
   )
 
+  # Include the LiDAR launch file only if AMCL is enabled
   start_lidar_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(lidar_launch_path),
+    condition=IfCondition(amcl),  # This ensures LiDAR only starts if AMCL is True
     launch_arguments={'use_sim_time': use_sim_time}.items()
   )
+
 
   # Include odometry
   start_odometry_cmd = IncludeLaunchDescription(
