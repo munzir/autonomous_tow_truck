@@ -1,7 +1,7 @@
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node
@@ -37,19 +37,24 @@ def generate_launch_description():
   use_rviz = LaunchConfiguration('use_rviz')
   use_sim_time = LaunchConfiguration('use_sim_time')
   amcl = LaunchConfiguration('amcl')
+  ekf = LaunchConfiguration('ekf')
 
   # Set nav2_launch_dir based on AMCL condition
   default_launch_dir = os.path.join(pkg_share, 'launch')
   nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup')
   nav2_launch_dir = os.path.join(nav2_dir, 'launch')
 
-  selected_nav2_launch_dir = IfCondition(amcl, nav2_launch_dir, default_launch_dir)
-
   # Declare the launch arguments
   declare_amcl_cmd = DeclareLaunchArgument(
     name='amcl',
-    default_value='False',
+    default_value='True',
     description='Use AMCL-based localization'
+  )
+
+  declare_ekf_cmd = DeclareLaunchArgument(
+    name='ekf',
+    default_value='False',
+    description='Use ekf-based localization'
   )
 
   declare_namespace_cmd = DeclareLaunchArgument(
@@ -112,6 +117,15 @@ def generate_launch_description():
     default_value='False',
     description='Use simulation (Gazebo) clock if true')
 
+  # Start robot localization using an Extended Kalman filter
+  start_robot_localization_cmd = Node(
+    condition = IfCondition(ekf),
+    package='robot_localization',
+    executable='ekf_node',
+    name='ekf_filter_node',
+    output='screen',
+    parameters=[robot_localization_file_path, 
+    {'use_sim_time': use_sim_time}])
 
   # Start robot state publisher
   start_robot_state_publisher_cmd = Node(
@@ -161,21 +175,41 @@ def generate_launch_description():
 
   # Launch the ROS 2 Navigation Stack
   start_ros2_navigation_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(selected_nav2_launch_dir, 'bringup_launch.py')),
-    launch_arguments = {'namespace': namespace,
-                        'use_namespace': use_namespace,
-                        'slam': slam,
-                        'map': map_yaml_file,
-                        'use_sim_time': use_sim_time,
-                        'params_file': params_file,
-                        'default_bt_xml_filename': default_bt_xml_filename,
-                        'autostart': autostart}.items())
+      PythonLaunchDescriptionSource(os.path.join(default_launch_dir, 'bringup_launch.py')),
+      launch_arguments = {
+          'namespace': namespace,
+          'use_namespace': use_namespace,
+          'slam': slam,
+          'map': map_yaml_file,
+          'use_sim_time': use_sim_time,
+          'params_file': params_file,
+          'default_bt_xml_filename': default_bt_xml_filename,
+          'autostart': autostart
+      }.items(),
+      condition=UnlessCondition(LaunchConfiguration('amcl'))  # Condition to not launch if amcl is true
+  )
+
+  start_ros2_navigation_cmd_amcl = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
+        launch_arguments = {
+            'namespace': namespace,
+            'use_namespace': use_namespace,
+            'slam': slam,
+            'map': map_yaml_file,
+            'use_sim_time': use_sim_time,
+            'params_file': params_file,
+            'default_bt_xml_filename': default_bt_xml_filename,
+            'autostart': autostart
+        }.items(),
+        condition=IfCondition(LaunchConfiguration('amcl'))  # Run this when 'amcl' is true
+    )
 
   # Create the launch description and populate
   ld = LaunchDescription()
 
   # Declare the launch options
   ld.add_action(declare_amcl_cmd)
+  ld.add_action(declare_ekf_cmd)
   ld.add_action(declare_namespace_cmd)
   ld.add_action(declare_use_namespace_cmd)
   ld.add_action(declare_autostart_cmd)
@@ -195,6 +229,8 @@ def generate_launch_description():
   ld.add_action(start_imu_cmd)
   ld.add_action(start_lidar_cmd)
   ld.add_action(start_ros2_navigation_cmd)
+  ld.add_action(start_ros2_navigation_cmd_amcl)
   ld.add_action(start_odometry_cmd)
+  ld.add_action(start_robot_localization_cmd)
 
   return ld
