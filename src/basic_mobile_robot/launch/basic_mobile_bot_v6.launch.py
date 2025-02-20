@@ -208,8 +208,8 @@ def generate_launch_description():
   ld = LaunchDescription()
 
   # Declare the launch options
-  ld.add_action(declare_amcl_cmd)
-  ld.add_action(declare_ekf_cmd)
+  ld.add_action(declare_amcl_cmd) #param to control amcl
+  ld.add_action(declare_ekf_cmd) #param to control ekf
   ld.add_action(declare_namespace_cmd)
   ld.add_action(declare_use_namespace_cmd)
   ld.add_action(declare_autostart_cmd)
@@ -228,9 +228,8 @@ def generate_launch_description():
   ld.add_action(start_rviz_cmd)
   ld.add_action(start_imu_cmd)
   ld.add_action(start_lidar_cmd)
-  ld.add_action(start_ros2_navigation_cmd)
-  ld.add_action(start_ros2_navigation_cmd_amcl)
-  ld.add_action(start_odometry_cmd)
-  ld.add_action(start_robot_localization_cmd)
-
+  ld.add_action(start_ros2_navigation_cmd) #amcl off, using the nav2 bringup - modified
+  ld.add_action(start_ros2_navigation_cmd_amcl) #amcl on, using the nav2 available directory
+  ld.add_action(start_odometry_cmd) #single odometry launch
+  ld.add_action(start_robot_localization_cmd) 
   return ld
