@@ -1,11 +1,11 @@
 amcl:
   ros__parameters:
     use_sim_time: False
-    alpha1: 0.2
-    alpha2: 0.2
-    alpha3: 0.2
-    alpha4: 0.2
-    alpha5: 0.2
+    alpha1: 0.185 #decreased from 2
+    alpha2: 0.185
+    alpha3: 0.185
+    alpha4: 0.185
+    alpha5: 0.185
     base_frame_id: "base_footprint"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.85
@@ -26,7 +26,7 @@ amcl:
     pf_z: 0.99
     recovery_alpha_fast: 0.0
     recovery_alpha_slow: 0.0
-    resample_interval: 1
+    resample_interval: 2 #increased from 1
     #robot_model_type: "differential"
     motion_model_type: "nav2_amcl::DifferentialMotionModel" 
     save_pose_rate: 0.5
