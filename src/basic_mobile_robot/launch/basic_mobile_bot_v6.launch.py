@@ -216,7 +216,10 @@ def generate_launch_description():
 
   # Declare the launch options
   ld.add_action(declare_amcl_cmd) #param to control amcl
+<<<<<<< HEAD
   ld.add_action(declare_joystick_cmd) #param to control joystick
+=======
+>>>>>>> e1c6899549f3b5fafaac854f20c2f68df0a790bf
   ld.add_action(declare_ekf_cmd) #param to control ekf
   ld.add_action(declare_namespace_cmd)
   ld.add_action(declare_use_namespace_cmd)

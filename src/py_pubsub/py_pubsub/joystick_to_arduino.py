@@ -132,7 +132,7 @@ class JoystickToArduino(Node):
 
                 # Update previous state for next cycle
                 #self.prev_manual_button = manual_button
-                #self.prev_reverse_button = reverse_button
+                #self.p     rev_reverse_button = reverse_button
                 #self.prev_debug_mode_button = debug_mode_button
 
             except Exception as e:
