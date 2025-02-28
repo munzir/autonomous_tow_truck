@@ -38,6 +38,7 @@ def generate_launch_description():
   use_sim_time = LaunchConfiguration('use_sim_time')
   amcl = LaunchConfiguration('amcl')
   ekf = LaunchConfiguration('ekf')
+  joystick = LaunchConfiguration('joystick')
 
   # Set nav2_launch_dir based on AMCL condition
   default_launch_dir = os.path.join(pkg_share, 'launch')
@@ -49,6 +50,12 @@ def generate_launch_description():
     name='amcl',
     default_value='True',
     description='Use AMCL-based localization'
+  )
+
+  declare_joystick_cmd = DeclareLaunchArgument(
+    name='joystick',
+    default_value='True',
+    description='Use joystick'
   )
 
   declare_ekf_cmd = DeclareLaunchArgument(
@@ -118,14 +125,14 @@ def generate_launch_description():
     description='Use simulation (Gazebo) clock if true')
 
   # Start robot localization using an Extended Kalman filter
-  start_robot_localization_cmd = Node(
-    condition = IfCondition(ekf),
-    package='robot_localization',
-    executable='ekf_node',
-    name='ekf_filter_node',
-    output='screen',
-    parameters=[robot_localization_file_path, 
-    {'use_sim_time': use_sim_time}])
+  # start_robot_localization_cmd = Node(
+  #   condition = IfCondition(ekf),
+  #   package='robot_localization',
+  #   executable='ekf_node',
+  #   name='ekf_filter_node',
+  #   output='screen',
+  #   parameters=[robot_localization_file_path, 
+  #   {'use_sim_time': use_sim_time}])
 
   # Start robot state publisher
   start_robot_state_publisher_cmd = Node(
@@ -170,7 +177,7 @@ def generate_launch_description():
   # Include odometry
   start_odometry_cmd = IncludeLaunchDescription(
       PythonLaunchDescriptionSource(odometry_launch_path),
-      launch_arguments={'use_sim_time': use_sim_time}.items()
+      launch_arguments={'joystick': joystick}.items()
   )
 
   # Launch the ROS 2 Navigation Stack
@@ -209,6 +216,7 @@ def generate_launch_description():
 
   # Declare the launch options
   ld.add_action(declare_amcl_cmd) #param to control amcl
+  ld.add_action(declare_joystick_cmd) #param to control joystick
   ld.add_action(declare_ekf_cmd) #param to control ekf
   ld.add_action(declare_namespace_cmd)
   ld.add_action(declare_use_namespace_cmd)
