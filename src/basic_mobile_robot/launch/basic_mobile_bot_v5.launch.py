@@ -187,6 +187,17 @@ def generate_launch_description():
                         'params_file': params_file,
                         'default_bt_xml_filename': default_bt_xml_filename,
                         'autostart': autostart}.items())
+    # Start the obstacle detection node
+  start_obstacle_detection_cmd = Node(
+    package='object_detection_pkg',  # Replace with the actual package name
+    executable='detection_node',    # Replace with the actual node executable
+    name='obstacle_detection_node',
+    output='screen',
+    parameters=[
+            {'use_sim_time': use_sim_time}, 
+            {'use_hardware': False}  # Set this to True for real hardware
+        ]
+    )
   
   # Create the launch description and populate
   ld = LaunchDescription()
@@ -215,5 +226,6 @@ def generate_launch_description():
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
   ld.add_action(start_ros2_navigation_cmd)
+  ld.add_action(start_obstacle_detection_cmd)
 
   return ld

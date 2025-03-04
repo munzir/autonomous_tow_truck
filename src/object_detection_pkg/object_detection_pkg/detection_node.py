@@ -20,6 +20,8 @@ class ObstacleDetectionNode(Node):
         super().__init__('obstacle_detection_node')
         self.declare_parameter('use_hardware', True)
         self.use_hardware = self.get_parameter('use_hardware').value
+        self.declare_parameter('use_sim_time', False)  # Add this
+        self.use_sim_time = self.get_parameter('use_sim_time').value
         self.bridge = CvBridge()
         
         self.string_publisher = self.create_publisher(String, 'obstacle_info', 10)
@@ -28,7 +30,8 @@ class ObstacleDetectionNode(Node):
         
         if self.use_hardware and rs is not None:
             self.setup_realsense_pipeline()
-        else:
+        elif not self.use_hardware and self.use_sim_time:
+            self.get_logger().info("Running with simulated time")
             self.get_logger().info("Using simulated camera")
             self.camera_info_sub = self.create_subscription(
                 CameraInfo, '/camera/camera_info', self.camera_info_callback, 10)
