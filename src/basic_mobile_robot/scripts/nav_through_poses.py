@@ -35,7 +35,7 @@ def main():
  
   # Launch the ROS 2 Navigation Stack
   navigator = BasicNavigator()
- 
+
   # Set the robot's initial pose if necessary
   initial_pose = PoseStamped()
   initial_pose.header.frame_id = 'map'
@@ -45,7 +45,7 @@ def main():
   initial_pose.pose.position.z = 0.0
   initial_pose.pose.orientation.x = 0.0
   initial_pose.pose.orientation.y = 0.0
-  initial_pose.pose.orientation.z = -0.9999373025858765
+  initial_pose.pose.orientation.z =-0.9999373025858765
   initial_pose.pose.orientation.w = 0.01119780769976286
   navigator.setInitialPose(initial_pose)
  
