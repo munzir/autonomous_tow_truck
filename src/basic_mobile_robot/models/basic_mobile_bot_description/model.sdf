@@ -36,6 +36,88 @@
     </visual>
   </link>
 
+  <!-- ********************** HITCH 1 *********************************  -->
+  <link name="hitch1_link">
+    <pose>-0.5 0 0 0 0 0</pose>
+
+    <collision name="hitch1_collision">
+      <geometry>
+        <box>
+          <size>0.1 0.1 0.1</size>
+        </box>
+      </geometry>
+    </collision>
+
+    <visual name="hitch1_visual">
+      <geometry>
+        <box>
+          <size>0.1 0.1 0.1</size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- ********************** CART 1 *********************************  -->
+  <link name="cart1_base_link">
+    <pose>-1.0 0 0 0 0 0</pose>
+
+    <collision name="cart1_base_collision">
+      <geometry>
+        <box>
+          <size>0.5 0.3 0.2</size>
+        </box>
+      </geometry>
+    </collision>
+
+    <visual name="cart1_base_visual">
+      <geometry>
+        <box>
+          <size>0.5 0.3 0.2</size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="cart1_wheel_left">
+    <pose>-1.15 0.18 -0.1 0 1.570796 1.570796</pose>
+    <collision name="cart1_wheel_left_collision">
+      <geometry>
+        <cylinder>
+          <radius>0.1</radius>
+          <length>0.05</length>
+        </cylinder>
+      </geometry>
+    </collision>
+    <visual name="cart1_wheel_left_visual">
+      <geometry>
+        <cylinder>
+          <radius>0.1</radius>
+          <length>0.05</length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="cart1_wheel_right">
+    <pose>-1.15 -0.18 -0.1 0 1.570796 1.570796</pose>
+    <collision name="cart1_wheel_right_collision">
+      <geometry>
+        <cylinder>
+          <radius>0.1</radius>
+          <length>0.05</length>
+        </cylinder>
+      </geometry>
+    </collision>
+    <visual name="cart1_wheel_right_visual">
+      <geometry>
+        <cylinder>
+          <radius>0.1</radius>
+          <length>0.05</length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
   <!-- *********************** IMU SENSOR SETUP **************************  -->
   <link name="imu_link">
     <gravity>true</gravity>
@@ -316,6 +398,12 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
+  <joint name="rear_axle_joint" type="fixed">
+   <parent>base_link</parent>
+   <child>rear_axle_link</child>
+   <pose>0 0 0 0 0 0</pose>
+  </joint>
+
   <joint name="drivewhl_l_joint" type="revolute">
     <parent>base_link</parent>
     <child>drivewhl_l_link</child>
@@ -338,6 +426,43 @@
     <parent>base_link</parent>
     <child>front_caster</child>
     <pose>0 0 0 0 0 0</pose>
+  </joint>
+
+  <joint name="hitch1_joint" type="revolute">
+    <parent>base_link</parent>
+    <child>hitch1_link</child>
+    <pose>0 0 0 0 0 0</pose>
+    <axis>
+      <xyz>0 0 1</xyz>
+      <limit>
+        <lower>-1.57</lower>
+        <upper>1.57</upper>
+        <effort>10</effort>
+        <velocity>1.0</velocity>
+      </limit>
+    </axis>
+  </joint>
+
+  <joint name="cart1_joint" type="fixed">
+    <parent>hitch1_link</parent>
+    <child>cart1_base_link</child>
+    <pose>0 0 0 0 0 0</pose>
+  </joint>
+
+  <joint name="cart1_wheel_left_joint" type="revolute">
+    <parent>cart1_base_link</parent>
+    <child>cart1_wheel_left</child>
+    <axis>
+      <xyz>0 0 1</xyz>
+    </axis>
+  </joint>
+
+  <joint name="cart1_wheel_right_joint" type="revolute">
+    <parent>cart1_base_link</parent>
+    <child>cart1_wheel_right</child>
+    <axis>
+      <xyz>0 0 1</xyz>
+    </axis>
   </joint>
 
   <joint name="imu_joint" type="fixed">
