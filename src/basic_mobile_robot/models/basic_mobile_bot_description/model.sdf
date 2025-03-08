@@ -449,20 +449,43 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
-  <joint name="cart1_wheel_left_joint" type="revolute">
+  <joint name="cart1_wheel_left_joint" type="universal">
     <parent>cart1_base_link</parent>
     <child>cart1_wheel_left</child>
     <axis>
-      <xyz>0 0 1</xyz>
+      <xyz>1 0 0</xyz>  <!-- First axis of rotation (tilt) -->
+      <limit>
+        <lower>-0.5</lower>  <!-- Tilt limit to avoid extreme angles -->
+        <upper>0.5</upper>
+      </limit>
     </axis>
+    <axis2>
+      <xyz>0 1 0</xyz>  <!-- Second axis of rotation (tilt) -->
+      <limit>
+        <lower>-0.5</lower>
+        <upper>0.5</upper>
+      </limit>
+    </axis2>
   </joint>
+
 
   <joint name="cart1_wheel_right_joint" type="revolute">
     <parent>cart1_base_link</parent>
     <child>cart1_wheel_right</child>
     <axis>
-      <xyz>0 0 1</xyz>
+      <xyz>1 0 0</xyz>  <!-- First axis of rotation (tilt) -->
+      <limit>
+        <lower>-0.5</lower>  <!-- Limit tilt to avoid extreme angles -->
+        <upper>0.5</upper>
+      </limit>
     </axis>
+    <axis2>
+      <xyz>0 1 0</xyz>  <!-- Second axis of rotation (tilt) -->
+      <limit>
+        <lower>-0.5</lower>
+        <upper>0.5</upper>
+      </limit>
+    </axis2>
   </joint>
 
   <joint name="imu_joint" type="fixed">
