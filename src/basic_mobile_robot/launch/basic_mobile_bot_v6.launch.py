@@ -54,7 +54,7 @@ def generate_launch_description():
 
   declare_joystick_cmd = DeclareLaunchArgument(
     name='joystick',
-    default_value='True',
+    default_value='False',
     description='Use joystick'
   )
 
@@ -144,6 +144,13 @@ def generate_launch_description():
                    'robot_description': Command(['xacro ', model])}],
                    arguments=[default_model_path])
 
+  # joynode
+  start_joy_node = Node(
+    condition=IfCondition(joystick),
+    package='joy',
+    executable='joy_node',
+    output='screen'
+  )
   # Launch RViz
   start_rviz_cmd = Node(
     condition=IfCondition(use_rviz),
@@ -238,5 +245,6 @@ def generate_launch_description():
   ld.add_action(start_ros2_navigation_cmd) #amcl off, using the nav2 bringup - modified
   ld.add_action(start_ros2_navigation_cmd_amcl) #amcl on, using the nav2 available directory
   ld.add_action(start_odometry_cmd) #single odometry launch
+  ld.add_action(start_joy_node)
   # ld.add_action(start_robot_localization_cmd) 
   return ld
