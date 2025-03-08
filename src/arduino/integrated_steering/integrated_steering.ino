@@ -34,7 +34,15 @@ void setup()
 
 void loop()
 {
-  JoystickLoop();  
+  JoystickLoop();
+
+  if (reverse) {
+    digitalWrite(4, LOW);
+    digitalWrite(7, HIGH);
+  } else {
+    digitalWrite(4, HIGH);
+    digitalWrite(7, LOW);
+  }
 
   manual_mode = (manual == true);
 

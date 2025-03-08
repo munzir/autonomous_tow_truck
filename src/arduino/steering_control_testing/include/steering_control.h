@@ -5,7 +5,6 @@
 #include <avr/interrupt.h>
 
 bool manual_mode = false;
-bool reverse_mode = false;
 
 // Input is Duty cycle which varies from -255 to 255, beyond those values it stops. 0 is unavailable for use
 int RPWM_Output = 5; // Arduino PWM output pin 5; connect to IBT-2 pin 1 (RPWM)
@@ -36,10 +35,6 @@ float pidOutput = 0;
 // Integral clamping limits
 const float integratorMin = -abs(7/Ki); // Minimum integrator limit (adjust as needed)
 const float integratorMax = abs(7/Ki);  // Maximum integrator limit (adjust as needed)
-
-// Pins for gear control
-int forwardGearPin = 4;
-int reverseGearPin = 7;
 
 // Function to compute the PID control
 float computePID(float setpoint, float angle) {
@@ -97,10 +92,6 @@ void steering_control_setup()
   steering_angle_sensing_setup();
   pinMode(RPWM_Output, OUTPUT);
   pinMode(LPWM_Output, OUTPUT);
-
-  // Initialize gear control pins
-  pinMode(forwardGearPin, OUTPUT);
-  pinMode(reverseGearPin, OUTPUT);
 
   lastTime = millis(); 
 }
@@ -164,15 +155,6 @@ void pwm_output(int dutyCycle)
 
 int ControlLoop(float setpoint)
 {
-  // Update gear selection based on reverse_mode state variable
-  if (reverse_mode) {
-    digitalWrite(forwardGearPin, LOW);
-    digitalWrite(reverseGearPin, HIGH);
-  } else {
-    digitalWrite(forwardGearPin, HIGH);
-    digitalWrite(reverseGearPin, LOW);
-  }
-
   if(manual_mode) {
     dutyCycle = 0;
   }
