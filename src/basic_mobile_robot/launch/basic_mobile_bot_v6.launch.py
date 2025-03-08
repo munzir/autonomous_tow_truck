@@ -216,10 +216,6 @@ def generate_launch_description():
 
   # Declare the launch options
   ld.add_action(declare_amcl_cmd) #param to control amcl
-<<<<<<< HEAD
-  ld.add_action(declare_joystick_cmd) #param to control joystick
-=======
->>>>>>> e1c6899549f3b5fafaac854f20c2f68df0a790bf
   ld.add_action(declare_ekf_cmd) #param to control ekf
   ld.add_action(declare_namespace_cmd)
   ld.add_action(declare_use_namespace_cmd)
@@ -233,7 +229,7 @@ def generate_launch_description():
   ld.add_action(declare_slam_cmd)
   ld.add_action(declare_use_robot_state_pub_cmd)
   ld.add_action(declare_use_rviz_cmd)
-
+  ld.add_action(declare_joystick_cmd)
   # Add actions
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
@@ -242,5 +238,5 @@ def generate_launch_description():
   ld.add_action(start_ros2_navigation_cmd) #amcl off, using the nav2 bringup - modified
   ld.add_action(start_ros2_navigation_cmd_amcl) #amcl on, using the nav2 available directory
   ld.add_action(start_odometry_cmd) #single odometry launch
-  ld.add_action(start_robot_localization_cmd) 
+  # ld.add_action(start_robot_localization_cmd) 
   return ld

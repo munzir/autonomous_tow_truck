@@ -42,15 +42,17 @@ class JoystickToArduino(Node):
 
         # Declare parameter for joystick mode
         self.declare_parameter('joystick_mode', joystick_mode)
-
+        self.joystick_mode = self.get_parameter('joystick_mode').value
         #ROS subscription to joystick topic
-        if joystick_mode:
+        if self.joystick_mode:
             self.subscription = self.create_subscription(
                Joy,
                '/joy',
-               self.joystick_callback(),
+               self.joystick_callback,
                1
             )
+            self.get_logger().info(f"Successfully autonomous!")
+
 
         # ROS subscription to cmd_vel topic
         self.cmd_vel_subscription = self.create_subscription(
@@ -92,55 +94,12 @@ class JoystickToArduino(Node):
         steering_angle_window_size = int(steering_angle_time_constant / self.control_update_period)
         self.steering_angle_window = deque(maxlen=steering_angle_window_size)
 
-    def joystick_callback(self):
-        joystick_mode = self.get_parameter('joystick_mode').value  # Access the joystick_mode parameter
-        if joystick_mode:
-            try:
-                self.manual_mode = False
-                self.teleop_mode = False
-                self.autonom_mode = True
-                #self.get_logger().info("Autonomous On!")
-                
-                # Handle forward/reverse toggle (positive edge detection)
-                #if reverse_button == 1 and self.prev_reverse_button == 0:
-                #    self.reverse_mode = not self.reverse_mode
-                #    self.get_logger().info(f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}")
-                
-                
-                # Handle debug_mode toggle (positive edge detection)
-                
-                # Handle brake
-                #self.brake_active = brake_button == 1
-
-                # Map joystick index [4] to Speed between 4.4 and 2.5
-
-                if (self.autonom_mode == True):
-                    self.speed = int(self.auto_speed)
-                else:
-                    self.speed = int(interp(4.4 - (1 + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
-                # If brake is active, force speed to 0
-                if self.brake_active:
-                    self.speed = 0
-
-                # Map joystick index [0] to Steering Angle between -255 and 255
-
-                if (self.autonom_mode == True):
-                    self.steering_angle_window.append(self.auto_steering_angle)
-                else:
-                    self.steering_angle_window.append(int(53 - (1 + 1) * ((53 + 53) / 2)) * -1)
-                self.steering_angle = int(sum(self.steering_angle_window) / len(self.steering_angle_window))
-
-                # Update previous state for next cycle
-                #self.prev_manual_button = manual_button
-                #self.p     rev_reverse_button = reverse_button
-                #self.prev_debug_mode_button = debug_mode_button
-
-            except Exception as e:
-                self.get_logger().error(f"Unexpected error: {str(e)}")
-        else:
+    def joystick_callback(self, msg):
+        self.joystick_mode = self.get_parameter('joystick_mode').value  # Update the value # Access the joystick_mode parameter
+        if self.joystick_mode:
             try:
                 # Button mappings
-                reinit_button = msg.buttons[Button.A.value]  # Reinitialize all variables
+                reinit_button = msg.buttons[Button.A.value]  # type: ignore # Reinitialize all variables
                 manual_button = msg.buttons[Button.CENTER_RIGHT.value]  # Hold for manual
                 teleop_button = msg.buttons[Button.CENTER_LEFT.value]
                 autonom_button = msg.buttons[Button.CENTER_MIDDLE.value]
@@ -208,6 +167,50 @@ class JoystickToArduino(Node):
 
             except Exception as e:
                 self.get_logger().error(f"Unexpected error: {str(e)}")
+        else:
+            try:
+                self.manual_mode = False
+                self.teleop_mode = False
+                self.autonom_mode = True
+                #self.get_logger().info("Autonomous On!")
+                
+                # Handle forward/reverse toggle (positive edge detection)
+                #if reverse_button == 1 and self.prev_reverse_button == 0:
+                #    self.reverse_mode = not self.reverse_mode
+                #    self.get_logger().info(f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}")
+                
+                
+                # Handle debug_mode toggle (positive edge detection)
+                
+                # Handle brake
+                #self.brake_active = brake_button == 1
+
+                # Map joystick index [4] to Speed between 4.4 and 2.5
+
+                if (self.autonom_mode == True):
+                    self.speed = int(self.auto_speed)
+                else:
+                    self.speed = int(interp(4.4 - (1 + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
+                # If brake is active, force speed to 0
+                if self.brake_active:
+                    self.speed = 0
+
+                # Map joystick index [0] to Steering Angle between -255 and 255
+
+                if (self.autonom_mode == True):
+                    self.steering_angle_window.append(self.auto_steering_angle)
+                else:
+                    self.steering_angle_window.append(int(53 - (1 + 1) * ((53 + 53) / 2)) * -1)
+                self.steering_angle = int(sum(self.steering_angle_window) / len(self.steering_angle_window))
+
+                # Update previous state for next cycle
+                #self.prev_manual_button = manual_button
+                #self.p     rev_reverse_button = reverse_button
+                #self.prev_debug_mode_button = debug_mode_button
+
+            except Exception as e:
+                self.get_logger().error(f"Unexpected error: {str(e)}")
+            
     
     def periodic_log_callback(self, link, serial_dev_name):
         # Periodic logging of state variables
@@ -323,21 +326,21 @@ def main(args=None):
 
     # Assuming `joystick` is a parameter passed to the node
     # Check for launch argument "joystick"
-    joystick_mode = False
-    for arg in args:
-        if 'joystick:=true' in arg:
-            joystick_mode = True
-            break
+    node = Node("joystick_to_arduino_temp")  # Temporary node for parameter retrieval
+    node.declare_parameter("joystick", False)  # Default to False
+    joystick_mode = node.get_parameter("joystick").value
+    node.destroy_node()  # Destroy the temporary node
 
     joystick_to_arduino = JoystickToArduino(joystick_mode)
 
     try:
         rclpy.spin(joystick_to_arduino)
     except KeyboardInterrupt:
-        joystick_to_arduino.get_logger().info('Shutting down node.')
+        joystick_to_arduino.get_logger().info("Shutting down node.")
     finally:
         joystick_to_arduino.destroy_node()
         rclpy.shutdown()
+
 
 
 if __name__ == '__main__':
