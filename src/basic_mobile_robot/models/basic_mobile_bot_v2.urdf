@@ -48,6 +48,15 @@
     </inertial>
   </xacro:macro>
 
+    <!-- Define trailer properties -->
+  <xacro:property name="trailer_length" value="1.0"/>
+  <xacro:property name="trailer_width" value="0.7"/>
+  <xacro:property name="trailer_height" value="0.5"/>
+  <xacro:property name="trailer_wheel_radius" value="0.15"/>
+  <xacro:property name="trailer_wheel_width" value="0.06"/>
+  <xacro:property name="hitch_offset" value="0.5"/>  <!-- Adjust as needed -->
+
+
   <!-- ****************** ROBOT BASE FOOTPRINT ***************************  -->
   <!-- Define the center of the main robot chassis projected on the ground -->	
   <link name="base_footprint"/>
@@ -247,4 +256,33 @@
     </inertial>
   </link>
 
+
+  <!-- ****************** TRAILER BODY ***************************  -->
+  <link name="trailer_link">
+    <visual>
+      <origin xyz="${-trailer_length} 0 0" rpy="0 0 0"/>  <!-- Shift backward -->
+      <geometry>
+        <box size="${trailer_length} ${trailer_width} ${trailer_height}"/>
+      </geometry>
+      <material name="Blue">
+        <color rgba="0.0 0.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="${-trailer_length} 0 0" rpy="0 0 0"/>  <!-- Shift backward -->
+      <geometry>
+        <box size="${trailer_length} ${trailer_width} ${trailer_height}"/>
+      </geometry>
+    </collision>
+
+    <xacro:box_inertia m="150.0" w="${trailer_width}" d="${trailer_length}" h="${trailer_height}"/>
+  </link>
+
+  <!-- ****************** TRAILER JOINT ***************************  -->
+  <joint name="trailer_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="trailer_link"/>
+    <origin xyz="${-(base_length/2)} 0 0" rpy="0 0 0"/>  <!-- Joint at the rear end -->
+  </joint>
 </robot>
