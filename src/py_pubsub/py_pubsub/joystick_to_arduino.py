@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Joy
-from std_msgs.msg import String
+from std_msgs.msg import String, Int32
 from geometry_msgs.msg import Twist  # Import Twist for cmd_vel topic
 import serial
 import math
@@ -52,6 +52,13 @@ class JoystickToArduino(Node):
             Twist,
             '/cmd_vel',
             self.cmd_vel_callback,
+            10
+        )
+
+        # Initialization of ROS publishing to gear_status topic
+        self.gear_status_pub_ = self.create_publisher(
+            Int32,
+            'gear_status',
             10
         )
        
@@ -119,6 +126,13 @@ class JoystickToArduino(Node):
                 self.reverse_mode = not self.reverse_mode
                 self.get_logger().info(f"Direction = {'Reverse' if self.reverse_mode else 'Forward'}")
             
+            # Publish gear status
+            gear_msg = Int32()
+            gear_msg.data = 2 if self.reverse_mode else 1
+            self.gear_status_pub_.publish(gear_msg)
+
+            # Log the gear status (temporary; remove later)
+            self.get_logger().info(f"Published Gear Status: {gear_msg.data}")
             
             # Handle debug_mode toggle (positive edge detection)
             if debug_mode_button == 1 and self.prev_debug_mode_button == 0:
