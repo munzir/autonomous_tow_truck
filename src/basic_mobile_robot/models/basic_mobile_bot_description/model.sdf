@@ -453,18 +453,10 @@
     <parent>cart1_base_link</parent>
     <child>cart1_wheel_left</child>
     <axis>
-      <xyz>1 0 0</xyz>  <!-- First axis of rotation (tilt) -->
-      <limit>
-        <lower>-0.5</lower>  <!-- Tilt limit to avoid extreme angles -->
-        <upper>0.5</upper>
-      </limit>
+      <xyz>1 0 0</xyz>  <!-- First axis of rotation -->
     </axis>
     <axis2>
-      <xyz>0 1 0</xyz>  <!-- Second axis of rotation (tilt) -->
-      <limit>
-        <lower>-0.5</lower>
-        <upper>0.5</upper>
-      </limit>
+      <xyz>0 1 0</xyz>  <!-- Second axis of rotation -->
     </axis2>
   </joint>
 
@@ -473,18 +465,10 @@
     <parent>cart1_base_link</parent>
     <child>cart1_wheel_right</child>
     <axis>
-      <xyz>1 0 0</xyz>  <!-- First axis of rotation (tilt) -->
-      <limit>
-        <lower>-0.5</lower>  <!-- Limit tilt to avoid extreme angles -->
-        <upper>0.5</upper>
-      </limit>
+      <xyz>1 0 0</xyz>
     </axis>
     <axis2>
-      <xyz>0 1 0</xyz>  <!-- Second axis of rotation (tilt) -->
-      <limit>
-        <lower>-0.5</lower>
-        <upper>0.5</upper>
-      </limit>
+      <xyz>0 1 0</xyz>
     </axis2>
   </joint>
 
