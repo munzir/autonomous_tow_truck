@@ -1,6 +1,6 @@
 import rclpy  # Again for ROS 2 usage
 from rclpy.node import Node  # For inheritance
-from std_msgs.msg import Float32  # For publishing frequency and steering angle in this format
+from std_msgs.msg import Float32, Int32  # For publishing frequency and steering angle in this format
 import math  # For trigonometry in general
 
 class KinematicCalculator(Node):  # This class is inheriting from Node, which is from ROS 2
@@ -21,6 +21,13 @@ class KinematicCalculator(Node):  # This class is inheriting from Node, which is
             'steering_angle_data',  # The name
             self.steering_angle_callback,  # Callback function
             10)  # Buffer size
+
+        # Subscriber for gear status
+        self.gear_status_subscription = self.create_subscription(
+            Int32, # The data type of the published data
+            'gear_status', # Topic name
+            self.gear_status_callback, # Callback function
+            10) # Buffer size
 
         # Publishers for the calculated values
         self.pub_x = self.create_publisher(Float32, 'x', 10)
@@ -49,12 +56,21 @@ class KinematicCalculator(Node):  # This class is inheriting from Node, which is
         self.frequency = msg.data
         self.calculate_and_publish()
 
+    def gear_status_callback(self, msg):
+        self.gear_status = msg.data
+
     #def steering_angle_callback(self, msg):
         #self.phi = msg.data  # Update steering angle with the received data
 	#self.phi_array.append(msg.data)
 	
     def calculate_and_publish(self):
     	
+        # Console log based on gear status (temporary; remove later)
+        if self.gear_status == 1:
+            self.get_logger().info("Movement in forward direction")
+        elif self.gear_status == 2:
+            self.get_logger().info("Movement in reverse direction")
+
     	# Calculate average phi if phi_array is not empty
         if self.phi_array:
             self.phi = ( (sum(self.phi_array) / len(self.phi_array)))  # Average the phi values
