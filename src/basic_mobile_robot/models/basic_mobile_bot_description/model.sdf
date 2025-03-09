@@ -82,18 +82,16 @@
     <pose>-1.15 0.18 -0.1 0 1.570796 1.570796</pose>
     <collision name="cart1_wheel_left_collision">
       <geometry>
-        <cylinder>
+        <sphere>
           <radius>0.1</radius>
-          <length>0.05</length>
-        </cylinder>
+        </sphere>
       </geometry>
     </collision>
     <visual name="cart1_wheel_left_visual">
       <geometry>
-        <cylinder>
+        <sphere>
           <radius>0.1</radius>
-          <length>0.05</length>
-        </cylinder>
+        </sphere>
       </geometry>
     </visual>
   </link>
@@ -102,18 +100,16 @@
     <pose>-1.15 -0.18 -0.1 0 1.570796 1.570796</pose>
     <collision name="cart1_wheel_right_collision">
       <geometry>
-        <cylinder>
+        <sphere>
           <radius>0.1</radius>
-          <length>0.05</length>
-        </cylinder>
+        </sphere>
       </geometry>
     </collision>
     <visual name="cart1_wheel_right_visual">
       <geometry>
-        <cylinder>
+        <sphere>
           <radius>0.1</radius>
-          <length>0.05</length>
-        </cylinder>
+        </sphere>
       </geometry>
     </visual>
   </link>
@@ -449,27 +445,14 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
-  <joint name="cart1_wheel_left_joint" type="universal">
+  <joint name="cart1_wheel_left_joint" type="ball">
     <parent>cart1_base_link</parent>
     <child>cart1_wheel_left</child>
-    <axis>
-      <xyz>1 0 0</xyz>  <!-- First axis of rotation -->
-    </axis>
-    <axis2>
-      <xyz>0 1 0</xyz>  <!-- Second axis of rotation -->
-    </axis2>
   </joint>
 
-
-  <joint name="cart1_wheel_right_joint" type="revolute">
+  <joint name="cart1_wheel_right_joint" type="ball">
     <parent>cart1_base_link</parent>
     <child>cart1_wheel_right</child>
-    <axis>
-      <xyz>1 0 0</xyz>
-    </axis>
-    <axis2>
-      <xyz>0 1 0</xyz>
-    </axis2>
   </joint>
 
   <joint name="imu_joint" type="fixed">
