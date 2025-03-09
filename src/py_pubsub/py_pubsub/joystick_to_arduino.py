@@ -132,7 +132,7 @@ class JoystickToArduino(Node):
             self.gear_status_pub_.publish(gear_msg)
 
             # Log the gear status (temporary; remove later)
-            self.get_logger().info(f"Published Gear Status: {gear_msg.data}")
+            # self.get_logger().info(f"Published Gear Status: {gear_msg.data}")
             
             # Handle debug_mode toggle (positive edge detection)
             if debug_mode_button == 1 and self.prev_debug_mode_button == 0:
