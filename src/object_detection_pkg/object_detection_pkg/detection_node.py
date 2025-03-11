@@ -22,13 +22,18 @@ class ObstacleDetectionNode(Node):
         self.use_hardware = self.get_parameter('use_hardware').value
         self.bridge = CvBridge()
         
+        self.declare_parameter('use_sim_time', False)  # Add this
+        self.use_sim_time = self.get_parameter('use_sim_time').value
+        self.bridge = CvBridge()
+        
         self.string_publisher = self.create_publisher(String, 'obstacle_info', 10)
         self.pointcloud_publisher = self.create_publisher(PointCloud2, 'camera_obstacles', 10)
         self.cx, self.cy, self.fx, self.fy = None, None, None, None  # Initialize intrinsics
         
         if self.use_hardware and rs is not None:
             self.setup_realsense_pipeline()
-        else:
+        elif not self.use_hardware and self.use_sim_time:
+            self.get_logger().info("Running with simulated time")
             self.get_logger().info("Using simulated camera")
             self.camera_info_sub = self.create_subscription(
                 CameraInfo, '/camera/camera_info', self.camera_info_callback, 10)
@@ -142,6 +147,10 @@ class ObstacleDetectionNode(Node):
         return obstacle_detected, color_image, points
 
     def publish_obstacles(self, points):
+        if not points:
+            self.get_logger().warn("No valid points detected, skipping PointCloud2 publishing.")
+            return
+
         cloud = PointCloud2()
         cloud.header.stamp = self.get_clock().now().to_msg()
         cloud.header.frame_id = "camera_link"
@@ -152,16 +161,24 @@ class ObstacleDetectionNode(Node):
             PointField(name="z", offset=8, datatype=PointField.FLOAT32, count=1),
         ]
 
+        cloud.height = 1  # Unordered point cloud
+        cloud.width = len(points)
         cloud.fields = fields
-        cloud.point_step = 12
-        cloud.row_step = cloud.point_step * len(points)
-        cloud.is_dense = True
+        cloud.is_bigendian = False
+        cloud.point_step = 12  # Each point is 3x float32 (4 bytes each)
+        cloud.row_step = cloud.point_step * cloud.width
+        cloud.is_dense = False  # Set False in case of invalid depth points
 
         # Convert list of points to binary format
-        data = b''.join(struct.pack("fff", *p) for p in points)
-        cloud.data = data
+        cloud.data = b''.join(struct.pack("fff", *p) for p in points)
+
+        self.get_logger().info(f"Publishing {len(points)} points in PointCloud2")
+        for i, p in enumerate(points[:5]):  # Print first 5 points
+            self.get_logger().info(f"Point {i}: X={p[0]:.2f}, Y={p[1]:.2f}, Z={p[2]:.2f}")
 
         self.pointcloud_publisher.publish(cloud)
+        self.get_logger().info(f"Published PointCloud2 with {len(points)} points")
+
 
     def destroy_node(self):
         self.pipeline.stop()

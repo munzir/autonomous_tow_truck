@@ -1,0 +1,20 @@
+digraph G {
+"odom" -> "base_footprint"[label=" Broadcaster: default_authority\nAverage rate: 20.155\nBuffer length: 2.58\nMost recent transform: 130.21\nOldest transform: 127.63\n"];
+"map" -> "odom"[label=" Broadcaster: default_authority\nAverage rate: 5.5\nBuffer length: 2.0\nMost recent transform: 131.002\nOldest transform: 129.002\n"];
+"base_footprint" -> "base_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "camera_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"camera_link" -> "camera_link_optical"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "gps_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "imu_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "lidar_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "rear_axle_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "steering_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"rear_axle_link" -> "drivewhl_l_link"[label=" Broadcaster: default_authority\nAverage rate: 15.31\nBuffer length: 2.482\nMost recent transform: 130.152\nOldest transform: 127.67\n"];
+"rear_axle_link" -> "drivewhl_r_link"[label=" Broadcaster: default_authority\nAverage rate: 15.31\nBuffer length: 2.482\nMost recent transform: 130.152\nOldest transform: 127.67\n"];
+"steering_wheel_link" -> "front_steering_wheel_link"[label=" Broadcaster: default_authority\nAverage rate: 15.31\nBuffer length: 2.482\nMost recent transform: 130.152\nOldest transform: 127.67\n"];
+"steering_link" -> "steering_wheel_link"[label=" Broadcaster: default_authority\nAverage rate: 15.31\nBuffer length: 2.482\nMost recent transform: 130.152\nOldest transform: 127.67\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1741597140.4498205"[ shape=plaintext ] ;
+}->"map";
+}

@@ -68,6 +68,9 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
+        camera_link:
+          camera_link_optical:
+            Value: true
         drivewhl_l_link:
           Value: true
         drivewhl_r_link:
@@ -79,8 +82,6 @@ Visualization Manager:
         imu_link:
           Value: true
         lidar_link:
-          Value: true
-        camera_link:
           Value: true
         map:
           Value: true
@@ -96,6 +97,9 @@ Visualization Manager:
           odom:
             base_footprint:
               base_link:
+                camera_link:
+                  camera_link_optical:
+                    {}
                 drivewhl_l_link:
                   {}
                 drivewhl_r_link:
@@ -108,9 +112,6 @@ Visualization Manager:
                   {}
                 lidar_link:
                   {}
-                camera_link:
-                  camera_link_optical:
-                    {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -153,7 +154,7 @@ Visualization Manager:
       Enabled: true
       Name: Map
       Topic:
-        Depth: 1
+        Depth: 5
         Durability Policy: Transient Local
         History Policy: Keep Last
         Reliability Policy: Reliable
@@ -319,6 +320,12 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        camera_link:
+          camera_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         drivewhl_l_link:
           Alpha: 1
           Show Axes: false
@@ -347,16 +354,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_link_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
@@ -375,6 +372,22 @@ Visualization Manager:
       Queue Size: 5
       Transport Hint: raw
       Unreliable: false
+      Value: true
+
+    - Alpha: 1
+      Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Name: Camera PointCloud
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /camera/depth/color/points
+      Queue Size: 5
+      Style: Points
+      Size (Pixels): 3
+      Color Transformer: Intensity
       Value: true
 
   Enabled: true

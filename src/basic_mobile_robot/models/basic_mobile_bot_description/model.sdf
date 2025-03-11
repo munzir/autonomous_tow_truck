@@ -292,6 +292,7 @@
       <camera_name>depth_camera</camera_name>
       <image_topic_name>/camera/depth/image_raw</image_topic_name>
       <camera_info_topic_name>/camera/depth/camera_info</camera_info_topic_name>
+      <point_cloud_topic_name>/camera/depth/color/points</point_cloud_topic_name>
       <frame_name>camera_link</frame_name>
     </plugin>
   </sensor>
