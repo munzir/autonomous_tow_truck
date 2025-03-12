@@ -51,7 +51,10 @@ class JoystickToArduino(Node):
                self.joystick_callback,
                1
             )
+            self.get_logger().info(f"Successfully joystick!")
+        else:
             self.get_logger().info(f"Successfully autonomous!")
+
 
 
         # ROS subscription to cmd_vel topic
@@ -94,7 +97,7 @@ class JoystickToArduino(Node):
         steering_angle_window_size = int(steering_angle_time_constant / self.control_update_period)
         self.steering_angle_window = deque(maxlen=steering_angle_window_size)
 
-    def joystick_callback(self, msg):
+    def joystick_callback(self, msg=None):
         self.joystick_mode = self.get_parameter('joystick_mode').value  # Update the value # Access the joystick_mode parameter
         if self.joystick_mode:
             try:
@@ -267,8 +270,11 @@ class JoystickToArduino(Node):
             self.get_logger().error(f"Unexpected error: {str(e)}")
     
     def cmd_vel_callback(self, msg):
-        
-        self.joystick_callback()
+        # self.joystick_mode = self.get_parameter('joystick_mode').value  # Update the value # Access the joystick_mode parameter
+        # if not self.joystick_mode:
+        #     self.get_logger().info(f"Callback needed!")
+
+        #     self.joystick_callback()
         # Log linear and angular velocities
         #self.get_logger().info(
         #    f"Received /cmd_vel: Linear = {msg.linear.x:.2f}, {msg.linear.y:.2f}, {msg.linear.z:.2f} | "
