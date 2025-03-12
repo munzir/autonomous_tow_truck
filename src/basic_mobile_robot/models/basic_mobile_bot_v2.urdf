@@ -7,7 +7,7 @@
   <xacro:property name="base_length" value="1.27"/>
   <xacro:property name="base_height" value="1.90"/>
 	
-  <!-- Define the shape of the robot's two back wheels in meters -->
+  <!-- Define the shape of the robot's wheels in meters -->
   <xacro:property name="wheel_radius" value="0.2"/>
   <xacro:property name="wheel_width" value="0.09"/>
 
@@ -18,8 +18,11 @@
   <!-- Position the wheels along the z-axis -->
   <xacro:property name="wheel_zoff" value="0.05"/>
 
-  <!-- Position the wheels along the x-axis -->
-  <xacro:property name="wheel_xoff" value="0.635"/>
+  <!-- Position the rear wheels along the x-axis -->
+  <xacro:property name="rear_wheel_xoff" value="0.635"/>
+
+  <!-- Position the front wheels along the x-axis -->
+  <xacro:property name="front_wheel_xoff" value="0.635"/>  <!-- Same as rear wheels for symmetry -->
 
   <!-- Position the caster wheel along the x-axis -->
   <xacro:property name="steering_wheel_xoff" value="0.55"/>
@@ -48,14 +51,13 @@
     </inertial>
   </xacro:macro>
 
-    <!-- Define trailer properties -->
+  <!-- Define trailer properties -->
   <xacro:property name="trailer_length" value="1.0"/>
   <xacro:property name="trailer_width" value="0.7"/>
   <xacro:property name="trailer_height" value="0.5"/>
   <xacro:property name="trailer_wheel_radius" value="0.15"/>
   <xacro:property name="trailer_wheel_width" value="0.06"/>
   <xacro:property name="hitch_offset" value="0.5"/>  <!-- Adjust as needed -->
-
 
   <!-- ****************** ROBOT BASE FOOTPRINT ***************************  -->
   <!-- Define the center of the main robot chassis projected on the ground -->	
@@ -70,15 +72,15 @@
 
   <!-- ********************** ROBOT BASE *********************************  -->
   <link name="base_link">
-  <visual>
-    <origin xyz="0 0 -0.05" rpy="0 0 0"/>
-    <geometry>
-      <box size="${base_length} ${base_width} ${base_height}"/>
-    </geometry>
-    <material name="Red">
-      <color rgba="1.0 0.0 0.0 1.0"/>
-    </material>
-  </visual>
+    <visual>
+      <origin xyz="0 0 -0.05" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="1.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
 
     <collision>
       <geometry>
@@ -87,7 +89,6 @@
     </collision>
 
     <xacro:box_inertia m="360.0" w="${base_width}" d="${base_length}" h="${base_height}"/>
-    
   </link>
 
   <gazebo reference="base_link">
@@ -96,14 +97,25 @@
 
   <!-- *********************** DRIVE WHEELS ******************************  -->
 
+  <!-- Rear Axle -->
   <link name="rear_axle_link"/>
 
   <joint name="rear_axle_joint" type="fixed">
     <parent link="base_link"/>
     <child link="rear_axle_link"/>
-    <origin xyz="${-wheel_xoff} 0 ${-wheel_zoff}" rpy="0 0 0"/>
+    <origin xyz="${-rear_wheel_xoff} 0 ${-wheel_zoff}" rpy="0 0 0"/>
   </joint>
 
+  <!-- Front Axle -->
+  <link name="front_axle_link"/>
+
+  <joint name="front_axle_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_axle_link"/>
+    <origin xyz="${front_wheel_xoff} 0 ${-wheel_zoff}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Wheel Macro -->
   <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
     <link name="${prefix}_link">
       <visual>
@@ -124,7 +136,6 @@
       </collision>
       
       <xacro:cylinder_inertia m="400" r="${wheel_radius}" h="${wheel_width}"/>
-      
     </link>
 
     <!-- Connect the wheels to the base_link at the appropriate location, and 
@@ -139,11 +150,13 @@
     </joint>
   </xacro:macro>
 
-  <!-- Instantiate two wheels using the macro we just made through the 
+  <!-- Instantiate four wheels using the macro we just made through the 
        xacro:wheel tags. We also define the parameters to have one wheel
-       on both sides at the back of our robot (i.e. x_reflect=-1). -->
-  <xacro:wheel prefix="drivewhl_l" x_reflect="-1" y_reflect="1" />
-  <xacro:wheel prefix="drivewhl_r" x_reflect="-1" y_reflect="-1" />
+       on both sides at the back and front of our robot. -->
+  <xacro:wheel prefix="rear_left_wheel" x_reflect="-1" y_reflect="1" />
+  <xacro:wheel prefix="rear_right_wheel" x_reflect="-1" y_reflect="-1" />
+  <xacro:wheel prefix="front_left_wheel" x_reflect="1" y_reflect="1" />
+  <xacro:wheel prefix="front_right_wheel" x_reflect="1" y_reflect="-1" />
 
   <!-- *********************** STEERING WHEEL ******************************  -->
   <link name="steering_link"/>
@@ -231,22 +244,21 @@
   </joint>
 
   <link name="lidar_link">
-  
     <collision>
-     <origin xyz="0 0 0" rpy="0 0 0"/>
-     <geometry>
-      <cylinder radius="0.0508" length="0.18"/>
-     </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0508" length="0.18"/>
+      </geometry>
     </collision>
     
     <visual>
-     <origin xyz="0 0 0" rpy="0 0 0"/>
-     <geometry>
-      <cylinder radius="0.02" length="0.04"/>
-     </geometry>
-     <material name="Black">
-          <color rgba="${0/255} ${0/255} ${0/255} 1.0"/>
-     </material>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.04"/>
+      </geometry>
+      <material name="Black">
+        <color rgba="${0/255} ${0/255} ${0/255} 1.0"/>
+      </material>
     </visual>
     
     <inertial>
@@ -255,7 +267,6 @@
       <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
     </inertial>
   </link>
-
 
   <!-- ****************** TRAILER BODY ***************************  -->
   <link name="trailer_link">
