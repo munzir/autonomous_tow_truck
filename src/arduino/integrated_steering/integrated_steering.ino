@@ -41,7 +41,9 @@ void setup()
   steering_control_setup();  
   joystick_setup();
   Timer2Reset();
-  brake_setup(&pins);  
+  brake_setup(&pins);
+
+  pinMode(13, OUTPUT); // Initializing onboard LED for testing; remove later
 }
 
 
@@ -59,13 +61,12 @@ void loop()
   }
 
   // braking
-  if (brake == '0') //Releasing Brake
-  {
-    release_brake(&brakes, &pins);
-  }
-  else if (brake == '1') //Pressing Brake
-  {
+  if (brake) {
     press_brake(&brakes, &pins);
+    digitalWrite(13, HIGH); // Turn on LED for testing; remove later
+  } else {
+    release_brake(&brakes, &pins);
+    digitalWrite(13, LOW);  // Turn off LED for testing; remove later
   }
 
   manual_mode = (manual == true);
