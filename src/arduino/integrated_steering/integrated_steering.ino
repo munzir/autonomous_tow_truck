@@ -2,11 +2,23 @@
 #include "include/steering_control.h"
 #include "include/joystick.h"
 #include "include/timer2_1ms.h"
+#include "include/brakes.h"
 
 int control_timer_ticks = 0;
 int control_timer_period = 40;
 int prev_steering_angle = 999;
 bool recalibration_completed = false;
+
+//Global brake instance
+struct Pins pins = {
+  .dir = 9,
+  .pul = 8,
+  .ena = 10,
+  //.relay = 10,
+};
+
+Brake brakes;
+
 void recalibrate()
 {
   recalibration_completed = false;
@@ -29,6 +41,7 @@ void setup()
   steering_control_setup();  
   joystick_setup();
   Timer2Reset();
+  brake_setup(&pins);  
 }
 
 
@@ -36,12 +49,23 @@ void loop()
 {
   JoystickLoop();
 
+  // gear switching
   if (reverse) {
     digitalWrite(4, LOW);
     digitalWrite(7, HIGH);
   } else {
     digitalWrite(4, HIGH);
     digitalWrite(7, LOW);
+  }
+
+  // braking
+  if (brake == '0') //Releasing Brake
+  {
+    release_brake(&brakes, &pins);
+  }
+  else if (brake == '1') //Pressing Brake
+  {
+    press_brake(&brakes, &pins);
   }
 
   manual_mode = (manual == true);
