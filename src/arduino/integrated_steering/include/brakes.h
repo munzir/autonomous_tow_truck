@@ -1,5 +1,5 @@
-#ifndef BRAKE_H
-#define BRAKE_H
+#ifndef BRAKES_H
+#define BRAKES_H
 
 #include <Arduino.h>
 
@@ -13,7 +13,7 @@ struct Pins
   //const int relay;  //Relay pin (to turn on the the relay) (green)
 };
 
-struct Brake 
+struct Brake
 {
   //Variables
   long currentPosition = 0; //Current position in steps

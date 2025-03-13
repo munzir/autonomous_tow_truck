@@ -1,4 +1,4 @@
-#include "brake.h"
+#include "brakes.h"
 
 //Global brake instance
 struct Pins pins = {
@@ -8,7 +8,7 @@ struct Pins pins = {
   //.relay = 10,
 };
 
-Brake brake;
+Brake brakes;
 
 
 void setup() 
@@ -24,11 +24,11 @@ void loop()
   //Determine direction of rotation
   if (input == '0') //Releasing Brake
   {
-    release_brake(&brake, &pins);
+    release_brake(&brakes, &pins);
   }
   else if (input == '1') //Pressing Brake
   {
-    press_brake(&brake, &pins);
+    press_brake(&brakes, &pins);
   }
 
   // if (Serial.available() > 0) 
