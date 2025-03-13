@@ -19,6 +19,8 @@ void setup()
 
 void loop() 
 {
+  int input = Serial.read();  //To store input recieved from bluetooth
+
   //Determine direction of rotation
   if (input == '0') //Releasing Brake
   {

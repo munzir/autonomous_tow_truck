@@ -7,8 +7,8 @@ void brake_setup(struct Pins* pins) {
   pinMode(pins->ena, OUTPUT);
   //pinMode(pins->relay, OUTPUT);
 
-  digitalWrite(pins->relay, LOW);  //LOW means relay is off, HIGH means relay is on
-  digitalWrite(pins->ena, HIGH); //High enable pin means motor is disengaged
+  //digitalWrite(pins->relay, LOW);  //LOW means relay is off, HIGH means relay is on
+  //digitalWrite(pins->ena, HIGH); //High enable pin means motor is disengaged
 
 }
 
