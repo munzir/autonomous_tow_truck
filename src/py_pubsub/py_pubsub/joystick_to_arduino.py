@@ -140,10 +140,10 @@ class JoystickToArduino(Node):
                 self.get_logger().info(f"Debug Mode = {'True' if self.debug_mode else 'False'}")
             
             # Handle brake
-            #self.brake_active = brake_button == 1
-            if brake_button == 1 and self.prev_brake_button == 0:
-                self.brake_active = not self.brake_active
-                self.get_logger().info(f"Brake = {'Engaged' if self.brake_active else 'Disengaged'}")
+            self.brake_active = brake_button == 1
+            # if brake_button == 1 and self.prev_brake_button == 0:
+            #     self.brake_active = not self.brake_active
+            #     self.get_logger().info(f"Brake = {'Engaged' if self.brake_active else 'Disengaged'}")
 
             # Map joystick index [4] to Speed between 4.4 and 2.5
             raw_speed = msg.axes[Axis.FRONT_RIGHT_BOTTOM.value]

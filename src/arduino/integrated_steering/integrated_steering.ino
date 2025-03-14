@@ -65,10 +65,10 @@ void loop()
   if (brake != prev_brake_state) {
     if (brake) {
       press_brake(&brakes, &pins);
-      digitalWrite(13, HIGH); // Turn onboard LED ON (for testing; remove later)
+      // digitalWrite(13, HIGH); // Turn onboard LED ON (use for troubleshooting)
     } else {
       release_brake(&brakes, &pins);
-      digitalWrite(13, LOW);  // Turn onbaord LED OFF (for testing; remove later)
+      // digitalWrite(13, LOW);  // Turn onbaord LED OFF (use for troubleshooting)
     }
     prev_brake_state = brake; // Update previous state
   }
