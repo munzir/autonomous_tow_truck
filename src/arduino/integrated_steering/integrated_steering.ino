@@ -8,6 +8,7 @@ int control_timer_ticks = 0;
 int control_timer_period = 40;
 int prev_steering_angle = 999;
 bool recalibration_completed = false;
+bool prev_brake_state = false;
 
 //Global brake instance
 struct Pins pins = {
@@ -60,13 +61,16 @@ void loop()
     digitalWrite(7, LOW);
   }
 
-  // braking
-  if (brake) {
-    press_brake(&brakes, &pins);
-    digitalWrite(13, HIGH); // Turn on LED for testing; remove later
-  } else {
-    release_brake(&brakes, &pins);
-    digitalWrite(13, LOW);  // Turn off LED for testing; remove later
+  // braking (Call press_brake or release_brake only on state change)
+  if (brake != prev_brake_state) {
+    if (brake) {
+      press_brake(&brakes, &pins);
+      digitalWrite(13, HIGH); // Turn onboard LED ON (for testing; remove later)
+    } else {
+      release_brake(&brakes, &pins);
+      digitalWrite(13, LOW);  // Turn onbaord LED OFF (for testing; remove later)
+    }
+    prev_brake_state = brake; // Update previous state
   }
 
   manual_mode = (manual == true);
