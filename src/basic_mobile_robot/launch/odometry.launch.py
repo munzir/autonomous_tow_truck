@@ -10,6 +10,9 @@ def generate_launch_description():
             package='py_pubsub',
             executable='joyard',
             output='screen',
+            parameters=[{
+                'joystick': LaunchConfiguration('joystick'),
+            }]
         ),
         Node(
             package='py_pubsub',
