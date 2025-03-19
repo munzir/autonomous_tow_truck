@@ -30,6 +30,51 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
+
+    - Alpha: 0.7
+      Class: rviz_default_plugins/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: Occupancy Grid
+      Topic:
+        Depth: 1
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /obstacle_grid  
+      Update Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /obstacle_grid  
+      Use Timestamp: false
+      Value: true
+
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Name: TF
+
+    - Alpha: 1
+      Class: rviz_default_plugins/Image
+      Enabled: true
+      Name: Camera
+      Topic:
+        Value: /camera/color/image
+      Queue Size: 5
+      Transport Hint: raw
+
+    - Alpha: 1
+      Class: rviz_default_plugins/Image
+      Enabled: true
+      Name: Depth Camera
+      Topic:
+        Value: /camera/depth/image  
+      Queue Size: 5
+      Transport Hint: raw
+    
+
     - Alpha: 0.6000000238418579
       Class: rviz_default_plugins/RobotModel
       Collision Enabled: false
@@ -130,6 +175,9 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
+            camera_link:
+              camera_link_optical:
+                {}
             drivewhl_l_link:
               {}
             drivewhl_r_link:
@@ -142,9 +190,6 @@ Visualization Manager:
               {}
             lidar_link:
               {}
-            camera_link:
-              camera_link_optical:
-                {}
         odom:
           {}
       Update Interval: 0

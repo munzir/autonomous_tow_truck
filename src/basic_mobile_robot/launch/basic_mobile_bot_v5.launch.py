@@ -198,7 +198,24 @@ def generate_launch_description():
             {'use_hardware': False}  # Set this to True for real hardware
         ]
     )
-  
+  # Start the YOLO obstacle detection node
+  start_obstacle_detection_cmd = Node(
+        package='object_detection_pkg',  # Replace with the actual package name
+        executable='yolo_detection_node',    # Replace with the actual node executable
+        name='yolo_detection_node',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+
+    # Start the obstacle processing node for occupancy grid updates
+  start_obstacle_processing_cmd = Node(
+        package='object_detection_pkg',  # Replace with your actual package name
+        executable='obstacle_processing_node',  # Your occupancy grid updater node
+        name='obstacle_processing_node',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+
   # Create the launch description and populate
   ld = LaunchDescription()
 
@@ -226,6 +243,7 @@ def generate_launch_description():
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
   ld.add_action(start_ros2_navigation_cmd)
-  ld.add_action(start_obstacle_detection_cmd)
+  # ld.add_action(start_obstacle_detection_cmd)
+  # ld.add_action(start_obstacle_processing_cmd)
 
   return ld

@@ -247,19 +247,19 @@
     </inertial>
   </link>
 
-  <!-- *********************** CAMERA SETUP **********************************  -->
+   <!-- *********************** CAMERA SETUP **********************************  -->
+
   <joint name="camera_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="camera_link"/>
-      <origin xyz="0.276 0 0.181" rpy="0 0.18 0"/>
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0.215 0 0.1" rpy="0 0 0"/>  
   </joint>
 
-  <!-- Define the camera link -->
+  <!-- Camera Link -->
   <link name="camera_link">
       <visual>
           <origin xyz="0 0 0" rpy="0 0 0"/>
           <geometry>
-              <!-- Adjusted size to match D435i dimensions -->
               <box size="0.09 0.025 0.025"/>
           </geometry>
           <material name="black">
@@ -269,25 +269,58 @@
       <collision>
           <origin xyz="0 0 0" rpy="0 0 0"/>
           <geometry>
-              <!-- Same as visual geometry -->
               <box size="0.09 0.025 0.025"/>
           </geometry>
       </collision>
       <inertial>
-          <!-- Adjusted mass to match D435i weight -->
           <mass value="0.072"/>
           <origin xyz="0 0 0" rpy="0 0 0"/>
-          <!-- Approximate inertia for a small box -->
           <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
       </inertial>
   </link>
 
-  <!-- Define the optical frame for the camera -->
+    <!-- *********************** DEPTH CAMERA BESIDE LIDAR **********************************  -->
+  <joint name="depth_camera_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="depth_camera_link"/>
+      <origin xyz="0.215 0.10 0.13" rpy="0 0 0"/>  <!-- Depth camera moved beside LiDAR -->
+  </joint>
+
+  <link name="depth_camera_link">
+      <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+              <box size="0.09 0.025 0.025"/>
+          </geometry>
+          <material name="black">
+              <color rgba="0 0 0 1"/>
+          </material>
+      </visual>
+      <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+              <box size="0.09 0.025 0.025"/>
+          </geometry>
+      </collision>
+      <inertial>
+          <mass value="0.072"/>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+  </link>
+
+  <!-- Optical Frame (for correct TF alignment) -->
   <joint name="camera_optical_joint" type="fixed">
       <parent link="camera_link"/>
       <child link="camera_link_optical"/>
-      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${pi/2}"/>
+      <origin xyz="0 0 0" rpy="-1.5708 0 1.5708"/>  <!-- ✅ Fixed rpy values -->
   </joint>
 
-  <link name="camera_link_optical"/>
+  <link name="camera_link_optical">
+      <inertial>
+          <mass value="0.001"/>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+      </inertial>
+  </link>
 </robot>

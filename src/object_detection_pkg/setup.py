@@ -22,7 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'detection_node = object_detection_pkg.detection_node:main',
+            'yolo_detection_node = object_detection_pkg.yolo_detection_node:main',
+            'obstacle_processing_node = object_detection_pkg.obstacle_processing_node:main'
         ],
     },
 )
