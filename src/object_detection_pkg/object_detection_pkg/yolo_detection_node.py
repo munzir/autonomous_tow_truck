@@ -38,7 +38,7 @@ class YoloDetectionNode(Node):
         self.bridge = CvBridge()
 
         # Load YOLO model (ensure path is correct)
-        self.model = torch.hub.load('src/object_detection_pkg/object_detection_pkg/yolov5', 
+        self.model = torch.hub.load('/root/yolov5', 
                             'custom', path='src/object_detection_pkg/object_detection_pkg/best.pt', source='local')
 
 

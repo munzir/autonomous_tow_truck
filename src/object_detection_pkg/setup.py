@@ -19,7 +19,7 @@ setup(
     maintainer_email='your_email@example.com',
     description='ROS 2 package for object detection using YOLO and RealSense',
     license='Apache License 2.0',
-    tests_require=['pytest'],
+    # tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'yolo_detection_node = object_detection_pkg.yolo_detection_node:main',
