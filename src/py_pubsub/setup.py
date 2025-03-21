@@ -17,7 +17,7 @@ setup(
     maintainer_email='ailiya@todo.todo',
     description='dont know at this point',
     license='Apache-2.0',
-    tests_require=['pytest'],
+    # tests_require=['pytest'],
     entry_points={
         'console_scripts': [
                         'talker = py_pubsub.publisher_member_function:main',

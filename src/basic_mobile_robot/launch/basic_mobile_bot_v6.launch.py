@@ -125,14 +125,13 @@ def generate_launch_description():
     description='Use simulation (Gazebo) clock if true')
 
   # Start robot localization using an Extended Kalman filter
-  # start_robot_localization_cmd = Node(
-  #   condition = IfCondition(ekf),
-  #   package='robot_localization',
-  #   executable='ekf_node',
-  #   name='ekf_filter_node',
-  #   output='screen',
-  #   parameters=[robot_localization_file_path, 
-  #   {'use_sim_time': use_sim_time}])
+  start_robot_localization_cmd = Node(
+    package='robot_localization',
+    executable='ekf_node',
+    name='ekf_filter_node',
+    output='screen',
+    parameters=[robot_localization_file_path, 
+    {'use_sim_time': use_sim_time}])
 
   # Start robot state publisher
   start_robot_state_publisher_cmd = Node(
@@ -246,5 +245,5 @@ def generate_launch_description():
   ld.add_action(start_ros2_navigation_cmd_amcl) #amcl on, using the nav2 available directory
   ld.add_action(start_odometry_cmd) #single odometry launch
   ld.add_action(start_joy_node)
-  # ld.add_action(start_robot_localization_cmd) 
+  ld.add_action(start_robot_localization_cmd) 
   return ld
