@@ -57,6 +57,12 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        camera_link:
+          camera_link_optical:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         drivewhl_l_link:
           Alpha: 1
           Show Axes: false
@@ -85,16 +91,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_link_optical:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
@@ -109,6 +105,9 @@ Visualization Manager:
           Value: true
         base_link:
           Value: true
+        camera_link:
+          camera_link_optical:
+            Value: true
         drivewhl_l_link:
           Value: true
         drivewhl_r_link:
@@ -143,6 +142,9 @@ Visualization Manager:
               {}
             lidar_link:
               {}
+            camera_link:
+              camera_link_optical:
+                {}
         odom:
           {}
       Update Interval: 0

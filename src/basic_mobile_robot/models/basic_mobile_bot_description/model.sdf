@@ -238,6 +238,9 @@
     </material>
   </visual>
 
+  
+
+
   <!-- ***************** RGB CAMERA SENSOR ***************** -->
   <sensor name="rgb_camera" type="camera">
     <pose>0 0 0 0 0 0</pose>
@@ -258,11 +261,12 @@
     <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
       <always_on>1</always_on>
       <update_rate>30</update_rate>
-      <camera_name>rgb_camera</camera_name>
+      <camera_name>camera</camera_name>
       <image_topic_name>/camera/rgb/image_raw</image_topic_name>
       <camera_info_topic_name>/camera/rgb/camera_info</camera_info_topic_name>
       <frame_name>camera_link</frame_name>
     </plugin>
+
   </sensor>
 
   <!-- ***************** DEPTH CAMERA SENSOR ***************** -->
@@ -288,6 +292,7 @@
       <camera_name>depth_camera</camera_name>
       <image_topic_name>/camera/depth/image_raw</image_topic_name>
       <camera_info_topic_name>/camera/depth/camera_info</camera_info_topic_name>
+      <point_cloud_topic_name>/camera/depth/color/points</point_cloud_topic_name>
       <frame_name>camera_link</frame_name>
     </plugin>
   </sensor>
