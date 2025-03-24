@@ -29,7 +29,7 @@ class YoloDetectionNode(Node):
         # Image Subscriber
         self.image_sub = self.create_subscription(
             Image,
-            '/camera/image',  
+            '/camera/color/image',  
             self.image_callback,
             10
         )
@@ -39,7 +39,7 @@ class YoloDetectionNode(Node):
 
         # Load YOLO model (ensure path is correct)
         self.model = torch.hub.load('/root/yolov5', 
-                            'custom', path='src/object_detection_pkg/object_detection_pkg/best.pt', source='local')
+                            'custom', path='/root/autonomous_tow_truck/src/object_detection_pkg/object_detection_pkg/best.pt', source='local', force_reload = True)
 
 
 

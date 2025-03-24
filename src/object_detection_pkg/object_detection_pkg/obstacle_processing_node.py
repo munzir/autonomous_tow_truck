@@ -12,24 +12,57 @@ import time  # Needed for tracking obstacle timestamps
 class ObstacleProcessingNode(Node):
     def __init__(self):
         super().__init__('obstacle_processing_node')
-
-        # Declare sim time parameter
+        
+        # ROS 2 Parameter: Use simulation time, if available
         self.declare_parameter('use_sim_time', True)
-
-        # Read the sim time parameter
         self.use_sim_time = self.get_parameter('use_sim_time').value
         self.get_logger().info(f"use_sim_time set to: {self.use_sim_time}")
 
-        # Set the parameter for ROS 2 clock sync
-        self.set_parameters([rclpy.parameter.Parameter('use_sim_time', rclpy.Parameter.Type.BOOL, self.use_sim_time)])
+        # # Declare sim time parameter
+        # if not self.has_parameter('use_sim_time'):
+        #     self.declare_parameter('use_sim_time', True)
+
+        # # Read the sim time parameter
+        # self.use_sim_time = self.get_parameter('use_sim_time').value
+        # self.get_logger().info(f"use_sim_time set to: {self.use_sim_time}")
+
+        # # Set the parameter for ROS 2 clock sync
+        # # self.set_parameters([rclpy.parameter.Parameter('use_sim_time', rclpy.Parameter.Type.BOOL, self.use_sim_time)])
+
+        # # Subscribers
+        # self.detection_sub = self.create_subscription(Detection2DArray, '/yolo_detections', self.detection_callback, 10)
+        # self.depth_sub = self.create_subscription(Image, '/camera/depth/image_raw', self.depth_callback, 10)
+        # self.camera_info_sub = self.create_subscription(CameraInfo, '/camera/camera_info', self.camera_info_callback, 10)
+
+        # # Publisher
+        # self.occupancy_pub = self.create_publisher(OccupancyGrid, '/obstacle_grid', 10)
 
         # Subscribers
-        self.detection_sub = self.create_subscription(Detection2DArray, '/yolo_detections', self.detection_callback, 10)
-        self.depth_sub = self.create_subscription(Image, '/camera/depth/image_raw', self.depth_callback, 10)
-        self.camera_info_sub = self.create_subscription(CameraInfo, '/camera/camera_info', self.camera_info_callback, 10)
+        self.detection_sub = self.create_subscription(
+            Detection2DArray,
+            '/yolo_detections',
+            self.detection_callback,
+            10
+        )
+        self.depth_sub = self.create_subscription(
+            Image,
+            '/camera/depth/image',
+            self.depth_callback,
+            10
+        )
+        self.camera_info_sub = self.create_subscription(
+            CameraInfo,
+            '/camera/depth/camera_info',
+            self.camera_info_callback,
+            10
+        )
 
-        # Publisher
-        self.occupancy_pub = self.create_publisher(OccupancyGrid, '/obstacle_grid', 10)
+        # Publisher for OccupancyGrid
+        self.occupancy_pub = self.create_publisher(
+            OccupancyGrid,
+            '/obstacle_grid',
+            10
+        )
 
         # TF2 Buffer and Listener
         self.tf_buffer = tf2_ros.Buffer()
