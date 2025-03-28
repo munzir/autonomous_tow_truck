@@ -1,0 +1,10 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2025-03-27-13-15-12-397425-munzir-ThinkPad-T14s-Gen-4-15381
+[INFO] [launch]: Default logging verbosity is set to INFO
+[ERROR] [launch]: Caught exception in launch (see debug for traceback): executed command failed. Command: xacro /root/autonomous_tow_truck/src/install/basic_mobile_robot/share/basic_mobile_robot/models/basic_mobile_bot_v2.urdf
+Captured stderr output: XML parsing error: mismatched tag: line 313, column 4
+when processing file: /root/autonomous_tow_truck/src/install/basic_mobile_robot/share/basic_mobile_robot/models/basic_mobile_bot_v2.urdf
+
+Check that:
+ - Your XML is well-formed
+ - You have the xacro xmlns declaration: xmlns:xacro="http://www.ros.org/wiki/xacro"
+

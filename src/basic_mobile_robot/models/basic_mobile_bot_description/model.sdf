@@ -222,89 +222,50 @@
   </link>
   
   <!-- ************************ CAMERA SENSOR ************************ -->
-<link name="camera_link">
-  <pose>0.276 0 0.181 0 0.18 0</pose>  <!-- Adjust position as needed -->
+  <link name="camera_link">
+    <pose>0.276 0 0.181 0 0.18 0</pose>  <!-- Adjust position as needed -->
 
-  <!-- Camera Visual Representation -->
-  <visual name="camera_visual">
-    <geometry>
-      <box>
-        <size>0.09 0.025 0.025</size>  <!-- Approximate size of RealSense D435i -->
-      </box>
-    </geometry>
-    <material>
-      <ambient>0.0 0.0 0.0 1.0</ambient>
-      <diffuse>0.0 0.0 0.0 1.0</diffuse>
-    </material>
-  </visual>
-
-  
-
-
-  <!-- ***************** RGB CAMERA SENSOR ***************** -->
-  <sensor name="rgb_camera" type="camera">
-    <pose>0 0 0 0 0 0</pose>
-    <update_rate>30</update_rate>  <!-- 30 FPS -->
-    <camera>
-      <horizontal_fov>1.57</horizontal_fov>
-      <image>
-        <format>B8G8R8</format>
-        <width>1280</width>
-        <height>720</height>
-      </image>
-      <clip>
-        <near>0.02</near>
-        <far>10.0</far>
-      </clip>
-    </camera>
-    <!-- Plugin to integrate with ROS2 -->
-    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-      <always_on>1</always_on>
-      <update_rate>30</update_rate>
-      <camera_name>camera</camera_name>
-      <image_topic_name>/camera/rgb/image_raw</image_topic_name>
-      <camera_info_topic_name>/camera/rgb/camera_info</camera_info_topic_name>
-      <frame_name>camera_link</frame_name>
-    </plugin>
-
-  </sensor>
-
-  <!-- ***************** DEPTH CAMERA SENSOR ***************** -->
-  <sensor name="depth_camera" type="depth">
-    <pose>0 0 0 0 0 0</pose>
-    <update_rate>30</update_rate>
-    <camera>
-      <horizontal_fov>1.57</horizontal_fov>
-      <image>
-        <format>R8G8B8</format>
-        <width>1280</width>
-        <height>720</height>
-      </image>
-      <clip>
-        <near>0.28</near>
-        <far>10.0</far>
-      </clip>
-    </camera>
-    <!-- Plugin to integrate with ROS2 -->
-    <plugin name="depth_camera_controller" filename="libgazebo_ros_depth_camera.so">
-      <always_on>1</always_on>
-      <update_rate>30</update_rate>
-      <camera_name>depth_camera</camera_name>
-      <image_topic_name>/camera/depth/image_raw</image_topic_name>
-      <camera_info_topic_name>/camera/depth/camera_info</camera_info_topic_name>
-      <point_cloud_topic_name>/camera/depth/color/points</point_cloud_topic_name>
-      <frame_name>camera_link</frame_name>
-    </plugin>
-  </sensor>
+    <!-- Camera Visual Representation -->
+    <visual name="camera_visual">
+      <geometry>
+        <box>
+          <size>0.09 0.025 0.025</size>  <!-- Approximate size of RealSense D435i -->
+        </box>
+      </geometry>
+      <material>
+        <ambient>0.0 0.0 0.0 1.0</ambient>
+        <diffuse>0.0 0.0 0.0 1.0</diffuse>
+      </material>
+    </visual>
+  <sensor name="camera" type="depth">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+      <camera>
+        <horizontal_fov>1.089</horizontal_fov>
+        <image>
+          <format>R8G8B8</format>
+          <width>640</width>
+          <height>480</height>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>8.0</far>
+        </clip>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <ros>
+          <namespace>/</namespace>
+          <remapping>image_raw:=camera/image_raw</remapping>
+          <remapping>image_raw:=camera/depth/image_raw</remapping>
+          <remapping>camera_info:=camera/camera_info</remapping>
+        </ros>
+        <frame_name>camera_link_optical</frame_name>
+        <camera_name>camera</camera_name>
+      </plugin>
+    </sensor>
 
 </link>
-
-<!-- Attach Camera to Robot Base -->
-<joint name="camera_joint" type="fixed">
-  <parent>base_link</parent>
-  <child>camera_link</child>
-  <pose>0 0 0 0 0 0</pose>
-</joint>
 
 
   <!-- *********************** DRIVE WHEELS ******************************  -->
@@ -478,6 +439,19 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
+  <!-- Attach Camera to Robot Base -->
+  <joint name="camera_joint" type="fixed">
+    <parent>base_link</parent>
+    <child>camera_link</child>
+    <pose>0 0 0 0 0 0</pose>
+  </joint>
+
+  <!-- Attach Camera to Robot Base -->
+  <joint name="camera_optical_joint" type="fixed">
+    <parent>camera_link</parent>
+    <child>camera_link_optical</child>
+    <pose>0 0 0 0 0 0</pose>
+  </joint>
   <!-- *********************** WHEEL ODOMETRY ***************************    -->
   <plugin name="gazebo_ros_ackermann_drive" filename="libgazebo_ros_ackermann_drive_debug.so">
     <ros>
