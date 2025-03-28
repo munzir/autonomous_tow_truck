@@ -3,15 +3,31 @@ from rclpy.node import Node
 from sensor_msgs.msg import NavSatFix
 import re
 import time
+import os
+import glob
 
 class GPSPublisher(Node):
     def __init__(self):
         super().__init__('gps_publisher')
         self.publisher_ = self.create_publisher(NavSatFix, 'fix', 10)
-        self.filename = "/home/lyeba/Desktop/GPS/COM1___115200_250319_184652.txt"
-
+#        self.filename = "/home/lyeba/Desktop/GPS/COM1___115200_250319_184652.txt"
+# Automatically get the latest GPS file
+        #self.filename = self.get_latest_gps_file("/home/lyeba/Desktop/GPS/")
         # Timer to check file updates every 2 seconds
+        self.filename = self.get_latest_gps_file("/root/autonomous_tow_truck/src/gps_publisher/gps_publisher/")
+        
         self.timer = self.create_timer(2.0, self.read_nmea_file)
+
+    def get_latest_gps_file(self, directory):
+        """Finds the most recent GPS file based on modification time."""
+        import os, glob
+        list_of_files = glob.glob(os.path.join(directory, "COM1__*.txt"))  # Adjust pattern if needed
+        if not list_of_files:
+            self.get_logger().warn("No GPS files found!")
+            return None
+        latest_file = max(list_of_files, key=os.path.getmtime)
+        self.get_logger().info(f"Using latest GPS file: {latest_file}")
+        return latest_file
 
     def convert_nmea_to_decimal(self, degrees_minutes, direction):
         """ Convert NMEA format to decimal degrees """
