@@ -18,11 +18,12 @@ except ImportError:
 class ObstacleDetectionNode(Node):
     def __init__(self):
         super().__init__('obstacle_detection_node')
-        self.declare_parameter('use_hardware', True)
+        self.declare_parameter('use_hardware', False)
         self.use_hardware = self.get_parameter('use_hardware').value
         self.bridge = CvBridge()
         
-        self.declare_parameter('use_sim_time', False)  # Add this
+        if not self.has_parameter('use_sim_time'):
+            self.declare_parameter('use_sim_time', True)
         self.use_sim_time = self.get_parameter('use_sim_time').value
         self.bridge = CvBridge()
         
@@ -38,7 +39,7 @@ class ObstacleDetectionNode(Node):
             self.camera_info_sub = self.create_subscription(
                 CameraInfo, '/camera/camera_info', self.camera_info_callback, 10)
             self.image_sub = self.create_subscription(
-                Image, '/camera/rgb/image_raw', self.image_callback, 10)
+                Image, '/camera/image_raw', self.image_callback, 10)
             self.depth_sub = self.create_subscription(
                 Image, '/camera/depth/image_raw', self.depth_callback, 10)
             self.latest_depth_frame = None
