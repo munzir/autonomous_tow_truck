@@ -13,6 +13,7 @@ class ObstacleDetectionNode(Node):
     def __init__(self):
         super().__init__('obstacle_detection_node')
         self.publisher_ = self.create_publisher(String, 'obstacle_info', 10)
+        self.detection_publisher_ = self.create_publisher(String, '/yolo_detections', 10)
         self.bridge = CvBridge()
 
         # Load YOLOv5 model (adjust model path if necessary)
@@ -91,47 +92,39 @@ class ObstacleDetectionNode(Node):
         cv2.waitKey(1)  # Wait for 1 ms to update the window
 
     def detect_obstacle(self, color_image, depth_frame):
-
-        results = self.model(color_image)  # Perform YOLOv5 inference
+        results = self.model(color_image)
         obstacle_detected = False
-        range_within = 0  # Default to no obstacle within range
+        range_within = 0
 
-        for *box, conf, cls in results.pred[0]:  # Iterate over detections
-            x1, y1, x2, y2 = map(int, box)  # Coordinates of the bounding box
-            label = f"{results.names[int(cls)]} {conf:.2f}"  # Label with class name and confidence
-            cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Draw bounding box
-            obstacle_detected = True  
-            
-            # Get center point of the bounding box
+        for *box, conf, cls in results.pred[0]:
+            x1, y1, x2, y2 = map(int, box)
+            label = f"{results.names[int(cls)]} {conf:.2f}"
+            obstacle_detected = True
+
             center_x = int((x1 + x2) / 2)
             center_y = int((y1 + y2) / 2)
-
-            # Get depth at the center point
             Z = depth_frame.get_distance(center_x, center_y)
-
-            # Deproject to 3D camera coordinates
             X, Y, Z = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [center_x, center_y], Z)
-            # print("3D Camera Coordinates:", X, Y, Z)
 
-            # Determine corner coordinates for horizontal checks
-            if X < 0:  # Left side
+            # Horizontal logic (as before)
+            if X < 0:
                 corner_x, corner_y, corner_z = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x2, y2], Z)
-            else:  # Right side
+            else:
                 corner_x, corner_y, corner_z = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x1, y1], Z)
 
-            # Check horizontal constraints
             if ((corner_x > -self.width_t / 2 - 0.1) or (corner_x < self.width_t / 2 + 0.1)) and (corner_y > -self.height_t/2 - 0.3) and (Z < 9):
-                print("Brake")
                 range_within = 1
-                cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Draw bounding box
+                cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 0, 255), 2)
             else:
-                print("Continue")
                 range_within = 0
-                cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Draw bounding box
+                cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-            # Annotate distance on the image
             cv2.putText(color_image, f"Dist: {Z:.2f}m", (x1, y2 + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-            cv2.putText(color_image, f"X: {X:.2f}m, Y: {Y:.2f}m", (x1-20, y1 - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.putText(color_image, f"X: {X:.2f}m, Y: {Y:.2f}m", (x1 - 20, y1 - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+            # ==== NEW: Publish detection info ====
+            detection_info = f"Class: {results.names[int(cls)]}, Conf: {conf:.2f}, Box: ({x1}, {y1}, {x2}, {y2}), Dist: {Z:.2f}m"
+            self.detection_publisher_.publish(String(data=detection_info))
 
         return obstacle_detected, color_image, range_within
 

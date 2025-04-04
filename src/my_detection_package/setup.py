@@ -23,6 +23,7 @@ setup(
         'object_detection_node = my_detection_package.detection_node:main',
         'headlights_talker = my_detection_package.headlights_talker:main',
         'headlights_listener = my_detection_package.headlights_listener:main',
+        'processing_node = my_detection_package.processing_node:main',
         ],
     },
 )
