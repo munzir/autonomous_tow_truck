@@ -15,9 +15,8 @@ class ObstacleDetectionNode(Node):
         self.publisher_ = self.create_publisher(String, 'obstacle_info', 10)
         self.bridge = CvBridge()
 
-        # Load YOLO model (ensure path is correct)
-        self.model = torch.hub.load('/root/yolov5', 
-                            'custom', path='root/autonomous_tow_truck/src/object_detection_pkg/best.pt', source='local')
+        # Load YOLOv5 model (adjust model path if necessary)
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n')  # Lightweight YOLOv5 Nano
 
         # Initialize RealSense pipeline and alignment for depth data
         self.pipeline = rs.pipeline()

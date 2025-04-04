@@ -23,7 +23,8 @@ setup(
     entry_points={
         'console_scripts': [
             'yolo_detection_node = object_detection_pkg.yolo_detection_node:main',
-            'obstacle_processing_node = object_detection_pkg.obstacle_processing_node:main'
+            'obstacle_processing_node = object_detection_pkg.obstacle_processing_node:main',
+            'detection_node = object_detection_pkg.detection_node:main'
         ],
     },
 )

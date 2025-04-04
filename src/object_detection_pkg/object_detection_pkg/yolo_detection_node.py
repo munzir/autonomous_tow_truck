@@ -1,88 +1,92 @@
 import rclpy
 from rclpy.node import Node
-from vision_msgs.msg import Detection2DArray, Detection2D, ObjectHypothesisWithPose
-from std_msgs.msg import Header
+from std_msgs.msg import String
 from sensor_msgs.msg import Image
+import cv2
 from cv_bridge import CvBridge
 import torch
 import numpy as np
-import cv2  # Needed for image processing
+import message_filters  # For synchronized subscriptions
 
-class YoloDetectionNode(Node):
+class ObstacleDetectionNode(Node):
     def __init__(self):
-        super().__init__('yolo_detection_node')
-
-        # Declare sim time parameter
-        if not self.has_parameter('use_sim_time'):
-            self.declare_parameter('use_sim_time', True)
-
-        # Read the sim time parameter
-        self.use_sim_time = self.get_parameter('use_sim_time').value
-        self.get_logger().info(f"use_sim_time set to: {self.use_sim_time}")
-
-        # Set the parameter for ROS 2 clock sync
-        # self.set_parameters([rclpy.parameter.Parameter('use_sim_time', rclpy.Parameter.Type.BOOL, self.use_sim_time)])
-
-        # ROS2 Publisher
-        self.detection_pub = self.create_publisher(Detection2DArray, '/yolo_detections', 10)
-
-        # Image Subscriber
-        self.image_sub = self.create_subscription(
-            Image,
-            '/camera/color/image',  
-            self.image_callback,
-            10
-        )
-
-        # Initialize CvBridge
+        super().__init__('obstacle_detection_node')
+        self.publisher_ = self.create_publisher(String, 'obstacle_info', 10)
         self.bridge = CvBridge()
 
-        # Load YOLO model (ensure path is correct)
-        self.model = torch.hub.load('/root/yolov5', 
-                            'custom', path='/root/autonomous_tow_truck/src/object_detection_pkg/object_detection_pkg/best.pt', source='local', force_reload = True)
+        # Load YOLOv5 model
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n')  # YOLOv5 Nano
 
+        # Subscribe to RGB and Depth image topics using time synchronization
+        self.rgb_sub = message_filters.Subscriber(self, Image, '/camera/image_raw')
+        self.depth_sub = message_filters.Subscriber(self, Image, '/camera/depth/image_raw')
 
+        self.ts = message_filters.ApproximateTimeSynchronizer([self.rgb_sub, self.depth_sub], 10, 0.1)
+        self.ts.registerCallback(self.image_callback)
 
-    def image_callback(self, msg):
-        """ Callback function for image frames """
+        self.width_t = 0.8
+        self.height_t = 1.9
+
+    def image_callback(self, rgb_msg, depth_msg):
         try:
-            # Convert ROS Image to OpenCV format
-            cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-            self.process_frame(cv_image, msg.header)
+            color_image = self.bridge.imgmsg_to_cv2(rgb_msg, desired_encoding='bgr8')
+            depth_image = self.bridge.imgmsg_to_cv2(depth_msg, desired_encoding='passthrough')
         except Exception as e:
-            self.get_logger().error(f"Failed to process image: {e}")
+            self.get_logger().error(f"CV Bridge error: {e}")
+            return
 
-    def process_frame(self, image, header):
-        """ Processes an image frame with YOLO and publishes bounding boxes """
-        results = self.model(image)  # Run YOLO detection
-        msg = Detection2DArray()
-        msg.header = header  # Use original image timestamp
-        msg.header.frame_id = "camera_link"
+        start_time = self.get_clock().now().nanoseconds / 1e9
 
-        # Process detections
-        for det in results.xyxy[0]:  # YOLOv5 returns [x_min, y_min, x_max, y_max, conf, class]
-            x_min, y_min, x_max, y_max, conf, cls = det.tolist()
+        obstacle_detected, annotated_image, should_brake = self.detect_obstacle(color_image, depth_image)
 
-            detection = Detection2D()
-            detection.bbox.center.x = (x_min + x_max) / 2  # Compute center x
-            detection.bbox.center.y = (y_min + y_max) / 2  # Compute center y
-            detection.bbox.size_x = x_max - x_min  # Width
-            detection.bbox.size_y = y_max - y_min  # Height
+        if should_brake:
+            end_time = self.get_clock().now().nanoseconds / 1e9
+            latency = end_time - start_time
+            msg = String()
+            msg.data = f"Apply brakes and latency is: {latency:.4f} seconds"
+            self.publisher_.publish(msg)
 
-            hypothesis = ObjectHypothesisWithPose()
-            hypothesis.id = int(cls)  # Object class ID
-            hypothesis.score = float(conf)  # Confidence score
-            detection.results.append(hypothesis)
+        # Show annotated image
+        cv2.imshow("Camera Stream", annotated_image)
+        cv2.waitKey(1)
 
-            msg.detections.append(detection)
+    def detect_obstacle(self, color_image, depth_image):
+        results = self.model(color_image)
+        obstacle_detected = False
+        should_brake = False
 
-        # Publish detections
-        self.detection_pub.publish(msg)
-        self.get_logger().info(f"Published {len(msg.detections)} detections.")
+        for *box, conf, cls in results.pred[0]:
+            x1, y1, x2, y2 = map(int, box)
+            label = f"{results.names[int(cls)]} {conf:.2f}"
+            cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+            center_x = int((x1 + x2) / 2)
+            center_y = int((y1 + y2) / 2)
+
+            # Extract depth in meters (depth_image is assumed to be in meters or mm depending on sim)
+            Z = depth_image[center_y, center_x]
+
+            if Z == 0 or np.isnan(Z):
+                continue
+
+            # Simple range check for obstacle (Z < 9m and within width and height constraints)
+            if Z < 9:
+                obstacle_detected = True
+                should_brake = True
+                cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                cv2.putText(color_image, f"Dist: {Z:.2f}m", (x1, y2 + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            else:
+                cv2.putText(color_image, f"Dist: {Z:.2f}m", (x1, y2 + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+        return obstacle_detected, color_image, should_brake
+
+    def destroy_node(self):
+        cv2.destroyAllWindows()
+        super().destroy_node()
 
 def main(args=None):
     rclpy.init(args=args)
-    node = YoloDetectionNode()
+    node = ObstacleDetectionNode()
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()

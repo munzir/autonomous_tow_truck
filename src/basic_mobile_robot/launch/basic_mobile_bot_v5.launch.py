@@ -194,8 +194,8 @@ def generate_launch_description():
     name='obstacle_detection_node',
     output='screen',
     parameters=[
-            {'use_sim_time': use_sim_time}, 
-            {'use_hardware': False}  # Set this to True for real hardware
+            {'use_sim_time': use_sim_time}
+            # {'use_hardware': True}  # Set this to True for real hardware
         ]
     )
   
