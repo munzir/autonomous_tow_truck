@@ -860,27 +860,18 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan 
+        observation_sources: scan obstacle_pointcloud
         scan:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
-
-      obstacle_layer:  
-        plugin: "nav2_costmap_2d::ObstacleLayer"
-        enabled: True
-        max_obstacle_height: 2.0
-        min_obstacle_height: 0.1
-        observation_sources: obstacle_grid
-        obstacle_grid:
-          topic: /obstacle_grid
-          sensor_frame: camera_link
-          data_type: "OccupancyGrid"
-          marking: True
-          clearing: False
-
+        obstacle_pointcloud: #added in local
+          topic: /obstacle_pointcloud
+          clearing: true
+          marking: true
+          data_type: "PointCloud2"
       static_layer:
         map_subscribe_transient_local: True
       always_send_full_costmap: True
