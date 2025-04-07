@@ -9,7 +9,7 @@ import glob
 class GPSPublisher(Node):
     def __init__(self):
         super().__init__('gps_publisher')
-        self.publisher_ = self.create_publisher(NavSatFix, 'fix', 10)
+        self.publisher_ = self.create_publisher(NavSatFix, '/gps/fix', 10)
 #        self.filename = "/home/lyeba/Desktop/GPS/COM1___115200_250319_184652.txt"
 # Automatically get the latest GPS file
         #self.filename = self.get_latest_gps_file("/home/lyeba/Desktop/GPS/")
@@ -21,7 +21,7 @@ class GPSPublisher(Node):
     def get_latest_gps_file(self, directory):
         """Finds the most recent GPS file based on modification time."""
         import os, glob
-        list_of_files = glob.glob(os.path.join(directory, "COM1__*.txt"))  # Adjust pattern if needed
+        list_of_files = glob.glob(os.path.join(directory, "COM33__*.txt"))  # Adjust pattern if needed
         if not list_of_files:
             self.get_logger().warn("No GPS files found!")
             return None
