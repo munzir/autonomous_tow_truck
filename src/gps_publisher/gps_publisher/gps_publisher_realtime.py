@@ -68,7 +68,7 @@ class GPSPublisher(Node):
                             # Create and publish the GPS message
                             gps_msg = NavSatFix()
                             gps_msg.header.stamp = self.get_clock().now().to_msg()
-                            gps_msg.header.frame_id = "gps"
+                            gps_msg.header.frame_id = "gps_link"
                             gps_msg.latitude = latitude
                             gps_msg.longitude = longitude
                             gps_msg.altitude = 0.0  # Altitude not required
