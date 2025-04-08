@@ -1,0 +1,10 @@
+<library path="yolo_costmap_plugin/libyolo_layer">
+  <class 
+    name="yolo_layer" 
+    type="yolo_costmap_plugin::YoloLayer" 
+    base_class_type="nav2_costmap_2d::Layer">
+    <description>
+      Costmap layer that processes YOLO detections
+    </description>
+  </class>
+</library>
