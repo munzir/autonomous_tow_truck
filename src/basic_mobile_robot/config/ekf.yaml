@@ -2,7 +2,7 @@
 ekf_filter_node_odom:
     ros__parameters:
 
-        use_sim_time: true
+        use_sim_time: false
 
         
 # The frequency, in Hz, at which the filter will output a position estimate. Note that the filter will not begin
@@ -90,10 +90,10 @@ ekf_filter_node_odom:
 # has no pose information, so the first six values would be meaningless in that case. Each vector defaults to all false
 # if unspecified, effectively making this parameter required for each sensor.
         odom0_config: [true, true, true,
-                       false, false, false,
-                       true,  true,  true,
-                       false, false, true,
-                       false, false, false]
+                        true, true, true,
+                        false, false, false,
+                        false, false, false,
+                        false, false, false]
 
         #        [x_pos   , y_pos    , z_pos,
         #         roll    , pitch    , yaw,
@@ -237,7 +237,7 @@ ekf_filter_node_odom:
 ekf_filter_node_map:
   ros__parameters:
 
-    use_sim_time: true
+    use_sim_time: false
 
 
     frequency: 30.0
@@ -260,11 +260,11 @@ ekf_filter_node_map:
     world_frame: map
 
     odom0: wheel/odometry
-    odom0_config: [true,  true, true,
-                   false, false, false,
-                   true,  true,  true,
-                   false, false, true,
-                   false, false, false]
+    odom0_config: [true, true, true,
+               true, true, true,
+               false, false, false,
+               false, false, false,
+               false, false, false]
     odom0_queue_size: 2
     odom0_nodelay: false
     odom0_differential: false
