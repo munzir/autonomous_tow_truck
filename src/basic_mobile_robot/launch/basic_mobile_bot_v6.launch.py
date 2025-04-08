@@ -150,6 +150,7 @@ def generate_launch_description():
     executable='joy_node',
     output='screen'
   )
+  
   # Launch RViz
   start_rviz_cmd = Node(
     condition=IfCondition(use_rviz),
