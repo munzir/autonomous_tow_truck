@@ -63,7 +63,7 @@ class ObstacleDetectionNode(Node):
                 if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
                     depth = depth_image[y, x]
                     if depth > 0:
-                        z = depth
+                        z = float(depth)
                         x_3d = (x - self.cx) * z / self.fx
                         y_3d = (y - self.cy) * z / self.fy
                         # Store point with class as intensity (4th field)
@@ -193,3 +193,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+   
