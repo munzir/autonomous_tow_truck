@@ -44,16 +44,19 @@ class ObstacleDetectionNode(Node):
         self.cx = 325
         self.cy = 239
 
-    def bbox_to_pointcloud(self, bbox, depth_image, header):
+    def bbox_to_pointcloud(self, bbox, depth_frame, header):
         """Convert YOLO bboxes to PointCloud2 with class information in intensity field"""
         point_cloud = []
+        depth_image = np.asanyarray(depth_frame.get_data())
 
-        match = re.search(r"Box: \((\d+), (\d+), (\d+), (\d+)\), ist:\s*([\d.]+)m", bbox)
-        x_min, y_min, x_max, y_max, z_dist = map(int, match.groups())
-
-        # match = re.search(r"Dist:\s*([\d.]+)m" , bbox)
-        z_dist = float(z_dist)  # Convert distance to float
-        
+        match = re.search(r"Box: \((\d+), (\d+), (\d+), (\d+)\), Dist:\s*([\d.]+)m", bbox)
+        if match:
+            # Convert box coordinates to integers
+            x_min, y_min, x_max, y_max = map(int, match.groups()[:4])
+            # Convert distance to float
+            z_dist = float(match.group(5))
+        else:
+            raise ValueError(f"Failed to parse bbox string: {bbox}")
             
         for y in range(y_min, y_max, 5):
             for x in range(x_min, x_max, 5):
@@ -167,6 +170,7 @@ class ObstacleDetectionNode(Node):
 
             # ==== NEW: Publish detection info ====
             detection_info = f"Box: ({x1}, {y1}, {x2}, {y2}), Dist: {Z:.2f}m"
+            # print(depth_frame.shape)
             pc_msg =  self.bbox_to_pointcloud(detection_info, depth_frame, header)
             # self.detection_publisher_.publish(String(data=detection_info))
             if pc_msg:
