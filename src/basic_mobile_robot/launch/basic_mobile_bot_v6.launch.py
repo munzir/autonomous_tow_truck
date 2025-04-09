@@ -177,7 +177,8 @@ def generate_launch_description():
   start_lidar_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(lidar_launch_path),
     condition=IfCondition(amcl),  # This ensures LiDAR only starts if AMCL is True
-    launch_arguments={'use_sim_time': use_sim_time}.items()
+    launch_arguments={'use_sim_time': use_sim_time,
+                      'frame_id': 'lidar_link' }.items()
   )
 
 
