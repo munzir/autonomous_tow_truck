@@ -73,7 +73,7 @@ class PositionPublisher(Node):
         odom_msg.pose.pose.position.x = self.x
         odom_msg.pose.pose.position.y = self.y
         odom_msg.pose.pose.position.z = 0.0
-
+    
         import math
         odom_msg.pose.pose.orientation.x = 0.0
         odom_msg.pose.pose.orientation.y = 0.0
