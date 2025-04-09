@@ -5,15 +5,19 @@ from sensor_msgs.msg import Image
 import cv2
 from cv_bridge import CvBridge
 import torch
+import re
 import pyrealsense2 as rs
 import numpy as np
-import time  # To measure latency
+import time  # To measure latency'
+from sensor_msgs.msg import PointCloud2, PointField
+from std_msgs.msg import Header  # Added Header import
 
 class ObstacleDetectionNode(Node):
     def __init__(self):
         super().__init__('obstacle_detection_node')
         self.publisher_ = self.create_publisher(String, 'obstacle_info', 10)
-        self.detection_publisher_ = self.create_publisher(String, '/yolo_detections', 10)
+        # self.detection_publisher_ = self.create_publisher(String, '/yolo_detections', 10)
+        self.pointcloud_publisher_ = self.create_publisher(PointCloud2, '/yolo_obstacles', 10)  # New publisher
         self.bridge = CvBridge()
 
         # Load YOLOv5 model (adjust model path if necessary)
@@ -35,6 +39,54 @@ class ObstacleDetectionNode(Node):
         self.width_t = 0.8
         self.height_t = 1.9
 
+        self.fx = 385
+        self.fy = 385
+        self.cx = 325
+        self.cy = 239
+
+    def bbox_to_pointcloud(self, bbox, depth_image, header):
+        """Convert YOLO bboxes to PointCloud2 with class information in intensity field"""
+        point_cloud = []
+
+        match = re.search(r"Box: \((\d+), (\d+), (\d+), (\d+)\), ist:\s*([\d.]+)m", bbox)
+        x_min, y_min, x_max, y_max, z_dist = map(int, match.groups())
+
+        # match = re.search(r"Dist:\s*([\d.]+)m" , bbox)
+        z_dist = float(z_dist)  # Convert distance to float
+        
+            
+        for y in range(y_min, y_max, 5):
+            for x in range(x_min, x_max, 5):
+                if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
+                    depth = depth_image[y, x]
+                    if depth > 0:
+                        z = depth
+                        x_3d = (x - self.cx) * z / self.fx
+                        y_3d = (y - self.cy) * z / self.fy
+                        # Store point with class as intensity (4th field)
+                        point_cloud.append([x_3d, y_3d, z])
+        
+        fields = [
+            PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+            PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+            PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+        ]
+        
+        header.frame_id = "camera_depth_optical_frame"
+        pc2_msg = PointCloud2(
+            header=header,
+            height=1,
+            width=len(point_cloud),
+            is_dense=True,
+            is_bigendian=False,
+            fields=fields,
+            point_step=12,  # 4 fields * 4 bytes
+            row_step=12 * len(point_cloud),
+            data=np.asarray(point_cloud, dtype=np.float32).tobytes()
+        )
+        
+        return pc2_msg
+
     def capture_frame(self):
         # Record the timestamp when the frame is captured
         start_capture_time = time.time()
@@ -54,9 +106,6 @@ class ObstacleDetectionNode(Node):
         # Convert color frame to OpenCV format
         color_image = np.asanyarray(color_frame.get_data())
 
-        # Record timestamp when detection starts
-        # detection_start_time = time.time()
-
         # Perform object detection and draw bounding boxes
         obstacle_detected, annotated_frame, distance = self.detect_obstacle(color_image, depth_frame)
 
@@ -65,17 +114,6 @@ class ObstacleDetectionNode(Node):
 
         # Calculate detection latency (time from capture to detection)
         capture_and_detection_latency = detection_end_time - start_capture_time
-        # detection_latency = detection_end_time - detection_start_time
-
-        # Log latencies
-        # self.get_logger().info(f"Capture to Detection Latency: {capture_and_detection_latency:.4f} seconds")
-        # self.get_logger().info(f"Detection Latency: {detection_latency:.4f} seconds")
-
-        # Publish obstacle status if detected
-        # if obstacle_detected:    
-            # msg = String()
-            # msg.data = f"Obstacle detected at distance: {distance:.2f}m"
-            # self.publisher_.publish(msg)
 
 
         if distance:    
@@ -95,6 +133,11 @@ class ObstacleDetectionNode(Node):
         results = self.model(color_image)
         obstacle_detected = False
         range_within = 0
+
+        # Create header with ROS 2 timestamp
+        header = Header()
+        header.stamp = self.get_clock().now().to_msg()  # ROS 2 way to get time
+        header.frame_id = "camera_depth_optical_frame"  # Match your TF tree
 
         for *box, conf, cls in results.pred[0]:
             x1, y1, x2, y2 = map(int, box)
@@ -123,8 +166,11 @@ class ObstacleDetectionNode(Node):
             cv2.putText(color_image, f"X: {X:.2f}m, Y: {Y:.2f}m", (x1 - 20, y1 - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
             # ==== NEW: Publish detection info ====
-            detection_info = f"Class: {results.names[int(cls)]}, Conf: {conf:.2f}, Box: ({x1}, {y1}, {x2}, {y2}), Dist: {Z:.2f}m"
-            self.detection_publisher_.publish(String(data=detection_info))
+            detection_info = f"Box: ({x1}, {y1}, {x2}, {y2}), Dist: {Z:.2f}m"
+            pc_msg =  self.bbox_to_pointcloud(detection_info, depth_frame, header)
+            # self.detection_publisher_.publish(String(data=detection_info))
+            if pc_msg:
+                self.pointcloud_publisher_.publish(pc_msg)
 
         return obstacle_detected, color_image, range_within
 
