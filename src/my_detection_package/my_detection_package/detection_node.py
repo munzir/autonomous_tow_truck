@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from std_msgs.msg import String, Header
+from sensor_msgs.msg import Image, PointCloud2
 import cv2
 from cv_bridge import CvBridge
 import torch
@@ -9,15 +9,29 @@ import re
 import pyrealsense2 as rs
 import numpy as np
 import time  # To measure latency'
-from sensor_msgs.msg import PointCloud2, PointField
+from sensor_msgs.msg import PointField
 from std_msgs.msg import Header  # Added Header import
+import sensor_msgs_py.point_cloud2 as pc2
+from geometry_msgs.msg import TransformStamped
+import tf2_ros
+
+
 
 class ObstacleDetectionNode(Node):
     def __init__(self):
         super().__init__('obstacle_detection_node')
         self.publisher_ = self.create_publisher(String, 'obstacle_info', 10)
-        # self.detection_publisher_ = self.create_publisher(String, '/yolo_detections', 10)
-        self.pointcloud_publisher_ = self.create_publisher(PointCloud2, '/yolo_obstacles', 10)  # New publisher
+        self.detection_publisher_ = self.create_publisher(String, '/yolo_detections', 10)
+        qos_profile = rclpy.qos.QoSProfile(
+                reliability=rclpy.qos.ReliabilityPolicy.BEST_EFFORT,
+                history=rclpy.qos.HistoryPolicy.KEEP_LAST,
+                depth=1
+            )
+        self.pointcloud_publisher_ = self.create_publisher(
+            PointCloud2, 
+            '/yolo_detections',  # Standard RealSense topic
+            qos_profile
+        )        
         self.bridge = CvBridge()
 
         # Load YOLOv5 model (adjust model path if necessary)
@@ -44,51 +58,20 @@ class ObstacleDetectionNode(Node):
         self.cx = 325
         self.cy = 239
 
-    def bbox_to_pointcloud(self, bbox, depth_frame, header):
-        """Convert YOLO bboxes to PointCloud2 with class information in intensity field"""
-        point_cloud = []
-        depth_image = np.asanyarray(depth_frame.get_data())
+        self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
+        self.publish_camera_tf()
 
-        match = re.search(r"Box: \((\d+), (\d+), (\d+), (\d+)\), Dist:\s*([\d.]+)m", bbox)
-        if match:
-            # Convert box coordinates to integers
-            x_min, y_min, x_max, y_max = map(int, match.groups()[:4])
-            # Convert distance to float
-            z_dist = float(match.group(5))
-        else:
-            raise ValueError(f"Failed to parse bbox string: {bbox}")
-            
-        for y in range(y_min, y_max, 5):
-            for x in range(x_min, x_max, 5):
-                if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
-                    depth = depth_image[y, x]
-                    if depth > 0:
-                        z = float(depth)
-                        x_3d = (x - self.cx) * z / self.fx
-                        y_3d = (y - self.cy) * z / self.fy
-                        # Store point with class as intensity (4th field)
-                        point_cloud.append([x_3d, y_3d, z])
-        
-        fields = [
-            PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-            PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-            PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-        ]
-        
-        header.frame_id = "camera_depth_optical_frame"
-        pc2_msg = PointCloud2(
-            header=header,
-            height=1,
-            width=len(point_cloud),
-            is_dense=True,
-            is_bigendian=False,
-            fields=fields,
-            point_step=12,  # 4 fields * 4 bytes
-            row_step=12 * len(point_cloud),
-            data=np.asarray(point_cloud, dtype=np.float32).tobytes()
-        )
-        
-        return pc2_msg
+    def publish_camera_tf(self):
+        transform = TransformStamped()
+        transform.header.stamp = self.get_clock().now().to_msg()
+        transform.header.frame_id = "base_link"
+        transform.child_frame_id = "camera_link_optical"
+        transform.transform.translation.x = 0.305
+        transform.transform.translation.y = 0.0
+        transform.transform.translation.z = 0.08
+        transform.transform.rotation.x = -0.707  # -π/2 around X
+        transform.transform.rotation.w = 0.707   # -π/2 around Z (combined)
+        self.tf_broadcaster.sendTransform(transform)
 
     def capture_frame(self):
         # Record the timestamp when the frame is captured
@@ -140,7 +123,7 @@ class ObstacleDetectionNode(Node):
         # Create header with ROS 2 timestamp
         header = Header()
         header.stamp = self.get_clock().now().to_msg()  # ROS 2 way to get time
-        header.frame_id = "camera_depth_optical_frame"  # Match your TF tree
+        header.frame_id = "camera_link_optical"  # Match your TF tree
 
         for *box, conf, cls in results.pred[0]:
             x1, y1, x2, y2 = map(int, box)
@@ -177,6 +160,59 @@ class ObstacleDetectionNode(Node):
                 self.pointcloud_publisher_.publish(pc_msg)
 
         return obstacle_detected, color_image, range_within
+    
+    def bbox_to_pointcloud(self, bbox, depth_frame):
+        header = Header()
+        header.stamp = self.get_clock().now().to_msg()
+        header.frame_id = "camera_link_optical"
+        point_cloud = []
+        depth_image = np.asanyarray(depth_frame.get_data())
+        
+        # Parse detection info
+        match = re.search(r"Box: \((\d+), (\d+), (\d+), (\d+)\), Dist:\s*([\d.]+)m", bbox)
+        x_min, y_min, x_max, y_max = map(int, match.groups()[:4])
+        
+        # Convert depth units if needed (Z16 format is in mm)
+        depth_scale = self.profile.get_device().first_depth_sensor().get_depth_scale()
+        
+        for y in range(y_min, y_max, 5):  # Sample with stride
+            for x in range(x_min, x_max, 5):
+                if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
+                    depth = depth_image[y, x] * depth_scale  # Convert to meters
+                    if depth > 0:
+                        # Convert to 3D coordinates
+                        point = rs.rs2_deproject_pixel_to_point(
+                            self.depth_intrinsics, 
+                            [x, y], 
+                            depth
+                        )
+                        point_cloud.append(point)
+        
+        # Create fields matching RealSense's format
+        fields = [
+            PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+            PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+            PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+            # Optional: Add intensity if needed by costmap
+            PointField(name='intensity', offset=12, datatype=PointField.FLOAT32, count=1)
+        ]
+        
+        # Match RealSense's point_step (typically 16 or 32 bytes)
+        point_step = 16
+        
+        # Create the message
+        pc2_msg = PointCloud2(
+            header=header,
+            height=1,
+            width=len(point_cloud),
+            is_dense=False,  # Important for costmap
+            is_bigendian=False,
+            fields=fields,
+            point_step=point_step,
+            row_step=point_step * len(point_cloud),
+            data=np.asarray(point_cloud, dtype=np.float32).tobytes()
+        )
+        return pc2_msg
 
     def destroy_node(self):
         # Stop the RealSense pipeline
