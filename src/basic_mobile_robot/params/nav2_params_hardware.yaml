@@ -328,7 +328,7 @@ local_costmap:
           marking: True
           data_type: "LaserScan"
         yolo_detections: #added in local
-          topic: /camera/realsense_camera/depth/color/points
+          topic: /yolo_detections
           max_obstacle_height: 3.0
           min_obstacle_height: 0.0
           obstacle_max_range: 4.0
@@ -337,14 +337,15 @@ local_costmap:
           data_type: "PointCloud2"
           expected_update_rate: 1.0
           observation_persistence: 0.0
-          # inflation_radius: 0.1
           decay: 0.2
       static_layer:
         map_subscribe_transient_local: True
       always_send_full_costmap: True
+
   local_costmap_client:
     ros__parameters:
       use_sim_time: True
+      
   local_costmap_rclcpp_node:
     ros__parameters:
       use_sim_time: True
