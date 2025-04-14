@@ -46,7 +46,7 @@ def main():
   initial_pose.pose.orientation.y = 0.0
   initial_pose.pose.orientation.z = -0.7089376127395005
   initial_pose.pose.orientation.w = 0.7052711969471163
-  navigator.setInitialPose(initial_pose)
+  # navigator.setInitialPose(initial_pose)
  
   # Activate navigation, if not autostarted. This should be called after setInitialPose()
   # or this will initialize at the origin of the map and update the costmap with bogus readings.
@@ -54,7 +54,7 @@ def main():
   # navigator.lifecycleStartup()
  
   # Wait for navigation to fully activate. Use this line if autostart is set to true.
-  navigator.waitUntilNav2Active()
+  # navigator.waitUntilNav2Active()
  
   # If desired, you can change or load the map as well
   # navigator.changeMap('/path/to/map.yaml')
