@@ -3,12 +3,26 @@ from rclpy.node import Node
 from visualization_msgs.msg import Marker, MarkerArray
 import csv
 
+# class WaypointPublisher(Node):
+#     def __init__(self):
+#         super().__init__('waypoint_publisher')
+#         self.publisher_markers = self.create_publisher(MarkerArray, '/waypoints', 10)
+#         self.timer = self.create_timer(1.0, self.publish_waypoints)
+#         self.waypoints = self.load_waypoints('/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_to_AS.csv')
+#         self.index = 0
+#         self.marker_array = MarkerArray()
+
 class WaypointPublisher(Node):
     def __init__(self):
         super().__init__('waypoint_publisher')
+
+        # Declare parameter
+        self.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_to_AS.csv')
+        csv_filename = self.get_parameter('csv_filename').get_parameter_value().string_value
+
         self.publisher_markers = self.create_publisher(MarkerArray, '/waypoints', 10)
         self.timer = self.create_timer(1.0, self.publish_waypoints)
-        self.waypoints = self.load_waypoints('/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_to_AS.csv')
+        self.waypoints = self.load_waypoints(csv_filename)
         self.index = 0
         self.marker_array = MarkerArray()
 
