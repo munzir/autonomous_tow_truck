@@ -1,0 +1,41 @@
+capture_directory: "~"
+fixed_frame: map
+target_frame: <none>
+fix_orientation: false
+rotate_90: true
+enable_antialiasing: true
+show_displays: true
+show_status_bar: true
+show_capture_tools: true
+window_width: 1600
+window_height: 900
+view_scale: 0.09229598
+offset_x: 0
+offset_y: 0
+use_latest_transforms: true
+background: "#a0a0a4"
+image_transport: raw
+displays:
+  - type: mapviz_plugins/tile_map
+    name: OSM Map
+    config:
+      visible: true
+      collapsed: false
+      custom_sources:
+        - base_url: https://tile.openstreetmap.org/{level}/{x}/{y}.png
+          max_zoom: 19
+          name: OSM
+          type: wmts
+      source: OSM
+  - type: mapviz_plugins/navsat
+    name: GPS Location
+    config:
+      visible: true
+      collapsed: false
+      topic: /gps/fix
+      color: "#fce94f"
+      draw_style: points
+      position_tolerance: 0.5
+      buffer_size: 0
+      show_covariance: true
+      show_all_covariances: false
