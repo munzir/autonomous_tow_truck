@@ -9,4 +9,5 @@ source ~/autonomous_tow_truck/install/local_setup.bash
 ros2 run waypoint_publisher waypoint_publisher_node --ros-args -p csv_filename:=/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_AS_uturn.csv &
 
 # Run the nav_through_poses script
-ros2 run basic_mobile_robot nav_through_poses.py
+ros2 run basic_mobile_robot nav_through_poses.py --ros-args -p csv_filename:=/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_AS_uturn.csv
+

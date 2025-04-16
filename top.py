@@ -1,11 +1,19 @@
 import subprocess
 import sys
 
-def run_script(script_name):
+# def run_script(script_name):
+#     try:
+#         subprocess.run(['bash', script_name], check=True)
+#     except subprocess.CalledProcessError as e:
+#         print(f"Error while running {script_name}: {e}")
+
+def run_script_in_terminal(script_name):
     try:
-        subprocess.run(['bash', script_name], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Error while running {script_name}: {e}")
+        with open('logs.txt', 'a') as log_file:
+            subprocess.Popen(['bash', script_name], stdout=log_file, stderr=log_file)
+    except Exception as e:
+        print(f"Failed to run {script_name}: {e}")
+
 
 def toggle_mode(current_mode):
     if current_mode == 'manual':
@@ -19,35 +27,42 @@ def toggle_mode(current_mode):
         return 'manual'
     return current_mode
 
+project_launched = False  # Define at the global level or pass as argument
+
 def select_destination(destination):
+    global project_launched  # to modify the flag inside the function
+    if not project_launched:
+        print("Launching project stack.")
+        run_script_in_terminal('launch_project.sh')
+        project_launched = True
+    else:
+        print("Project already running. Skipping launch.")
+
     if destination == 'assembly_shop':
         print("Running Assembly Shop Waypoints.")
-        run_script('launch_project.sh')
-        # run_script('assembly_shop_waypoints.sh')
-    elif destination == 'charging_station':
-        print("Running Charging Station Waypoints.")
-        run_script('launch_project.sh')
-        run_script('charging_station_waypoints.sh')
+        run_script_in_terminal('assembly_shop_waypoints.sh')
+    elif destination == 'u_turn':
+        print("Running U-turn Waypoints.")
+        run_script_in_terminal('u_turn_waypoints.sh')
     elif destination == 'bumper_shop':
         print("Running Bumper Shop Waypoints.")
-        run_script('launch_project.sh')
-        run_script('bumper_shop_waypoints.sh')
+        run_script_in_terminal('bumper_shop_waypoints.sh')
 
 def transition_to_outdoor():
     print("Switching to outdoor mode with GPS.")
-    run_script('gps.sh')
+    run_script_in_terminal('gps.sh')
 
 def transition_to_indoor():
     print("Switching to indoor mode with LiDAR.")
-    run_script('odometry.sh')
+    run_script_in_terminal('odometry.sh')
 
 def reset_motor_power():
     print("Resetting motor power.")
-    run_script('motor_power_reset.sh')
+    run_script_in_terminal('motor_power_reset.sh')
 
 def reset_logic_power():
     print("Resetting logic power.")
-    run_script('logic_power_reset.sh')
+    run_script_in_terminal('logic_power_reset.sh')
 
 def main():
     current_mode = 'manual'
@@ -63,7 +78,7 @@ def main():
             print(f"Current mode: {current_mode}")
         
         elif button_input == 'select_destination':
-            destination = input("Enter destination (assembly_shop, charging_station, bumper_shop): ")
+            destination = input("Enter destination (assembly_shop, u_turn, bumper_shop): ")
             select_destination(destination)
             current_destination = destination
         
@@ -82,7 +97,7 @@ def main():
             reset_logic_power()
         
         elif button_input == 'launch_project':
-            run_script('launch_project.sh')
+            run_script_in_terminal('launch_project.sh')
         
         elif button_input == 'exit':
             print("Exiting the program.")

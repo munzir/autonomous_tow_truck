@@ -22,7 +22,7 @@ from rclpy.duration import Duration # Handles time for ROS 2
 import rclpy # Python client library for ROS 2
 import csv
 
-from robot_navigator import BasicNavigator
+from robot_navigator import BasicNavigator, TaskResult
  
 '''
 Navigates a robot through goal poses.
@@ -36,17 +36,19 @@ def main():
   # Launch the ROS 2 Navigation Stack
   navigator = BasicNavigator()
   # Set the robot's initial pose if necessary
-  initial_pose = PoseStamped()
-  initial_pose.header.frame_id = 'map'
-  initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  initial_pose.pose.position.x =  14.5093994140625
-  initial_pose.pose.position.y = 6.217558860778809
-  initial_pose.pose.position.z = 0.0
-  initial_pose.pose.orientation.x = 0.0
-  initial_pose.pose.orientation.y = 0.0
-  initial_pose.pose.orientation.z = -0.7089376127395005
-  initial_pose.pose.orientation.w = 0.7052711969471163
+  # ==================================================
+  # initial_pose = PoseStamped()
+  # initial_pose.header.frame_id = 'map'
+  # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+  # initial_pose.pose.position.x = 291.5
+  # initial_pose.pose.position.y = -14.61
+  # initial_pose.pose.position.z = 0.0
+  # initial_pose.pose.orientation.x = 0.0
+  # initial_pose.pose.orientation.y = 0.0
+  # initial_pose.pose.orientation.z = 0.99992
+  # initial_pose.pose.orientation.w = 0.012665
   # navigator.setInitialPose(initial_pose)
+  # ======================================================
  
   # Activate navigation, if not autostarted. This should be called after setInitialPose()
   # or this will initialize at the origin of the map and update the costmap with bogus readings.
@@ -54,7 +56,7 @@ def main():
   # navigator.lifecycleStartup()
  
   # Wait for navigation to fully activate. Use this line if autostart is set to true.
-  # navigator.waitUntilNav2Active()
+  navigator.waitUntilNav2Active()
  
   # If desired, you can change or load the map as well
   # navigator.changeMap('/path/to/map.yaml')
@@ -65,12 +67,64 @@ def main():
   # local_costmap = navigator.getLocalCostmap()
  
   # Set the robot's goal poses
-  file_path='/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv'
+  # current comment
+  # ========================================================
+  # file_path='/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv'
+  # goal_poses = []
+  # try:
+  #     with open(file_path, mode='r') as file:
+  #         reader = csv.reader(file)
+  #         for row in reader:
+  #             if len(row) == 4:
+  #                 x, y, w, z = map(float, row)
+  #                 goal_pose = PoseStamped()
+  #                 goal_pose.header.frame_id = 'map'
+  #                 goal_pose.header.stamp = navigator.get_clock().now().to_msg()
+  #                 goal_pose.pose.position.x = x
+  #                 goal_pose.pose.position.y = y
+  #                 goal_pose.pose.position.z = 0.0
+  #                 goal_pose.pose.orientation.x = 0.0
+  #                 goal_pose.pose.orientation.y = 0.0
+  #                 goal_pose.pose.orientation.z = z
+  #                 goal_pose.pose.orientation.w = w
+  #                 goal_poses.append(goal_pose)
+  #             print(goal_pose)
+  #     print(f'Loaded {len(goal_poses)} goal_poses from {file_path}')
+  # except Exception as e:
+  #     print(f'Failed to load goal_poses: {e}')
+  # ==================================================
+  temp_node = rclpy.create_node('nav_through_poses_param_node')
+  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv').get_parameter_value().string_value
+  temp_node.destroy_node()
+  file_path = csv_filename
   goal_poses = []
   try:
       with open(file_path, mode='r') as file:
           reader = csv.reader(file)
-          for row in reader:
+          all_rows = list(reader)
+          
+          # First row is initial pose
+          if len(all_rows[0]) == 4:
+              x, y, w, z = map(float, all_rows[0])
+              initial_pose = PoseStamped()
+              initial_pose.header.frame_id = 'map'
+              initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+              initial_pose.pose.position.x = x
+              initial_pose.pose.position.y = y
+              initial_pose.pose.position.z = 0.0
+              initial_pose.pose.orientation.x = 0.0
+              initial_pose.pose.orientation.y = 0.0
+              initial_pose.pose.orientation.z = z
+              initial_pose.pose.orientation.w = w
+              navigator.setInitialPose(initial_pose)
+              navigator.waitUntilNav2Active()
+
+              # # ✅ Give AMCL some time to localize
+              # print("Waiting for localization...")
+              # navigator.waitForInitialPose(timeout=Duration(seconds=5))
+          
+          # Remaining rows are goals
+          for row in all_rows[1:]:
               if len(row) == 4:
                   x, y, w, z = map(float, row)
                   goal_pose = PoseStamped()
@@ -84,504 +138,11 @@ def main():
                   goal_pose.pose.orientation.z = z
                   goal_pose.pose.orientation.w = w
                   goal_poses.append(goal_pose)
-              print(goal_pose)
+                  print(goal_pose)
       print(f'Loaded {len(goal_poses)} goal_poses from {file_path}')
   except Exception as e:
       print(f'Failed to load goal_poses: {e}')
-  # goal_poses = []
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 238.90697686745187
-  # goal_pose.pose.position.y = 98.24506821246187
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = -0.9659017178529264
-  # goal_pose.pose.orientation.w = 0.2589090022551657
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 0.0
-  # goal_pose.pose.position.y = -4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 5.0
-  # goal_pose.pose.position.y = -4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 10.0
-  # goal_pose.pose.position.y = -4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
- 
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.0
-  # goal_pose.pose.position.y = -4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.5
-  # goal_pose.pose.position.y = -3.7
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.38
-  # goal_pose.pose.orientation.w = 0.92
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.5
-  # goal_pose.pose.position.y = -3.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.707
-  # goal_pose.pose.orientation.w = 0.707
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.5
-  # goal_pose.pose.position.y = -2.7
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.92
-  # goal_pose.pose.orientation.w = 0.38
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.0
-  # goal_pose.pose.position.y = -2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 10.0
-  # goal_pose.pose.position.y = -2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 5.0
-  # goal_pose.pose.position.y = -2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 0.0
-  # goal_pose.pose.position.y = -2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -5.0
-  # goal_pose.pose.position.y = -2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -6.5
-  # goal_pose.pose.position.y = -2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -7.0
-  # goal_pose.pose.position.y = -1.7
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.92
-  # goal_pose.pose.orientation.w = 0.38
-  # goal_poses.append(goal_pose)
- 
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -7.0
-  # goal_pose.pose.position.y = -1.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.707
-  # goal_pose.pose.orientation.w = 0.707
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -7.0
-  # goal_pose.pose.position.y = -0.7
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.38
-  # goal_pose.pose.orientation.w = 0.92
-  # goal_poses.append(goal_pose)
- 
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -6.5
-  # goal_pose.pose.position.y = 0.0
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -5.0
-  # goal_pose.pose.position.y = 0.0
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 0.0
-  # goal_pose.pose.position.y = 0.0
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
- 
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 5.0
-  # goal_pose.pose.position.y = 0.0
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 10.0
-  # goal_pose.pose.position.y = 0.0
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose5 = PoseStamped()
-  # goal_pose5.header.frame_id = 'map'
-  # goal_pose5.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose5.pose.position.x = 13.0
-  # goal_pose5.pose.position.y = 0.0
-  # goal_pose5.pose.position.z = 0.0
-  # goal_pose5.pose.orientation.x = 0.0
-  # goal_pose5.pose.orientation.y = 0.0
-  # goal_pose5.pose.orientation.z = 0.0
-  # goal_pose5.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose5)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.5
-  # goal_pose.pose.position.y = 0.5
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.38
-  # goal_pose.pose.orientation.w = 0.92
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.5
-  # goal_pose.pose.position.y = 1.0
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.707
-  # goal_pose.pose.orientation.w = 0.707
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.5
-  # goal_pose.pose.position.y = 1.5
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.92
-  # goal_pose.pose.orientation.w = 0.38
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.0
-  # goal_pose.pose.position.y = 2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 10.0
-  # goal_pose.pose.position.y = 2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 5.0
-  # goal_pose.pose.position.y = 2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 0.0
-  # goal_pose.pose.position.y = 2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -5.0
-  # goal_pose.pose.position.y = 2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -6.5
-  # goal_pose.pose.position.y = 2.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 1.0
-  # goal_pose.pose.orientation.w = 0.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -7.0
-  # goal_pose.pose.position.y = 2.7
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.92
-  # goal_pose.pose.orientation.w = 0.38
-  # goal_poses.append(goal_pose)
- 
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -7.0
-  # goal_pose.pose.position.y = 3.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.707
-  # goal_pose.pose.orientation.w = 0.707
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -7.0
-  # goal_pose.pose.position.y = 3.7
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.38
-  # goal_pose.pose.orientation.w = 0.92
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -6.5
-  # goal_pose.pose.position.y = 4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = -5.0
-  # goal_pose.pose.position.y = 4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 0.0
-  # goal_pose.pose.position.y = 4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 5.0
-  # goal_pose.pose.position.y = 4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
-   
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 10.0
-  # goal_pose.pose.position.y = 4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
- 
-  # goal_pose = PoseStamped()
-  # goal_pose.header.frame_id = 'map'
-  # goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # goal_pose.pose.position.x = 13.0
-  # goal_pose.pose.position.y = 4.2
-  # goal_pose.pose.position.z = 0.0
-  # goal_pose.pose.orientation.x = 0.0
-  # goal_pose.pose.orientation.y = 0.0
-  # goal_pose.pose.orientation.z = 0.0
-  # goal_pose.pose.orientation.w = 1.0
-  # goal_poses.append(goal_pose)
- 
+
   # sanity check a valid path exists
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
@@ -624,14 +185,14 @@ def main():
  
   # Do something depending on the return code
   result = navigator.getResult()
-#   if result == TaskResult.SUCCEEDED:
-#     print('Goal succeeded!')
-#   elif result == TaskResult.CANCELED:
-#     print('Goal was canceled!')
-#   elif result == TaskResult.FAILED:
-#     print('Goal failed!')
-#   else:
-#     print('Goal has an invalid return status!')
+  if result == TaskResult.SUCCEEDED:
+    print('Goal succeeded!')
+  elif result == TaskResult.CANCELED:
+    print('Goal was canceled!')
+  elif result == TaskResult.FAILED:
+    print('Goal failed!')
+  else:
+    print('Goal has an invalid return status!')
  
   # Close the ROS 2 Navigation Stack
   navigator.lifecycleShutdown()
