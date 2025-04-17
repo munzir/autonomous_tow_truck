@@ -335,8 +335,8 @@ local_costmap:
           clearing: true
           marking: true
           data_type: "PointCloud2"
-          expected_update_rate: 1.0
-          observation_persistence: 0.0
+          expected_update_rate: 0.2
+          observation_persistence: 0.5
           decay: 0.2
       static_layer:
         map_subscribe_transient_local: True

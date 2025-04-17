@@ -1,0 +1,284 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2025-04-17-14-14-32-320201-munzir-ThinkPad-T14s-Gen-4-1713
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [robot_state_publisher-1]: process started with pid [1727]
+[INFO] [rviz2-2]: process started with pid [1729]
+[INFO] [um7_driver-3]: process started with pid [1731]
+[INFO] [component_container_isolated-4]: process started with pid [1733]
+[INFO] [joyard-5]: process started with pid [1735]
+[INFO] [freqnangle-6]: process started with pid [1737]
+[INFO] [poser-7]: process started with pid [1739]
+[INFO] [listener-8]: process started with pid [1741]
+[INFO] [static_transform_publisher-9]: process started with pid [1743]
+[INFO] [object_detection_node-10]: process started with pid [1745]
+[static_transform_publisher-9] [WARN] [1744884873.467878931] []: Old-style arguments are deprecated; see --help for new-style arguments
+[um7_driver-3] [WARN] [1744884873.483063318] [um7_driver]: um7_driver was unable to connect to port: /dev/ttyUSB1
+[um7_driver-3] [WARN] [1744884873.483377832] [um7_driver]: Could not connect to serial device /dev/ttyUSB1. Trying again every 1 second.
+[static_transform_publisher-9] [INFO] [1744884873.485765267] [static_map_to_odom]: Spinning until stopped - publishing transform
+[static_transform_publisher-9] translation: ('-2.000000', '1.000000', '0.000000')
+[static_transform_publisher-9] rotation: ('0.000000', '0.000000', '0.977902', '0.209059')
+[static_transform_publisher-9] from 'map' to 'odom'
+[rviz2-2] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[robot_state_publisher-1] Warning: link 'camera_link' material 'red' undefined.
+[robot_state_publisher-1]          at line 84 in ./urdf_parser/src/model.cpp
+[robot_state_publisher-1] Warning: link 'camera_link' material 'red' undefined.
+[robot_state_publisher-1]          at line 84 in ./urdf_parser/src/model.cpp
+[robot_state_publisher-1] [INFO] [1744884873.491876446] [robot_state_publisher]: got segment base_footprint
+[robot_state_publisher-1] [INFO] [1744884873.491989773] [robot_state_publisher]: got segment base_link
+[robot_state_publisher-1] [INFO] [1744884873.492001105] [robot_state_publisher]: got segment camera_link
+[robot_state_publisher-1] [INFO] [1744884873.492008548] [robot_state_publisher]: got segment camera_link_optical
+[robot_state_publisher-1] [INFO] [1744884873.492015722] [robot_state_publisher]: got segment drivewhl_l_link
+[robot_state_publisher-1] [INFO] [1744884873.492022467] [robot_state_publisher]: got segment drivewhl_r_link
+[robot_state_publisher-1] [INFO] [1744884873.492028948] [robot_state_publisher]: got segment front_steering_wheel_link
+[robot_state_publisher-1] [INFO] [1744884873.492035986] [robot_state_publisher]: got segment gps_link
+[robot_state_publisher-1] [INFO] [1744884873.492042576] [robot_state_publisher]: got segment imu_link
+[robot_state_publisher-1] [INFO] [1744884873.492048593] [robot_state_publisher]: got segment lidar_link
+[robot_state_publisher-1] [INFO] [1744884873.492054733] [robot_state_publisher]: got segment rear_axle_link
+[robot_state_publisher-1] [INFO] [1744884873.492060714] [robot_state_publisher]: got segment steering_link
+[robot_state_publisher-1] [INFO] [1744884873.492066909] [robot_state_publisher]: got segment steering_wheel_link
+[freqnangle-6] [INFO] [1744884873.627062081] [ros_arduino_communication]: Connected to Arduino on {serial_dev_name}
+[freqnangle-6] [INFO] [1744884873.627656589] [ros_arduino_communication]: Connected to Arduino on {serial_dev_name}
+[freqnangle-6] [WARN] [1744884873.628240590] [ros_arduino_communication]: Received invalid steering angle data: 
+[freqnangle-6] [INFO] [1744884873.628517978] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.628762210] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.628987154] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.629208640] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.629434462] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.629692233] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.629931019] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.630157777] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.630390620] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.630623146] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.630846236] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.631064126] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.650321831] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.650801696] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.651081023] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.651329186] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.651566862] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.651834739] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.652059423] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.652280562] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.652512751] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.652744210] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.652964579] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.653188032] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.653432469] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.653717296] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.653957107] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.654189981] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.661569093] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.661972904] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.662262421] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.662519426] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.662799360] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.663030620] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.663255737] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.663486880] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.663746462] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.663984823] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.664214050] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.666015935] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.666339393] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.666643653] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.666897488] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.667130773] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.667366645] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.667605846] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.667834305] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.668070288] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.668268263] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.668460949] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.668775048] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.668980742] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.669163504] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.669347616] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.669527304] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.669733176] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.669983808] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.670187095] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.670390903] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.670575302] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.670869171] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.672495733] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.673339935] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.674188695] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.674779613] [ros_arduino_communication]: Published steering angle data: 1.0
+[freqnangle-6] [INFO] [1744884873.675416193] [ros_arduino_communication]: Published steering angle data: 1.0
+[component_container_isolated-4] [INFO] [1744884873.679358204] [nav2_container]: Load Library: /opt/ros/humble/lib/libcontroller_server_core.so
+[component_container_isolated-4] [INFO] [1744884873.685815385] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_controller::ControllerServer>
+[component_container_isolated-4] [INFO] [1744884873.685873468] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_controller::ControllerServer>
+[component_container_isolated-4] [INFO] [1744884873.693798584] [controller_server]: 
+[component_container_isolated-4] 	controller_server lifecycle node launched. 
+[component_container_isolated-4] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-4] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-4] [INFO] [1744884873.698064592] [controller_server]: Creating controller server
+[joyard-5] [INFO] [1744884873.701457343] [joystick_to_arduino]: Successfully autonomous!
+[component_container_isolated-4] [INFO] [1744884873.705564988] [local_costmap.local_costmap]: 
+[component_container_isolated-4] 	local_costmap lifecycle node launched. 
+[component_container_isolated-4] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-4] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-4] [INFO] [1744884873.706117282] [local_costmap.local_costmap]: Creating Costmap
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[component_container_isolated-4] [INFO] [1744884873.706578664] [rclcpp]: signal_handler(signum=2)
+[static_transform_publisher-9] [INFO] [1744884873.706579002] [rclcpp]: signal_handler(signum=2)
+[robot_state_publisher-1] [INFO] [1744884873.706585929] [rclcpp]: signal_handler(signum=2)
+[rviz2-2] [INFO] [1744884873.706585419] [rclcpp]: signal_handler(signum=2)
+[um7_driver-3] [INFO] [1744884873.706617267] [rclcpp]: signal_handler(signum=2)
+[joyard-5] Traceback (most recent call last):
+[joyard-5]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/joyard", line 33, in <module>
+[joyard-5]     sys.exit(load_entry_point('py-pubsub==0.0.0', 'console_scripts', 'joyard')())
+[joyard-5]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/joystick_to_arduino.py", line 341, in main
+[joyard-5]     joystick_to_arduino = JoystickToArduino(joystick_mode)
+[joyard-5]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/joystick_to_arduino.py", line 69, in __init__
+[joyard-5]     self.link_steering = txfer.SerialTransfer('arduino_steering', baud=115200)
+[joyard-5]   File "/usr/local/lib/python3.10/dist-packages/pySerialTransfer/pySerialTransfer.py", line 167, in __init__
+[joyard-5]     for p in serial_ports():
+[joyard-5]   File "/usr/local/lib/python3.10/dist-packages/pySerialTransfer/pySerialTransfer.py", line 130, in serial_ports
+[joyard-5]     return [p.device for p in serial.tools.list_ports.comports(include_links=True)]
+[joyard-5]   File "/usr/local/lib/python3.10/dist-packages/serial/tools/list_ports_linux.py", line 102, in comports
+[joyard-5]     for info in [SysFS(d) for d in devices]
+[joyard-5]   File "/usr/local/lib/python3.10/dist-packages/serial/tools/list_ports_linux.py", line 102, in <listcomp>
+[joyard-5]     for info in [SysFS(d) for d in devices]
+[joyard-5]   File "/usr/local/lib/python3.10/dist-packages/serial/tools/list_ports_linux.py", line 32, in __init__
+[joyard-5]     self.subsystem = os.path.basename(os.path.realpath(os.path.join(self.device_path, 'subsystem')))
+[joyard-5]   File "/usr/lib/python3.10/posixpath.py", line 396, in realpath
+[joyard-5]     path, ok = _joinrealpath(filename[:0], filename, strict, {})
+[joyard-5]   File "/usr/lib/python3.10/posixpath.py", line 429, in _joinrealpath
+[joyard-5]     newpath = join(path, name)
+[joyard-5]   File "/usr/lib/python3.10/posixpath.py", line 82, in join
+[joyard-5]     for b in map(os.fspath, p):
+[joyard-5] KeyboardInterrupt
+[listener-8] Traceback (most recent call last):
+[listener-8]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/listener", line 33, in <module>
+[listener-8]     sys.exit(load_entry_point('py-pubsub==0.0.0', 'console_scripts', 'listener')())
+[listener-8]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/subscriber_member_function.py", line 107, in main
+[listener-8]     rclpy.spin(kinematic_calculator)  # Spinning our node i.e. executing work
+[listener-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 222, in spin
+[listener-8]     executor.spin_once()
+[listener-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 739, in spin_once
+[listener-8]     self._spin_once_impl(timeout_sec)
+[listener-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 728, in _spin_once_impl
+[listener-8]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[listener-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 711, in wait_for_ready_callbacks
+[listener-8]     return next(self._cb_iter)
+[listener-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 608, in _wait_for_ready_callbacks
+[listener-8]     wait_set.wait(timeout_nsec)
+[listener-8] KeyboardInterrupt
+[poser-7] Traceback (most recent call last):
+[poser-7]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/poser", line 33, in <module>
+[poser-7]     sys.exit(load_entry_point('py-pubsub==0.0.0', 'console_scripts', 'poser')())
+[poser-7]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/pose_pub.py", line 115, in main
+[poser-7]     rclpy.spin(position_publisher)
+[poser-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 222, in spin
+[poser-7]     executor.spin_once()
+[poser-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 739, in spin_once
+[poser-7]     self._spin_once_impl(timeout_sec)
+[poser-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 728, in _spin_once_impl
+[poser-7]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[poser-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 711, in wait_for_ready_callbacks
+[poser-7]     return next(self._cb_iter)
+[poser-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 608, in _wait_for_ready_callbacks
+[poser-7]     wait_set.wait(timeout_nsec)
+[poser-7] KeyboardInterrupt
+[component_container_isolated-4] [INFO] [1744884873.707047561] [nav2_container]: Load Library: /opt/ros/humble/lib/libmap_server_core.so
+[component_container_isolated-4] [INFO] [1744884873.707523239] [controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[component_container_isolated-4] [INFO] [1744884873.707571860] [controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[component_container_isolated-4] [INFO] [1744884873.720238057] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::CostmapFilterInfoServer>
+[component_container_isolated-4] [INFO] [1744884873.720255054] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapSaver>
+[component_container_isolated-4] [INFO] [1744884873.720257637] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>
+[component_container_isolated-4] [INFO] [1744884873.720259794] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>
+[component_container_isolated-4] [ERROR] [1744884873.720537989] [nav2_container]: Component constructor threw an exception: failed to create guard condition: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/guard_condition.c:67
+[object_detection_node-10] Traceback (most recent call last):
+[object_detection_node-10]   File "/root/autonomous_tow_truck/install/my_detection_package/lib/my_detection_package/object_detection_node", line 33, in <module>
+[object_detection_node-10]     sys.exit(load_entry_point('my-detection-package==0.0.0', 'console_scripts', 'object_detection_node')())
+[object_detection_node-10]   File "/root/autonomous_tow_truck/install/my_detection_package/lib/my_detection_package/object_detection_node", line 25, in importlib_load_entry_point
+[object_detection_node-10]     return next(matches).load()
+[object_detection_node-10]   File "/usr/lib/python3.10/importlib/metadata/__init__.py", line 171, in load
+[object_detection_node-10]     module = import_module(match.group('module'))
+[object_detection_node-10]   File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+[object_detection_node-10]     return _bootstrap._gcd_import(name[level:], package, level)
+[object_detection_node-10]   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+[object_detection_node-10]   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+[object_detection_node-10]   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+[object_detection_node-10]   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+[object_detection_node-10]   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+[object_detection_node-10]   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+[object_detection_node-10]   File "/root/autonomous_tow_truck/install/my_detection_package/lib/python3.10/site-packages/my_detection_package/detection_node.py", line 9, in <module>
+[object_detection_node-10]     import torch
+[object_detection_node-10]   File "/usr/local/lib/python3.10/dist-packages/torch/__init__.py", line 404, in <module>
+[object_detection_node-10]     _load_global_deps()
+[object_detection_node-10]   File "/usr/local/lib/python3.10/dist-packages/torch/__init__.py", line 334, in _load_global_deps
+[object_detection_node-10]     _preload_cuda_deps("nvjitlink", "libnvJitLink.so.*[0-9]")
+[object_detection_node-10]   File "/usr/local/lib/python3.10/dist-packages/torch/__init__.py", line 303, in _preload_cuda_deps
+[object_detection_node-10]     ctypes.CDLL(lib_path)
+[object_detection_node-10]   File "/usr/lib/python3.10/ctypes/__init__.py", line 374, in __init__
+[object_detection_node-10]     self._handle = _dlopen(self._name, mode)
+[object_detection_node-10] KeyboardInterrupt
+[ERROR] [listener-8]: process has died [pid 1741, exit code -2, cmd '/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/listener --ros-args'].
+[rviz2-2] [INFO] [1744884873.743711818] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-2] [INFO] [1744884873.743757439] [rviz2]: OpenGl version: 4.6 (GLSL 4.6)
+[freqnangle-6] Traceback (most recent call last):
+[freqnangle-6]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/freqnangle", line 33, in <module>
+[freqnangle-6]     sys.exit(load_entry_point('py-pubsub==0.0.0', 'console_scripts', 'freqnangle')())
+[freqnangle-6]   File "/root/autonomous_tow_truck/install/py_pubsub/lib/python3.10/site-packages/py_pubsub/pose.py", line 71, in main
+[freqnangle-6]     rclpy.shutdown()
+[freqnangle-6]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 126, in shutdown
+[freqnangle-6]     _shutdown(context=context)
+[freqnangle-6]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[freqnangle-6]     return context.shutdown()
+[freqnangle-6]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[freqnangle-6]     self.__context.shutdown()
+[freqnangle-6] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ERROR] [object_detection_node-10]: process has died [pid 1745, exit code -2, cmd '/root/autonomous_tow_truck/install/my_detection_package/lib/my_detection_package/object_detection_node --ros-args'].
+[rviz2-2] [INFO] [1744884873.759061728] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-2] terminate called after throwing an instance of 'rclcpp::exceptions::RCLError'
+[rviz2-2]   what():  failed to create guard condition: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/guard_condition.c:67
+[ERROR] [joyard-5]: process has died [pid 1735, exit code -2, cmd '/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/joyard --ros-args --params-file /tmp/launch_params_ptouxmso'].
+[ERROR] [poser-7]: process has died [pid 1739, exit code -2, cmd '/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/poser --ros-args'].
+[INFO] [static_transform_publisher-9]: process has finished cleanly [pid 1743]
+[INFO] [robot_state_publisher-1]: process has finished cleanly [pid 1727]
+[INFO] [um7_driver-3]: process has finished cleanly [pid 1731]
+[ERROR] [freqnangle-6]: process has died [pid 1737, exit code 1, cmd '/root/autonomous_tow_truck/install/py_pubsub/lib/py_pubsub/freqnangle --ros-args'].
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884874.001608933] [rclcpp]: signal_handler(signum=2)
+[ERROR] [rviz2-2]: process has died [pid 1729, exit code -6, cmd '/opt/ros/humble/lib/rviz2/rviz2 -d /root/autonomous_tow_truck/install/basic_mobile_robot/share/basic_mobile_robot/rviz/nav2_config.rviz --ros-args -r __node:=rviz2'].
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884874.176818597] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884874.335138532] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884874.566565918] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch_ros.actions.load_composable_nodes]: Abandoning wait for the '/nav2_container/_container/load_node' service response, due to shutdown.
+[WARNING] [launch_ros.actions.load_composable_nodes]: Abandoning wait for the '/nav2_container/_container/load_node' service response, due to shutdown.
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884874.869612131] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884875.092516919] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884877.119547990] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884877.382094944] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884877.620987662] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884877.811355085] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884878.050722084] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884878.281102228] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884878.464751195] [rclcpp]: signal_handler(signum=2)
+[ERROR] [component_container_isolated-4]: process[component_container_isolated-4] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[INFO] [component_container_isolated-4]: sending signal 'SIGTERM' to process[component_container_isolated-4]
+[component_container_isolated-4] [INFO] [1744884878.733616540] [rclcpp]: signal_handler(signum=15)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884879.775203436] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884880.078279621] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884880.301270426] [rclcpp]: signal_handler(signum=2)
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT) again, ignoring...
+[component_container_isolated-4] [INFO] [1744884880.516644316] [rclcpp]: signal_handler(signum=2)
+[ERROR] [component_container_isolated-4]: process[component_container_isolated-4] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[INFO] [component_container_isolated-4]: sending signal 'SIGKILL' to process[component_container_isolated-4]
+[ERROR] [component_container_isolated-4]: process has died [pid 1733, exit code -9, cmd '/opt/ros/humble/lib/rclcpp_components/component_container_isolated --ros-args --log-level info --ros-args -r __node:=nav2_container --params-file /tmp/launch_params__nqvlj12 --params-file /tmp/launch_params_xpp0ir3s -r /tf:=tf -r /tf_static:=tf_static'].
