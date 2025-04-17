@@ -22,7 +22,7 @@ from rclpy.duration import Duration # Handles time for ROS 2
 import rclpy # Python client library for ROS 2
 import csv
 
-from robot_navigator import BasicNavigator, TaskResult
+from robot_navigator import BasicNavigator, NavigationResult
  
 '''
 Navigates a robot through goal poses.
@@ -185,17 +185,26 @@ def main():
  
   # Do something depending on the return code
   result = navigator.getResult()
-  if result == TaskResult.SUCCEEDED:
+  # if result == TaskResult.SUCCEEDED:
+  #   print('Goal succeeded!')
+  # elif result == TaskResult.CANCELED:
+  #   print('Goal was canceled!')
+  # elif result == TaskResult.FAILED:
+  #   print('Goal failed!')
+  # else:
+  #   print('Goal has an invalid return status!')
+  if result == 0:  # SUCCEEDED
     print('Goal succeeded!')
-  elif result == TaskResult.CANCELED:
+  elif result == 1:  # CANCELED
     print('Goal was canceled!')
-  elif result == TaskResult.FAILED:
+  elif result == 2:  # FAILED
     print('Goal failed!')
   else:
     print('Goal has an invalid return status!')
+
  
   # Close the ROS 2 Navigation Stack
-  navigator.lifecycleShutdown()
+  # navigator.lifecycleShutdown()
  
   exit(0)
  
