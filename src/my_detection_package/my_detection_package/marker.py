@@ -91,7 +91,6 @@ class SafetyMarkerDetectionNode(Node):
                 return
 
             color_image = np.asanyarray(color_frame.get_data())
-            depth_image = np.asanyarray(depth_frame.get_data())
 
             # Detect markers and get their 3D points
             marker_detected, annotated_frame, marker_lines = self.detect_markers(color_image, depth_frame)
@@ -118,7 +117,15 @@ class SafetyMarkerDetectionNode(Node):
         except Exception as e:
             self.get_logger().error(f"Error in capture_frame: {str(e)}")
 
-    def detect_markers(self, color_image, depth_image):
+    def detect_markers(self, color_image, depth_frame):
+        depth_image = np.asanyarray(depth_frame.get_data())
+        
+        # Debug: Show depth values
+        depth_colormap = cv2.applyColorMap(
+            cv2.convertScaleAbs(depth_image, alpha=0.03), 
+            cv2.COLORMAP_JET
+        )
+        cv2.imshow('Depth Debug', depth_colormap)
         # Apply trapezoid ROI
         mask = self.define_trapezoid_roi(color_image)
         roi_frame = cv2.bitwise_and(color_image, mask)
