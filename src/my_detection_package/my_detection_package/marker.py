@@ -45,7 +45,7 @@ class SafetyMarkerDetectionNode(Node):
 
         # TF broadcaster
         self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
-        # self.publish_camera_tf()
+        self.publish_camera_tf()
 
         # Marker detection parameters
         self.min_line_length = 20  # Minimum line length to be considered a marker
@@ -54,17 +54,17 @@ class SafetyMarkerDetectionNode(Node):
         self.wall_height = 1.5    # Estimated height of walls in meters
         self.wall_thickness = 0.1 # Thickness to give the wall points
 
-    # def publish_camera_tf(self):
-    #     transform = TransformStamped()
-    #     transform.header.stamp = self.get_clock().now().to_msg()
-    #     transform.header.frame_id = "base_link"
-    #     transform.child_frame_id = "camera_link_optical"
-    #     transform.transform.translation.x = 0.305
-    #     transform.transform.translation.y = 0.0
-    #     transform.transform.translation.z = 0.08
-    #     transform.transform.rotation.x = -0.707
-    #     transform.transform.rotation.w = 0.707
-    #     self.tf_broadcaster.sendTransform(transform)
+    def publish_camera_tf(self):
+        transform = TransformStamped()
+        transform.header.stamp = self.get_clock().now().to_msg()
+        transform.header.frame_id = "base_link"
+        transform.child_frame_id = "camera_link_optical"
+        transform.transform.translation.x = 0.305
+        transform.transform.translation.y = 0.0
+        transform.transform.translation.z = 0.08
+        transform.transform.rotation.x = -0.707
+        transform.transform.rotation.w = 0.707
+        self.tf_broadcaster.sendTransform(transform)
 
     def define_trapezoid_roi(self, image):
         H, W = image.shape[:2]
@@ -91,9 +91,10 @@ class SafetyMarkerDetectionNode(Node):
                 return
 
             color_image = np.asanyarray(color_frame.get_data())
+            depth_image = np.asanyarray(depth_frame.get_data())
 
             # Detect markers and get their 3D points
-            marker_detected, annotated_frame, marker_lines = self.detect_markers(color_image, depth_frame)
+            marker_detected, annotated_frame, marker_lines = self.detect_markers(color_image, depth_image)
 
             # Publish visualization image
             ros_image = self.bridge.cv2_to_imgmsg(annotated_frame, "bgr8")
@@ -117,15 +118,7 @@ class SafetyMarkerDetectionNode(Node):
         except Exception as e:
             self.get_logger().error(f"Error in capture_frame: {str(e)}")
 
-    def detect_markers(self, color_image, depth_frame):
-        depth_image = np.asanyarray(depth_frame.get_data())
-        
-        # Debug: Show depth values
-        depth_colormap = cv2.applyColorMap(
-            cv2.convertScaleAbs(depth_image, alpha=0.03), 
-            cv2.COLORMAP_JET
-        )
-        cv2.imshow('Depth Debug', depth_colormap)
+    def detect_markers(self, color_image, depth_image):
         # Apply trapezoid ROI
         mask = self.define_trapezoid_roi(color_image)
         roi_frame = cv2.bitwise_and(color_image, mask)
