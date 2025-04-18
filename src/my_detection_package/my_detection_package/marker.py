@@ -109,7 +109,7 @@ class SafetyMarkerDetectionNode(Node):
                 
                 marker = self.create_marker(len(marker_lines))
                 self.marker_publisher_.publish(marker)
-                self.get_logger().info(f"Detected {len(marker_lines)} safety markers")
+                # self.get_logger().info(f"Detected {len(marker_lines)} safety markers")
 
             # Display the result
             cv2.imshow("Safety Marker Detection", annotated_frame)
