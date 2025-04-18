@@ -53,23 +53,23 @@ class ObstacleDetectionNode(Node):
         self.depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
 
         self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
-        self.publish_camera_tf()
+        # self.publish_camera_tf()
 
         self.width_t = 0.8
         self.height_t = 1.9
        
 
-    def publish_camera_tf(self):
-        transform = TransformStamped()
-        transform.header.stamp = self.get_clock().now().to_msg()
-        transform.header.frame_id = "base_link"
-        transform.child_frame_id = "camera_link_optical"
-        transform.transform.translation.x = 0.305
-        transform.transform.translation.y = 0.0
-        transform.transform.translation.z = 0.08
-        transform.transform.rotation.x = -0.707  # -π/2 around X
-        transform.transform.rotation.w = 0.707   # -π/2 around Z (combined)
-        self.tf_broadcaster.sendTransform(transform)
+    # def publish_camera_tf(self):
+    #     transform = TransformStamped()
+    #     transform.header.stamp = self.get_clock().now().to_msg()
+    #     transform.header.frame_id = "base_link"
+    #     transform.child_frame_id = "camera_link_optical"
+    #     transform.transform.translation.x = 0.305
+    #     transform.transform.translation.y = 0.0
+    #     transform.transform.translation.z = 0.08
+    #     transform.transform.rotation.x = -0.707  # -π/2 around X
+    #     transform.transform.rotation.w = 0.707   # -π/2 around Z (combined)
+    #     self.tf_broadcaster.sendTransform(transform)
 
     def capture_frame(self):
         # Record the timestamp when the frame is captured

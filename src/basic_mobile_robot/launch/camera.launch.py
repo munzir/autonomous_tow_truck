@@ -22,17 +22,17 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Static TF: base_link → camera_link (with 90° CW about X and 90° CCW about Z)
-    static_tf_base_to_camera = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        arguments=[
-            '0.345', '0', '0.28',                # Translation: x y z
-            str(-math.pi/2), '0', str(math.pi/2),  # Rotation: roll pitch yaw (in radians)
-            'base_link', 'camera_link'          # Parent → Child
-        ],
-        output='screen'
-    )
+    # # Static TF: base_link → camera_link (with 90° CW about X and 90° CCW about Z)
+    # static_tf_base_to_camera = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     arguments=[
+    #         '0.345', '0', '0.28',                # Translation: x y z
+    #         str(-math.pi/2), '0', str(math.pi/2),  # Rotation: roll pitch yaw (in radians)
+    #         'base_link', 'camera_link'          # Parent → Child
+    #     ],
+    #     output='screen'
+    # )
 
     # # Static TF: camera_link → camera_link_optical (standard camera optical frame)
     # static_tf_camera_to_optical = Node(
@@ -48,6 +48,6 @@ def generate_launch_description():
 
     return LaunchDescription([
         realsense_node,
-        static_tf_base_to_camera,
+        # static_tf_base_to_camera,
         # static_tf_camera_to_optical
     ])
