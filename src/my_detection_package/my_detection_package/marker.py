@@ -45,7 +45,7 @@ class SafetyMarkerDetectionNode(Node):
 
         # TF broadcaster
         self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
-        self.publish_camera_tf()
+        # self.publish_camera_tf()
 
         # Marker detection parameters
         self.min_line_length = 20  # Minimum line length to be considered a marker
@@ -54,23 +54,23 @@ class SafetyMarkerDetectionNode(Node):
         self.wall_height = 1.5    # Estimated height of walls in meters
         self.wall_thickness = 0.1 # Thickness to give the wall points
 
-    def publish_camera_tf(self):
-        transform = TransformStamped()
-        transform.header.stamp = self.get_clock().now().to_msg()
-        transform.header.frame_id = "base_link"
-        transform.child_frame_id = "camera_link_optical"
-        transform.transform.translation.x = 0.305
-        transform.transform.translation.y = 0.0
-        transform.transform.translation.z = 0.08
-        transform.transform.rotation.x = -0.707
-        transform.transform.rotation.w = 0.707
-        self.tf_broadcaster.sendTransform(transform)
+    # def publish_camera_tf(self):
+    #     transform = TransformStamped()
+    #     transform.header.stamp = self.get_clock().now().to_msg()
+    #     transform.header.frame_id = "base_link"
+    #     transform.child_frame_id = "camera_link_optical"
+    #     transform.transform.translation.x = 0.305
+    #     transform.transform.translation.y = 0.0
+    #     transform.transform.translation.z = 0.08
+    #     transform.transform.rotation.x = -0.707
+    #     transform.transform.rotation.w = 0.707
+    #     self.tf_broadcaster.sendTransform(transform)
 
     def define_trapezoid_roi(self, image):
         H, W = image.shape[:2]
         bottom_left = (int(0.01 * W), H)
         bottom_right = (int(0.99 * W), H)
-        top_left = (int(0.35 * W), int(0.6 * H)
+        top_left = (int(0.35 * W), int(0.6 * H))
         top_right = (int(0.65 * W), int(0.6 * H))
         
         mask = np.zeros_like(image, dtype=np.uint8)

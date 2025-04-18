@@ -157,6 +157,12 @@ def generate_launch_description():
     executable="object_detection_node",
     output="screen"
   )
+  safety_marker_node = Node(
+        package="my_detection_package",
+        executable="marker_node",  # Second executable name
+        output="screen",
+        # Optional: Add parameters, remappings, etc.
+    )
   # Launch RViz
   start_rviz_cmd = Node(
     condition=IfCondition(use_rviz),
@@ -265,5 +271,6 @@ def generate_launch_description():
   ld.add_action(start_joy_node)
   ld.add_action(static_tf_map_to_odom_cmd)
   ld.add_action(start_camera_node)
+  ld.add_action(safety_marker_node)
   # ld.add_action(start_robot_localization_cmd) 
   return ld
