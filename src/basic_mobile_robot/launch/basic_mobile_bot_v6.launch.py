@@ -151,6 +151,13 @@ def generate_launch_description():
     executable='joy_node',
     output='screen'
   )
+
+  start_camera_node = Node(
+    package="my_detection_package",
+    executable="object_detection_node",
+    output="screen"
+  )
+
   # Launch RViz
   start_rviz_cmd = Node(
     condition=IfCondition(use_rviz),
@@ -257,5 +264,6 @@ def generate_launch_description():
   ld.add_action(start_odometry_cmd) #single odometry launch
   ld.add_action(start_joy_node)
   ld.add_action(static_tf_map_to_odom_cmd)
+  ld.add_action(start_camera_node)
   # ld.add_action(start_robot_localization_cmd) 
   return ld
