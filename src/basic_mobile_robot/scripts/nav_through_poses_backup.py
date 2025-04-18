@@ -21,13 +21,14 @@ from geometry_msgs.msg import PoseStamped # Pose with ref frame and timestamp
 from rclpy.duration import Duration # Handles time for ROS 2
 import rclpy # Python client library for ROS 2
 import csv
+import sys
 
 from robot_navigator import BasicNavigator, NavigationResult
  
 '''
 Navigates a robot through goal poses.
 '''
-def main():
+def main(use_current_pose=False):
  
   # Start the ROS 2 Python Client Library
   rclpy.init()
@@ -102,28 +103,48 @@ def main():
       with open(file_path, mode='r') as file:
           reader = csv.reader(file)
           all_rows = list(reader)
-          
-          # First row is initial pose
-          if len(all_rows[0]) == 4:
-              x, y, w, z = map(float, all_rows[0])
-              initial_pose = PoseStamped()
-              initial_pose.header.frame_id = 'map'
-              initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-              initial_pose.pose.position.x = x
-              initial_pose.pose.position.y = y
-              initial_pose.pose.position.z = 0.0
-              initial_pose.pose.orientation.x = 0.0
-              initial_pose.pose.orientation.y = 0.0
-              initial_pose.pose.orientation.z = z
-              initial_pose.pose.orientation.w = w
-              navigator.setInitialPose(initial_pose)
-              # navigator.waitUntilNav2Active()
 
-              # # ✅ Give AMCL some time to localize
-              # print("Waiting for localization...")
-              # navigator.waitForInitialPose(timeout=Duration(seconds=5))
-              navigator.lifecycleStartup()
-              navigator.waitUntilNav2Active() 
+          if use_current_pose:
+              print("Using current robot pose as initial pose.")
+              initial_pose = navigator.getCurrentPose()
+              navigator.setInitialPose(initial_pose)
+          else:
+              # Use pose from CSV (only on first launch)
+              if len(all_rows[0]) == 4:
+                  x, y, w, z = map(float, all_rows[0])
+                  initial_pose = PoseStamped()
+                  initial_pose.header.frame_id = 'map'
+                  initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+                  initial_pose.pose.position.x = x
+                  initial_pose.pose.position.y = y
+                  initial_pose.pose.position.z = 0.0
+                  initial_pose.pose.orientation.x = 0.0
+                  initial_pose.pose.orientation.y = 0.0
+                  initial_pose.pose.orientation.z = z
+                  initial_pose.pose.orientation.w = w
+                  navigator.setInitialPose(initial_pose)
+          
+          # # First row is initial pose
+          # if len(all_rows[0]) == 4:
+          #     x, y, w, z = map(float, all_rows[0])
+          #     initial_pose = PoseStamped()
+          #     initial_pose.header.frame_id = 'map'
+          #     initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+          #     initial_pose.pose.position.x = x
+          #     initial_pose.pose.position.y = y
+          #     initial_pose.pose.position.z = 0.0
+          #     initial_pose.pose.orientation.x = 0.0
+          #     initial_pose.pose.orientation.y = 0.0
+          #     initial_pose.pose.orientation.z = z
+          #     initial_pose.pose.orientation.w = w
+          #     navigator.setInitialPose(initial_pose)
+          #     # navigator.waitUntilNav2Active()
+
+          #     # # ✅ Give AMCL some time to localize
+          #     # print("Waiting for localization...")
+          #     # navigator.waitForInitialPose(timeout=Duration(seconds=5))
+          navigator.lifecycleStartup()
+          navigator.waitUntilNav2Active()
           
           # Remaining rows are goals
           for row in all_rows[1:]:
@@ -211,4 +232,6 @@ def main():
   exit(0)
  
 if __name__ == '__main__':
-  main()
+    use_current_pose = '--use_current_pose' in sys.argv
+    main(use_current_pose)
+
