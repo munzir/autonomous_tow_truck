@@ -109,7 +109,7 @@ class SafetyMarkerDetectionNode(Node):
                 
                 marker = self.create_marker(len(marker_lines))
                 self.marker_publisher_.publish(marker)
-                # self.get_logger().info(f"Detected {len(marker_lines)} safety markers")
+                self.get_logger().info(f"Detected {len(marker_lines)} safety markers")
 
             # Display the result
             cv2.imshow("Safety Marker Detection", annotated_frame)
@@ -162,7 +162,10 @@ class SafetyMarkerDetectionNode(Node):
         header.frame_id = "camera_link_optical"
 
         points = []
-        
+        for x in np.linspace(-0.5, 0.5, 10):
+            for y in np.linspace(-0.5, 0.5, 10):
+                points.append([x, y, 2.0])
+            
         for line in marker_lines:
             x1, y1 = line['p1']
             x2, y2 = line['p2']
@@ -179,6 +182,13 @@ class SafetyMarkerDetectionNode(Node):
                 for offset in np.linspace(-self.wall_thickness/2, self.wall_thickness/2, 3):
                     points.append([point1[0] + offset, point1[1] + offset, height])
                     points.append([point2[0] + offset, point2[1] + offset, height])
+
+        # Add debug print
+        self.get_logger().info(f"Generated {len(points)} points for point cloud")
+        
+        if not points:
+            self.get_logger().warn("No points generated for point cloud!")
+            return None
 
         # Create PointCloud2 message
         fields = [
