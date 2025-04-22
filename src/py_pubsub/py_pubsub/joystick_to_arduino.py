@@ -64,6 +64,14 @@ class JoystickToArduino(Node):
             self.cmd_vel_callback,
             10
         )
+
+        self.mode_subscriber = self.create_subscription(
+            String, 
+            '/mode_switch', 
+            self.mode_callback,  # Adding a callback for mode switch
+            10
+        )
+
        
         self.control_update_period = 0.06
         self.link_steering = txfer.SerialTransfer('arduino_steering', baud=115200)
@@ -96,6 +104,27 @@ class JoystickToArduino(Node):
         steering_angle_time_constant = 0.06
         steering_angle_window_size = int(steering_angle_time_constant / self.control_update_period)
         self.steering_angle_window = deque(maxlen=steering_angle_window_size)
+    
+    def mode_callback(self, msg):
+        """
+        Callback function to handle mode switch message from /mode_switch.
+        """
+        mode = msg.data
+        if mode == "M":
+            self.manual_mode = True
+            self.teleop_mode = False
+            self.autonom_mode = False
+            self.get_logger().info("Manual Mode Activated!")
+        elif mode == "T":
+            self.manual_mode = False
+            self.teleop_mode = True
+            self.autonom_mode = False
+            self.get_logger().info("Teleoperation Mode Activated!")
+        elif mode == "A":
+            self.manual_mode = False
+            self.teleop_mode = False
+            self.autonom_mode = True
+            self.get_logger().info("Autonomous Mode Activated!")
 
     def joystick_callback(self, msg=None):
         self.joystick_mode = self.get_parameter('joystick_mode').value  # Update the value # Access the joystick_mode parameter
