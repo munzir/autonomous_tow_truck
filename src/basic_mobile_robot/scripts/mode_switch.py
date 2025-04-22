@@ -7,7 +7,7 @@ import serial
 import time
 
 class ModePublisher(Node):
-    def __init__(self, port='/dev/ttyACM1', baud_rate=9600):
+    def __init__(self, port='/dev/ttyACM0', baud_rate=9600):
         super().__init__('arduino_mode_publisher')
 
         self.serial_port = serial.Serial(port, baud_rate, timeout=1)
