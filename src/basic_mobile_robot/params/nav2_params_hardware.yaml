@@ -320,7 +320,7 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan yolo_detections
+        observation_sources: scan yolo_detections safety_marker_points
         scan:
           topic: /scan
           max_obstacle_height: 2.0
@@ -338,6 +338,13 @@ local_costmap:
           expected_update_rate: 0.2
           observation_persistence: 0.5
           decay: 0.2
+        safety_marker_points:
+          topic: /safety_marker_points
+          data_type: PointCloud2
+          clearing: false
+          marking: true
+          obstacle_range: 3.0
+          raytrace_range: 3.5
       static_layer:
         map_subscribe_transient_local: True
       always_send_full_costmap: True
