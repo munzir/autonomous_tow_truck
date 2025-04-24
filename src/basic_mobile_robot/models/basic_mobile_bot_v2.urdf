@@ -276,6 +276,4 @@
   </joint>
 
   <link name="camera_link_optical"/>
-
-
 </robot>
