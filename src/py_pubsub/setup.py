@@ -25,6 +25,7 @@ setup(
                         'freqnangle = py_pubsub.pose:main',
                         'poser = py_pubsub.pose_pub:main',
                         'joyard = py_pubsub.joystick_to_arduino:main',
+                        'buttonard = py_pubsub.button_to_arduino:main',
         ],
     },
 )

@@ -8,6 +8,14 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package='py_pubsub',
+            executable='buttonard',
+            output='screen',
+            parameters=[{
+                'joystick': LaunchConfiguration('joystick'),
+            }]
+        ),
+        Node(
+            package='py_pubsub',
             executable='joyard',
             output='screen',
             parameters=[{

@@ -32,6 +32,7 @@ install(
   PROGRAMS
   scripts/robot_navigator.py
   scripts/nav_through_poses.py
+  scripts/mode_switch.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
