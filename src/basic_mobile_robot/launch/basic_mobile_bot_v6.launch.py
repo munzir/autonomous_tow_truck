@@ -133,7 +133,7 @@ def generate_launch_description():
     output='screen',
     parameters=[robot_localization_file_path, 
     {'use_sim_time': use_sim_time}],
-    remappings=[('imu', 'imu/data'),
+    remappings=[('imu/data', 'imu/data'),
                 ('gps/fix', 'gps/fix'), 
                 ('gps/filtered', 'gps/filtered'),
                 ('odometry/gps', 'odometry/gps'),
