@@ -3,7 +3,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2, PointField
 from std_msgs.msg import String
 from geometry_msgs.msg import Point
-from visualization_msgs.msg import Marker
+from visualization_msgs.msg import Marker, MarkerArray
 from std_msgs.msg import Header
 import numpy as np
 import torch
@@ -14,13 +14,13 @@ import re
 from cv_bridge import CvBridge
 import tf2_ros
 from geometry_msgs.msg import TransformStamped
+from collections import defaultdict
 
 class ObstacleDetectionNode(Node):
     def __init__(self):
         super().__init__('obstacle_detection_node')
-        # self.publisher_ = self.create_publisher(String, 'obstacle_info', 10)
-        # self.detection_publisher_ = self.create_publisher(String, '/yolo_detections', 10)
         qos_profile = rclpy.qos.QoSProfile(
+                durability=rclpy.qos.DurabilityPolicy.VOLATILE,
                 reliability=rclpy.qos.ReliabilityPolicy.BEST_EFFORT,
                 history=rclpy.qos.HistoryPolicy.KEEP_LAST,
                 depth=1
@@ -30,11 +30,16 @@ class ObstacleDetectionNode(Node):
             '/yolo_detections',  # Standard RealSense topic
             qos_profile
         )        
-        self.marker_publisher_ = self.create_publisher(Marker, '/obstacle_marker', qos_profile)
+        self.marker_array_publisher_ = self.create_publisher(
+            MarkerArray,
+            '/obstacle_marker_array',
+            qos_profile
+        )
         self.bridge = CvBridge()
 
         # Load YOLOv5 model (adjust model path if necessary)
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n')  # Lightweight YOLOv5 Nano
+        # self.model = torch.hub.load('ultralytics/yolov5', 'custom', path='src/my_detection_package/my_detection_package/best.pt')  # Lightweight YOLOv5 Nano
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n')
 
         # Initialize RealSense pipeline and alignment for depth data
         self.pipeline = rs.pipeline()
@@ -44,32 +49,23 @@ class ObstacleDetectionNode(Node):
         self.pipeline.start(config)
         self.align = rs.align(rs.stream.color)
 
-        # Timer to periodically capture frames
-        self.timer = self.create_timer(0.1, self.capture_frame)
-
         profile = self.pipeline.get_active_profile()
         self.intrinsics = profile.get_stream(rs.stream.color).as_video_stream_profile().get_intrinsics()
         self.depth_intrinsics = profile.get_stream(rs.stream.depth).as_video_stream_profile().get_intrinsics()
         self.depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
 
         self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
-        # self.publish_camera_tf()
 
         self.width_t = 0.8
         self.height_t = 1.9
-       
 
-    # def publish_camera_tf(self):
-    #     transform = TransformStamped()
-    #     transform.header.stamp = self.get_clock().now().to_msg()
-    #     transform.header.frame_id = "base_link"
-    #     transform.child_frame_id = "camera_link_optical"
-    #     transform.transform.translation.x = 0.305
-    #     transform.transform.translation.y = 0.0
-    #     transform.transform.translation.z = 0.08
-    #     transform.transform.rotation.x = -0.707  # -π/2 around X
-    #     transform.transform.rotation.w = 0.707   # -π/2 around Z (combined)
-    #     self.tf_broadcaster.sendTransform(transform)
+        # Track obstacles and their last seen time
+        self.obstacles = defaultdict(dict)  # {obstacle_id: {'points': [], 'last_seen': timestamp}}
+        self.obstacle_timeout = 1.0  # seconds before removing unseen obstacles
+        self.obstacle_id_counter = 0
+
+        # Timer to periodically capture frames
+        self.timer = self.create_timer(0.1, self.capture_frame)
 
     def capture_frame(self):
         # Record the timestamp when the frame is captured
@@ -93,22 +89,11 @@ class ObstacleDetectionNode(Node):
         # # Perform object detection and draw bounding boxes
         obstacle_detected, annotated_frame, distance = self.detect_obstacle(color_image, depth_frame)
 
-        # # Record timestamp when detection finishes
-        # detection_end_time = time.time()
+        # self.remove_old_obstacles(start_capture_time)
 
-        # # Calculate detection latency (time from capture to detection)
-        # capture_and_detection_latency = detection_end_time - start_capture_time
-
-
-        # if distance:    
-        #     msg = String()
-        #     brake_end_time = time.time()
-        #     brake_latency = brake_end_time - start_capture_time
-        #     msg.data = f"Apply brakes and latency is: {brake_latency:.4f} seconds"
-        #     self.get_logger().info(msg.data)
-        #     # self.publisher_.publish(msg)
-        #     # print(f"Capture to brake command Latency: {brake_latency:.4f} seconds")
-
+        # Publish updates
+        self.publish_marker_array()
+        self.publish_combined_pointcloud()
 
         # Display the camera stream with bounding boxes
         cv2.imshow("Camera Stream", annotated_frame)
@@ -117,14 +102,16 @@ class ObstacleDetectionNode(Node):
     def detect_obstacle(self, color_image, depth_frame):
         results = self.model(color_image)
         obstacle_detected = False
-        # range_within = 0
+        current_time = time.time()
+
+        # Reset visibility for all obstacles (will be set to True if detected again)
+        for obs_id in self.obstacles:
+            self.obstacles[obs_id]['visible'] = False
 
         # Create header with ROS 2 timestamp
         header = Header()
         header.stamp = self.get_clock().now().to_msg()  # ROS 2 way to get time
         header.frame_id = "camera_link_optical"  # Match your TF tree
-        
-        within_range = 0
 
         for *box, conf, cls in results.pred[0]:
             x1, y1, x2, y2 = map(int, box)
@@ -148,39 +135,34 @@ class ObstacleDetectionNode(Node):
             else:
                 range_within = 0
                 cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
-            # cv2.putText(color_image, f"Dist: {Z:.2f}m", (x1, y2 + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-            # cv2.putText(color_image, f"X: {X:.2f}m, Y: {Y:.2f}m", (x1 - 20, y1 - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
-            # ==== NEW: Publish detection info ====
-            # detection_info = f"Box: ({x1}, {y1}, {x2}, {y2}), Dist: {Z:.2f}m"
-            # print(depth_frame.shape)
-            pc_msg = self.bbox_to_pointcloud(x1, y1, x2, y2, depth_frame, header)
-            # self.detection_publisher_.publish(String(data=detection_info))
-            if pc_msg:
-                self.pointcloud_publisher_.publish(pc_msg)
+            # Get or create obstacle ID
+            obstacle_id = self.match_or_create_obstacle(X, Y, Z)
             
-             # Publish Marker for RViz visualization
-            marker = self.create_marker(center_x, center_y, Z)
-            self.marker_publisher_.publish(marker)
+            # Update obstacle data
+            self.obstacles[obstacle_id]['points'] = self.bbox_to_points(x1, y1, x2, y2, depth_frame)
+            self.obstacles[obstacle_id]['last_seen'] = current_time
+            self.obstacles[obstacle_id]['visible'] = True
+            self.obstacles[obstacle_id]['position'] = (X, Y, Z)
 
         return obstacle_detected, color_image, True
     
-    def bbox_to_pointcloud(self, x_min, y_min, x_max, y_max, depth_frame, header):
-        point_cloud = []
-        # header = Header()
-        # header.stamp = self.get_clock().now().to_msg()
-        # header.frame_id = "camera_link_optical"
+    def match_or_create_obstacle(self, x, y, z):
+        # Simple obstacle matching based on position (could be improved)
+        for obs_id, obs_data in self.obstacles.items():
+            if not obs_data['visible']:  # Only match with currently invisible obstacles
+                prev_x, prev_y, prev_z = obs_data['position']
+                distance = ((x - prev_x)**2 + (y - prev_y)**2 + (z - prev_z)**2)**0.5
+                if distance < 0.5:  # Threshold for matching (in meters)
+                    return obs_id
+        
+        # If no match found, create new obstacle
+        self.obstacle_id_counter += 1
+        return self.obstacle_id_counter
+    
+    def bbox_to_points(self, x_min, y_min, x_max, y_max, depth_frame):
         point_cloud = []
         depth_image = np.asanyarray(depth_frame.get_data())
-        
-        # # Parse detection info
-        # match = re.search(r"Box: \((\d+), (\d+), (\d+), (\d+)\), Dist:\s*([\d.]+)m", bbox)
-        # x_min, y_min, x_max, y_max = map(int, match.groups()[:4])
-        
-        # Convert depth units if needed (Z16 format is in mm)
-        # depth_scale = self.profile.get_device().first_depth_sensor().get_depth_scale()
-        
+               
         for y in range(y_min, y_max, 5):  # Sample with stride
             for x in range(x_min, x_max, 5):
                 if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
@@ -193,48 +175,97 @@ class ObstacleDetectionNode(Node):
                             depth
                         )
                         point_cloud.append(point)
-        
-        # Create fields matching RealSense's format
-        fields = [
-            PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-            PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-            PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-            # Optional: Add intensity if needed by costmap
-            # PointField(name='intensity', offset=12, datatype=PointField.FLOAT32, count=1)
-        ]
-        pc_data = np.array(point_cloud, dtype=np.float32).flatten()
-        
-        # Match RealSense's point_step (typically 16 or 32 bytes)
-        # point_step = 16
-        pc_msg = PointCloud2()
-        pc_msg.header.stamp = self.get_clock().now().to_msg()
-        pc_msg.header.frame_id = "camera_link_optical"
-        pc_msg.height = 1
-        pc_msg.width = len(point_cloud)
-        pc_msg.fields = fields
-        pc_msg.is_bigendian = False
-        pc_msg.point_step = 12
-        pc_msg.row_step = pc_msg.point_step * len(point_cloud)
-        pc_msg.data = pc_data.tobytes()
-        return pc_msg
-       
-        # return pc2_msg
+        return point_cloud
 
-    def create_marker(self, x, y, z):
-        marker = Marker()
-        marker.header.frame_id = "camera_link_optical"
-        marker.header.stamp = self.get_clock().now().to_msg()
-        marker.type = Marker.SPHERE
-        marker.action = Marker.ADD
-        marker.pose.position.x = float(x)
-        marker.pose.position.y = float(y)
-        marker.pose.position.z = float(z)
-        marker.scale.x = marker.scale.y = marker.scale.z = 0.1
-        marker.color.a = 1.0
-        marker.color.r = 1.0
-        marker.color.g = 0.0
-        marker.color.b = 0.0
-        return marker
+    def publish_combined_pointcloud(self):           
+        # Combine all obstacle points
+        all_points = []
+        for obs_data in self.obstacles.values():
+            all_points.extend(obs_data['points'])
+        
+        if not all_points:
+            return
+            
+        # Create PointCloud2 message
+        header = Header()
+        header.stamp = self.get_clock().now().to_msg()
+        header.frame_id = "camera_link_optical"
+
+        if not self.obstacles:
+            # Publish empty point cloud
+            pc_msg = PointCloud2(
+                header=header,
+                height=1,
+                width=0,
+                fields=[...],  # Same fields as before
+                is_bigendian=False,
+                point_step=12,
+                row_step=0,
+                data=bytes()
+            )
+        else:
+            pc_msg = PointCloud2(
+                header=header,
+                height=1,
+                width=len(all_points),
+                fields=[
+                    PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+                    PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+                    PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+                ],
+                is_bigendian=False,
+                point_step=12,
+                row_step=12 * len(all_points),
+                data=np.array(all_points, dtype=np.float32).tobytes(),
+                is_dense = True
+            )
+            
+            self.pointcloud_publisher_.publish(pc_msg)
+
+    def publish_marker_array(self):
+        """Publish all obstacles as a MarkerArray"""
+        marker_array = MarkerArray()
+        current_time = time.time()
+        
+        # Add/update markers for visible obstacles
+        to_remove = []
+        for obs_id, obs_data in self.obstacles.items():
+            if obs_data['visible']:
+                marker = Marker()
+                marker.header.frame_id = "camera_link_optical"
+                marker.header.stamp = self.get_clock().now().to_msg()
+                marker.ns = "obstacles"
+                marker.id = obs_id
+                marker.type = Marker.CUBE
+                marker.action = Marker.ADD
+                marker.pose.position.x = obs_data['position'][0]
+                marker.pose.position.y = obs_data['position'][1]
+                marker.pose.position.z = obs_data['position'][2]
+                marker.scale.x = marker.scale.y = marker.scale.z = 0.2
+                marker.color.a = 0.8
+                marker.color.r = 1.0
+                marker.color.g = 0.0
+                marker.color.b = 0.0
+                marker.lifetime = rclpy.duration.Duration(seconds=self.obstacle_timeout).to_msg()
+                marker_array.markers.append(marker)
+
+            elif current_time - obs_data['last_seen'] > self.obstacle_timeout:
+                # Mark for removal
+                delete_marker = Marker()
+                delete_marker.header.frame_id = "camera_link_optical"
+                delete_marker.header.stamp = self.get_clock().now().to_msg()
+                delete_marker.ns = "obstacles"
+                delete_marker.id = obs_id
+                delete_marker.action = Marker.DELETE
+                marker_array.markers.append(delete_marker)
+                to_remove.append(obs_id)
+        
+        # Remove old obstacles
+        for obs_id in to_remove:
+            del self.obstacles[obs_id]
+        
+        if marker_array.markers:
+            self.marker_array_publisher_.publish(marker_array)
 
     def destroy_node(self):
         # Stop the RealSense pipeline
