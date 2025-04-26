@@ -270,7 +270,7 @@ def generate_launch_description():
   ld.add_action(start_odometry_cmd) #single odometry launch
   ld.add_action(start_joy_node)
   ld.add_action(static_tf_map_to_odom_cmd)
-  # ld.add_action(start_camera_node)
-  ld.add_action(safety_marker_node)
+  ld.add_action(start_camera_node)
+  # ld.add_action(safety_marker_node)
   # ld.add_action(start_robot_localization_cmd) 
   return ld
