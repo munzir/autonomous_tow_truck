@@ -2,23 +2,11 @@
 #include "include/steering_control.h"
 #include "include/joystick.h"
 #include "include/timer2_1ms.h"
-#include "include/brakes.h"
 
 int control_timer_ticks = 0;
 int control_timer_period = 40;
 int prev_steering_angle = 999;
 bool recalibration_completed = false;
-bool prev_brake_state = false;
-
-//Global brake instance
-struct Pins pins = {
-  .dir = 9,
-  .pul = 8,
-  .ena = 10,
-  //.relay = 10,
-};
-
-Brake brakes;
 
 void recalibrate()
 {
@@ -42,9 +30,6 @@ void setup()
   steering_control_setup();  
   joystick_setup();
   Timer2Reset();
-  brake_setup(&pins);
-
-  pinMode(13, OUTPUT); // Initializing onboard LED for testing; remove later
 }
 
 
@@ -59,18 +44,6 @@ void loop()
   } else {
     digitalWrite(4, HIGH);
     digitalWrite(7, LOW);
-  }
-
-  // braking (Call press_brake or release_brake only on state change)
-  if (brake != prev_brake_state) {
-    if (brake) {
-      press_brake(&brakes, &pins);
-      // digitalWrite(13, HIGH); // Turn onboard LED ON (use for troubleshooting)
-    } else {
-      release_brake(&brakes, &pins);
-      // digitalWrite(13, LOW);  // Turn onbaord LED OFF (use for troubleshooting)
-    }
-    prev_brake_state = brake; // Update previous state
   }
 
   manual_mode = (manual == true);
