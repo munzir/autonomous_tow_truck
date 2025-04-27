@@ -2,14 +2,29 @@
 #include "include/timer2_1ms.h"
 #include "include/wheels_control.h"
 #include "include/wheels_sensing_robust.h"
+#include "include/brakes.h"
 
 unsigned long current_time, prev_time, iter_time = 0;
+bool prev_brake_state = false;
+
+//Global brake instance
+struct Pins pins = {
+  .dir = 9,
+  .pul = 8,
+  .ena = 10,
+  //.relay = 10,
+};
+
+Brake brakes;
 
 void setup() {
   WheelsSensingSetup(timer2TickPeriod);
   WheelsControlSetup(timer2TickPeriod);
   Timer2Reset();
   joystick_setup();
+  brake_setup(&pins);
+
+  pinMode(13, OUTPUT); // Initializing onboard LED for testing; remove later
 }
 
 void loop() {
@@ -24,6 +39,18 @@ void loop() {
       iter_time = current_time - prev_time;
       prev_time = current_time;
     }
+  }
+
+  // braking (Call press_brake or release_brake only on state change)
+  if (brake != prev_brake_state) {
+    if (brake) {
+      press_brake(&brakes, &pins);
+      // digitalWrite(13, HIGH); // Turn onboard LED ON (use for troubleshooting)
+    } else {
+      release_brake(&brakes, &pins);
+      // digitalWrite(13, LOW);  // Turn onbaord LED OFF (use for troubleshooting)
+    }
+    prev_brake_state = brake; // Update previous state
   }
 
   // Send the value of wheel speed

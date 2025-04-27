@@ -7,6 +7,7 @@ int control_timer_ticks = 0;
 int control_timer_period = 40;
 int prev_steering_angle = 999;
 bool recalibration_completed = false;
+
 void recalibrate()
 {
   recalibration_completed = false;
@@ -14,12 +15,12 @@ void recalibrate()
   while (abs(steering_angle - prev_steering_angle)>0)
   {
     prev_steering_angle = steering_angle;
-    digitalWrite(LPWM_Output, 1);
-    analogWrite(RPWM_Output, 255-220);
+    digitalWrite(LPWM_Output, 0);
+    analogWrite(RPWM_Output, 180);
     delay(200);
   }
-  digitalWrite(LPWM_Output, 1);
-  digitalWrite(RPWM_Output, 1);
+  digitalWrite(LPWM_Output, 0);
+  digitalWrite(RPWM_Output, 0);
   steering_angle = 56;
   recalibration_completed = true;
 }
@@ -29,13 +30,21 @@ void setup()
   steering_control_setup();  
   joystick_setup();
   Timer2Reset();
-  recalibrate();
 }
 
 
 void loop()
 {
-  JoystickLoop();  
+  JoystickLoop();
+
+  // gear switching
+  if (reverse) {
+    digitalWrite(4, LOW);
+    digitalWrite(7, HIGH);
+  } else {
+    digitalWrite(4, HIGH);
+    digitalWrite(7, LOW);
+  }
 
   manual_mode = (manual == true);
 
