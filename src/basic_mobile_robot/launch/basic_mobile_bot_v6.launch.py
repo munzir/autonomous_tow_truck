@@ -222,8 +222,8 @@ def generate_launch_description():
       launch_arguments = {
           'namespace': namespace,
           'use_namespace': use_namespace,
-          'slam': slam,
-          'map': map_yaml_file,
+          # 'slam': slam,
+          # 'map': map_yaml_file,
           'use_sim_time': use_sim_time,
           'params_file': params_file,
           'default_bt_xml_filename': default_bt_xml_filename,
@@ -237,8 +237,8 @@ def generate_launch_description():
         launch_arguments = {
             'namespace': namespace,
             'use_namespace': use_namespace,
-            'slam': slam,
-            'map': map_yaml_file,
+            # 'slam': slam,
+            # 'map': map_yaml_file,
             'use_sim_time': use_sim_time,
             'params_file': params_file,
             'default_bt_xml_filename': default_bt_xml_filename,

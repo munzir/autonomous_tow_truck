@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./src/basic_mobile_robot/nav2_gps_waypoint_follower_demo/utils"
+    ]
+}
