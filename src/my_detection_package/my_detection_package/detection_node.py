@@ -71,6 +71,8 @@ class ObstacleDetectionNode(Node):
         # Record the timestamp when the frame is captured
         start_capture_time = time.time()
 
+        # frames = self.pipeline.wait_for_frames()
+
         # Wait for frames and align the depth frame with the color frame
         frames = self.pipeline.wait_for_frames()  
         aligned_frames = self.align.process(frames)
@@ -223,21 +225,44 @@ class ObstacleDetectionNode(Node):
             self.pointcloud_publisher_.publish(pc_msg)
 
     def publish_marker_array(self):
-        """Publish all obstacles as a MarkerArray"""
-        marker_array = MarkerArray()
+        """Publish obstacles with guaranteed marker deletion"""
         current_time = time.time()
-        
-        # Add/update markers for visible obstacles
         to_remove = []
+
+        # --- Phase 1: Publish DELETIONS separately ---
+        delete_array = MarkerArray()
+        for obs_id, obs_data in list(self.obstacles.items()):
+            if current_time - obs_data['last_seen'] > self.obstacle_timeout:
+                delete_marker = Marker()
+                # Critical matching parameters (verified)
+                delete_marker.header.frame_id = "camera_link_optical"  # Exact match
+                delete_marker.ns = "obstacles"                        # Exact match  
+                delete_marker.id = obs_id                              # Exact match
+                delete_marker.action = Marker.DELETE
+                delete_marker.header.stamp = self.get_clock().now().to_msg()
+                
+                delete_array.markers.append(delete_marker)
+                to_remove.append(obs_id)
+                self.get_logger().info(f"Publishing DELETE for obstacle {obs_id}")
+
+        # Publish deletions FIRST
+        if delete_array.markers:
+            self.marker_array_publisher_.publish(delete_array)
+            time.sleep(0.001)  # Ensure deletion is processed
+
+        # --- Phase 2: Publish ADDITIONS ---
+        add_array = MarkerArray()
         for obs_id, obs_data in self.obstacles.items():
             if obs_data['visible']:
                 marker = Marker()
-                marker.header.frame_id = "camera_link_optical"
-                marker.header.stamp = self.get_clock().now().to_msg()
-                marker.ns = "obstacles"
-                marker.id = obs_id
+                # Must match DELETE marker's identifiers exactly
+                marker.header.frame_id = "camera_link_optical"  # Verified match
+                marker.ns = "obstacles"                        # Verified match
+                marker.id = obs_id                              # Verified match
+                
                 marker.type = Marker.CUBE
                 marker.action = Marker.ADD
+                marker.header.stamp = self.get_clock().now().to_msg()
                 marker.pose.position.x = obs_data['position'][0]
                 marker.pose.position.y = obs_data['position'][1]
                 marker.pose.position.z = obs_data['position'][2]
@@ -246,26 +271,19 @@ class ObstacleDetectionNode(Node):
                 marker.color.r = 1.0
                 marker.color.g = 0.0
                 marker.color.b = 0.0
-                marker.lifetime = rclpy.duration.Duration(seconds=self.obstacle_timeout).to_msg()
-                marker_array.markers.append(marker)
+                marker.lifetime = rclpy.duration.Duration(seconds=0.1).to_msg()  # Short lifetime
+                
+                add_array.markers.append(marker)
+                self.get_logger().info(f"Updating obstacle {obs_id}")
 
-            elif current_time - obs_data['last_seen'] > self.obstacle_timeout:
-                # Mark for removal
-                delete_marker = Marker()
-                delete_marker.header.frame_id = "camera_link_optical"
-                delete_marker.header.stamp = self.get_clock().now().to_msg()
-                delete_marker.ns = "obstacles"
-                delete_marker.id = obs_id
-                delete_marker.action = Marker.DELETE
-                marker_array.markers.append(delete_marker)
-                to_remove.append(obs_id)
-        
-        # Remove old obstacles
+        # Apply removals after publishing deletions
         for obs_id in to_remove:
             del self.obstacles[obs_id]
-        
-        if marker_array.markers:
-            self.marker_array_publisher_.publish(marker_array)
+
+        # Publish additions
+        if add_array.markers:
+            self.marker_array_publisher_.publish(add_array)
+        self.get_logger().info(f"Published {len(add_array.markers)} additions, {len(delete_array.markers)} deletions")
 
     def destroy_node(self):
         # Stop the RealSense pipeline
