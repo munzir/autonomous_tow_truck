@@ -335,8 +335,8 @@ local_costmap:
           clearing: true
           marking: true
           data_type: "PointCloud2"
-          expected_update_rate: 0.2
-          observation_persistence: 0.5
+          expected_update_rate: 0.5
+          observation_persistence: 0.2
           decay: 0.2
         safety_marker_points:
           topic: /safety_marker_points

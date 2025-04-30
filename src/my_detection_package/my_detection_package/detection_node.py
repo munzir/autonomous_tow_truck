@@ -19,6 +19,7 @@ from collections import defaultdict
 class ObstacleDetectionNode(Node):
     def __init__(self):
         super().__init__('obstacle_detection_node')
+
         qos_profile = rclpy.qos.QoSProfile(
                 durability=rclpy.qos.DurabilityPolicy.VOLATILE,
                 reliability=rclpy.qos.ReliabilityPolicy.BEST_EFFORT,
@@ -30,12 +31,18 @@ class ObstacleDetectionNode(Node):
             '/yolo_detections',  # Standard RealSense topic
             qos_profile
         )        
-        self.marker_array_publisher_ = self.create_publisher(
-            MarkerArray,
-            '/obstacle_marker_array',
-            qos_profile
-        )
+
+        # self.get_logger().info(f"Publishing {len(add_array.markers)} cube markers")
+
+        # self.marker_array_publisher_ = self.create_publisher(
+        #     MarkerArray,
+        #     '/obstacle_marker_array',
+        #     qos_profile
+        # )
         self.bridge = CvBridge()
+
+        # clear_marker = Marker(action=Marker.DELETEALL)
+        # self.marker_array_publisher_.publish(MarkerArray(markers=[clear_marker]))
 
         # Load YOLOv5 model (adjust model path if necessary)
         # self.model = torch.hub.load('ultralytics/yolov5', 'custom', path='src/my_detection_package/my_detection_package/best.pt')  # Lightweight YOLOv5 Nano
@@ -94,7 +101,7 @@ class ObstacleDetectionNode(Node):
         # self.remove_old_obstacles(start_capture_time)
 
         # Publish updates
-        self.publish_marker_array()
+        # self.publish_marker_array()
         self.publish_combined_pointcloud()
 
         # Display the camera stream with bounding boxes
@@ -184,14 +191,30 @@ class ObstacleDetectionNode(Node):
         all_points = []
         for obs_data in self.obstacles.values():
             all_points.extend(obs_data['points'])
-        
-        if not all_points:
-            return
-            
+
         # Create PointCloud2 message
         header = Header()
         header.stamp = self.get_clock().now().to_msg()
         header.frame_id = "camera_link_optical"
+        
+        if not all_points:
+            # Publish empty point cloud to signal clearing
+            pc_msg = PointCloud2(
+            header=header,
+            height=1,
+            width=0,
+            fields=[
+                PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+                PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+                PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+            ],
+            is_bigendian=False,
+            point_step=12,
+            row_step=0,
+            data=bytes(),
+            is_dense=True
+        )
+            
 
         if not self.obstacles:
             # Publish empty point cloud
@@ -224,72 +247,95 @@ class ObstacleDetectionNode(Node):
             
             self.pointcloud_publisher_.publish(pc_msg)
 
-    def publish_marker_array(self):
-        """Publish obstacles with guaranteed marker deletion"""
-        current_time = time.time()
-        to_remove = []
+    # def publish_marker_array(self):
+    #     """Publish obstacles with guaranteed marker deletion"""
+    #     current_time = time.time()
+    #     to_remove = []
 
-        # --- Phase 1: Publish DELETIONS separately ---
-        delete_array = MarkerArray()
-        for obs_id, obs_data in list(self.obstacles.items()):
-            if current_time - obs_data['last_seen'] > self.obstacle_timeout:
-                delete_marker = Marker()
-                # Critical matching parameters (verified)
-                delete_marker.header.frame_id = "camera_link_optical"  # Exact match
-                delete_marker.ns = "obstacles"                        # Exact match  
-                delete_marker.id = obs_id                              # Exact match
-                delete_marker.action = Marker.DELETE
-                delete_marker.header.stamp = self.get_clock().now().to_msg()
+    #     # --- Phase 1: Publish DELETIONS separately ---
+    #     delete_array = MarkerArray()
+    #     for obs_id, obs_data in list(self.obstacles.items()):
+    #         if current_time - obs_data['last_seen'] > self.obstacle_timeout:
+    #             delete_marker = Marker()
+    #             # Critical matching parameters (verified)
+    #             delete_marker.header.frame_id = "camera_link_optical"  # Exact match
+    #             delete_marker.ns = "obstacles"                        # Exact match  
+    #             delete_marker.id = obs_id                              # Exact match
+    #             delete_marker.action = Marker.DELETEALL
+    #             delete_marker.header.stamp = self.get_clock().now().to_msg()
                 
-                delete_array.markers.append(delete_marker)
-                to_remove.append(obs_id)
-                self.get_logger().info(f"Publishing DELETE for obstacle {obs_id}")
+    #             delete_array.markers.append(delete_marker)
+    #             to_remove.append(obs_id)
+    #             self.get_logger().info(f"Publishing DELETE for obstacle {obs_id}")
 
-        # Publish deletions FIRST
-        if delete_array.markers:
-            self.marker_array_publisher_.publish(delete_array)
-            time.sleep(0.001)  # Ensure deletion is processed
+    #     # Publish deletions FIRST
+    #     if delete_array.markers:
+    #         self.marker_array_publisher_.publish(delete_array)
+    #         time.sleep(0.02)  # Ensure deletion is processed
+    #         self.marker_array_publisher_.publish(MarkerArray())  # Flush delete buffer
 
-        # --- Phase 2: Publish ADDITIONS ---
-        add_array = MarkerArray()
-        for obs_id, obs_data in self.obstacles.items():
-            if obs_data['visible']:
-                marker = Marker()
-                # Must match DELETE marker's identifiers exactly
-                marker.header.frame_id = "camera_link_optical"  # Verified match
-                marker.ns = "obstacles"                        # Verified match
-                marker.id = obs_id                              # Verified match
+
+    #     # --- Phase 2: Publish ADDITIONS ---
+    #     add_array = MarkerArray()
+    #     for obs_id, obs_data in self.obstacles.items():
+    #         if obs_data['visible']:
+    #             marker = Marker()
+    #             # Must match DELETE marker's identifiers exactly
+    #             marker.header.frame_id = "camera_link_optical"  # Verified match
+    #             marker.ns = "obstacles"                        # Verified match
+    #             marker.id = obs_id                              # Verified match
                 
-                marker.type = Marker.CUBE
-                marker.action = Marker.ADD
-                marker.header.stamp = self.get_clock().now().to_msg()
-                marker.pose.position.x = obs_data['position'][0]
-                marker.pose.position.y = obs_data['position'][1]
-                marker.pose.position.z = obs_data['position'][2]
-                marker.scale.x = marker.scale.y = marker.scale.z = 0.2
-                marker.color.a = 0.8
-                marker.color.r = 1.0
-                marker.color.g = 0.0
-                marker.color.b = 0.0
-                marker.lifetime = rclpy.duration.Duration(seconds=0.1).to_msg()  # Short lifetime
-                
-                add_array.markers.append(marker)
-                self.get_logger().info(f"Updating obstacle {obs_id}")
+    #             marker.type = Marker.CUBE
+    #             marker.action = Marker.ADD
+    #             marker.header.stamp = self.get_clock().now().to_msg()
+    #             marker.pose.position.x = obs_data['position'][0]
+    #             marker.pose.position.y = obs_data['position'][1]
+    #             marker.pose.position.z = obs_data['position'][2]
+    #             marker.scale.x = marker.scale.y = marker.scale.z = 0.5
+    #             marker.color.a = 0.8
+    #             marker.color.r = 1.0
+    #             marker.color.g = 0.0
+    #             marker.color.b = 0.0
+    #             marker.lifetime = rclpy.duration.Duration(seconds=0).to_msg()  # Short lifetime
+    #             self.get_logger().info(f"Publishing {len(add_array.markers)} cube markers")
+    #             add_array.markers.append(marker)
+    #             self.get_logger().info(f"Updating obstacle {obs_id} position: {marker.pose.position}")
 
-        # Apply removals after publishing deletions
-        for obs_id in to_remove:
-            del self.obstacles[obs_id]
+    #     # Apply removals after publishing deletions
+    #     for obs_id in to_remove:
+    #         del self.obstacles[obs_id]
 
-        # Publish additions
-        if add_array.markers:
-            self.marker_array_publisher_.publish(add_array)
-        self.get_logger().info(f"Published {len(add_array.markers)} additions, {len(delete_array.markers)} deletions")
+    #     # Publish additions
+    #     if add_array.markers:
+    #         self.marker_array_publisher_.publish(add_array)
+    #     self.get_logger().info(f"Published {len(add_array.markers)} additions, {len(delete_array.markers)} deletions")
 
     def destroy_node(self):
         # Stop the RealSense pipeline
         self.pipeline.stop()
         cv2.destroyAllWindows()  # Close all OpenCV windows
         super().destroy_node()  # Call the base class destroy_node method
+
+    # def destroy_node(self):
+    # # --- Publish a DELETEALL marker to clear RViz ---
+    #     delete_all_marker = Marker()
+    #     delete_all_marker.header.frame_id = "camera_link_optical"
+    #     delete_all_marker.header.stamp = self.get_clock().now().to_msg()
+    #     delete_all_marker.ns = "obstacles"  # Optional, ignored by DELETEALL
+    #     delete_all_marker.id = 0            # Optional, ignored by DELETEALL
+    #     delete_all_marker.action = Marker.DELETEALL
+
+    #     # Publish DELETEALL inside a MarkerArray
+    #     self.marker_array_publisher_.publish(MarkerArray(markers=[delete_all_marker]))
+    #     time.sleep(0.1)  # Give RViz time to process the deletion
+
+    #     # --- Stop RealSense pipeline and GUI ---
+    #     self.pipeline.stop()
+    #     cv2.destroyAllWindows()
+
+    #     # --- Shutdown the node cleanly ---
+    #     super().destroy_node()
+
 
 def main(args=None):
     rclpy.init(args=args)
