@@ -134,8 +134,7 @@ def generate_launch_description():
     output='screen',
     parameters=[robot_localization_file_path, 
     {'use_sim_time': use_sim_time}],
-    remappings=[('imu/data', 'imu/data'),
-                ('gps/fix', 'gps/fix'), 
+    remappings=[('gps/fix', 'gps/fix'), 
                 ('gps/filtered', 'gps/filtered'),
                 ('odometry/gps', 'odometry/gps'),
                 ('odometry/filtered', 'odometry/global')])
@@ -147,20 +146,18 @@ def generate_launch_description():
     name='ekf_filter_node_map',
     output='screen',
     parameters=[robot_localization_file_path, 
-    {'use_sim_time': use_sim_time}],
-    remappings=[('odometry/filtered', 'odometry/global'),
-                ('/set_pose', '/initialpose')])
+    {'use_sim_time': use_sim_time}])
 
   # Start robot localization using an Extended Kalman filter...odom->base_footprint transform
-  start_robot_localization_local_cmd = Node(
-    package='robot_localization',
-    executable='ekf_node',
-    name='ekf_filter_node_odom',
-    output='screen',
-    parameters=[robot_localization_file_path, 
-    {'use_sim_time': use_sim_time}],
-    remappings=[('odometry/filtered', 'odometry/local'),
-                ('/set_pose', '/initialpose')])
+  # start_robot_localization_local_cmd = Node(
+  #   package='robot_localization',
+  #   executable='ekf_node',
+  #   name='ekf_filter_node_odom',
+  #   output='screen',
+  #   parameters=[robot_localization_file_path, 
+  #   {'use_sim_time': use_sim_time}],
+  #   remappings=[('odometry/filtered', 'odometry/local'),
+  #               ('/set_pose', '/initialpose')])
 
 
 
@@ -270,14 +267,14 @@ def generate_launch_description():
   # Add actions
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
-  ld.add_action(start_imu_cmd)
+  # ld.add_action(start_imu_cmd)
   ld.add_action(start_lidar_cmd)
   ld.add_action(start_ros2_navigation_cmd) #amcl off, using the nav2 bringup - modified
   ld.add_action(start_ros2_navigation_cmd_amcl) #amcl on, using the nav2 available directory
   ld.add_action(start_odometry_cmd) #single odometry launch
   ld.add_action(start_joy_node)
   ld.add_action(start_robot_localization_global_cmd) 
-  ld.add_action(start_robot_localization_local_cmd) 
+  # ld.add_action(start_robot_localization_local_cmd) 
   ld.add_action(start_navsat_transform_cmd)
 
   return ld
