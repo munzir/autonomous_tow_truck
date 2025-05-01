@@ -146,8 +146,9 @@ def generate_launch_description():
     name='ekf_filter_node_map',
     output='screen',
     parameters=[robot_localization_file_path, 
-    {'use_sim_time': use_sim_time}])
-
+    {'use_sim_time': use_sim_time}],
+    remappings=[('odometry/filtered', 'odometry/global'),
+                ('/set_pose', '/initialpose')])
   # Start robot localization using an Extended Kalman filter...odom->base_footprint transform
   # start_robot_localization_local_cmd = Node(
   #   package='robot_localization',
