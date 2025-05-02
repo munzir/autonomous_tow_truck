@@ -64,6 +64,28 @@ class SafetyMarkerDetectionNode(Node):
         trapezoid = np.array([[bottom_left, top_left, top_right, bottom_right]], dtype=np.int32)
         cv2.fillPoly(mask, [trapezoid], (255, 255, 255))
         return mask
+    
+    def create_empty_pointcloud(self):
+        header = Header()
+        header.stamp = self.get_clock().now().to_msg()
+        header.frame_id = "camera_link_optical"
+        fields = [
+            PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+            PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+            PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+        ]
+        return PointCloud2(
+            header=header,
+            height=1,
+            width=0,
+            fields=fields,
+            is_bigendian=False,
+            point_step=12,
+            row_step=0,
+            data=bytes(),
+            is_dense=True
+        )
+
 
     def capture_frame(self):
         try:
@@ -97,6 +119,12 @@ class SafetyMarkerDetectionNode(Node):
                 marker = self.create_marker(len(marker_lines))
                 self.marker_publisher_.publish(marker)
                 self.get_logger().info(f"Detected {len(marker_lines)} safety markers")
+
+            else:
+                self.get_logger().info("No markers found. Publishing empty cloud.")
+                empty_pc = self.create_empty_pointcloud()
+                self.pointcloud_publisher_.publish(empty_pc)
+
 
             # Display the result
             cv2.imshow("Safety Marker Detection", annotated_frame)
