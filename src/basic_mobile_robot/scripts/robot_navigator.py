@@ -389,8 +389,8 @@ class BasicNavigator(Node):
     def _feedbackCallback(self, feedback_msg):
         self.feedback = feedback_msg.feedback
         # if hasattr(self.feedback, 'current_waypoint'):
-        self.last_reached_index = self.feedback.current_waypoint
-        self.info(f"Reached waypoint index: {self.last_reached_index}")
+        # self.last_reached_index = self.feedback.current_waypoint
+        # self.info(f"Reached waypoint index: {self.last_reached_index}")
 
 
     
