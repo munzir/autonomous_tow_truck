@@ -47,6 +47,8 @@ class BasicNavigator(Node):
         self.result_future = None
         self.feedback = None
         self.status = None
+        self.last_reached_index = -1  # -1 indicates no waypoint reached yet
+
 
         amcl_pose_qos = QoSProfile(
           durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
@@ -177,6 +179,7 @@ class BasicNavigator(Node):
 
     def getFeedback(self):
         return self.feedback
+
 
     def getResult(self):
         if self.status == GoalStatus.STATUS_SUCCEEDED:
@@ -377,10 +380,20 @@ class BasicNavigator(Node):
         self.initial_pose_received = True
         return
 
-    def _feedbackCallback(self, msg):
-        self.debug('Received action feedback message')
-        self.feedback = msg.feedback
-        return
+    # def _feedbackCallback(self, msg):
+    #     # Update the last_reached_index with the current waypoint from the feedback
+    #     self.debug('Received action feedback message')
+    #     self.feedback = msg.feedback
+    #     # self.debug(f"Feedback received. Current waypoint: {self.last_reached_index}")
+
+    def _feedbackCallback(self, feedback_msg):
+        self.feedback = feedback_msg.feedback
+        # if hasattr(self.feedback, 'current_waypoint'):
+        self.last_reached_index = self.feedback.current_waypoint
+        self.info(f"Reached waypoint index: {self.last_reached_index}")
+
+
+    
 
     def _setInitialPose(self):
         msg = PoseWithCovarianceStamped()

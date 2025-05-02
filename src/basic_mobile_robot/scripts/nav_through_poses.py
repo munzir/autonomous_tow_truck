@@ -94,7 +94,7 @@ def main():
   #     print(f'Failed to load goal_poses: {e}')
   # ==================================================
   temp_node = rclpy.create_node('nav_through_poses_param_node')
-  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv').get_parameter_value().string_value
+  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_to_AS.csv').get_parameter_value().string_value
   temp_node.destroy_node()
   file_path = csv_filename
   goal_poses = []
@@ -195,14 +195,26 @@ def main():
   #   print('Goal failed!')
   # else:
   #   print('Goal has an invalid return status!')
+  
+  
   if result == 0:  # SUCCEEDED
     print('Goal succeeded!')
+    navigator.last_reached_index += 1
   elif result == 1:  # CANCELED
     print('Goal was canceled!')
   elif result == 2:  # FAILED
     print('Goal failed!')
+    # Add here which was the last waypoint executed and what is next
   else:
     print('Goal has an invalid return status!')
+    if navigator.last_reached_index >= 0 and navigator.last_reached_index < len(goal_poses):
+        last_pose = goal_poses[navigator.last_reached_index]
+        print(f"Last successfully reached waypoint index: {navigator.last_reached_index}")
+        print(f"Coordinates: x={last_pose.pose.position.x:.2f}, y={last_pose.pose.position.y:.2f}")
+        if navigator.last_reached_index + 1 < len(goal_poses):
+            next_pose = goal_poses[navigator.last_reached_index + 1]
+            print(f"Next intended waypoint index: {navigator.last_reached_index + 1}")
+            print(f"Coordinates: x={next_pose.pose.position.x:.2f}, y={next_pose.pose.position.y:.2f}")
 
  
   # Close the ROS 2 Navigation Stack
