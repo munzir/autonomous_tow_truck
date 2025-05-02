@@ -98,37 +98,26 @@ def main():
  
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses
-  while not navigator.isNavComplete():
-    ################################################
-    #
-    # Implement some code here for your application!
-    #
-    ################################################
- 
-    # Do something with the feedback
-    i = i + 1
-    feedback = navigator.getFeedback()
-    if feedback and i % 5 == 0:
-      print('Distance remaining: ' + '{:.2f}'.format(
-            feedback.distance_remaining) + ' meters.')
- 
-      # Some navigation timeout to demo cancellation
-      if Duration.from_msg(feedback.navigation_time) > Duration(seconds=1000000.0):
-        navigator.cancelNav()
- 
-      # Some navigation request change to demo preemption
-      if Duration.from_msg(feedback.navigation_time) > Duration(seconds=500000.0):
-        goal_pose_alt = PoseStamped()
-        goal_pose_alt.header.frame_id = 'map'
-        goal_pose_alt.header.stamp = navigator.get_clock().now().to_msg()
-        goal_pose_alt.pose.position.x = -6.5
-        goal_pose_alt.pose.position.y = -4.2
-        goal_pose_alt.pose.position.z = 0.0
-        goal_pose_alt.pose.orientation.x = 0.0
-        goal_pose_alt.pose.orientation.y = 0.0  
-        goal_pose_alt.pose.orientation.z = 0.0
-        goal_pose_alt.pose.orientation.w = 1.0
-        navigator.goThroughPoses([goal_pose_alt])
+  # Loop through each goal pose individually
+  for idx, goal in enumerate(goal_poses[:26]):
+      print(f'\nNavigating to waypoint {idx + 1}/{len(goal_poses[:26])}')
+      navigator.goToPose(goal)
+
+      while not navigator.isNavComplete():
+          feedback = navigator.getFeedback()
+          if feedback:
+              print(f'...Distance to waypoint {idx + 1}: {feedback.distance_remaining:.2f} meters')
+
+      result = navigator.getResult()
+      if result == navigator.TaskResult.SUCCEEDED:
+          print(f'✅ Reached waypoint {idx + 1}')
+      elif result == navigator.TaskResult.CANCELED:
+          print(f'⚠️ Navigation to waypoint {idx + 1} was canceled.')
+          break
+      elif result == navigator.TaskResult.FAILED:
+          print(f'❌ Failed to reach waypoint {idx + 1}')
+          break
+
  
   # Do something depending on the return code
   result = navigator.getResult()
