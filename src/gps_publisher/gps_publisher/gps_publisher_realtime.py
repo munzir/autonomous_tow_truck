@@ -14,9 +14,9 @@ class GPSPublisher(Node):
 # Automatically get the latest GPS file
         #self.filename = self.get_latest_gps_file("/home/lyeba/Desktop/GPS/")
         # Timer to check file updates every 2 seconds
+        self.timer = self.create_timer(0.1, self.read_nmea_file)
         self.filename = self.get_latest_gps_file("/root/autonomous_tow_truck/src/gps_publisher/gps_publisher/")
-        
-        self.timer = self.create_timer(2.0, self.read_nmea_file)
+
 
     def get_latest_gps_file(self, directory):
         """Finds the most recent GPS file based on modification time."""
@@ -53,9 +53,9 @@ class GPSPublisher(Node):
                 while True:
                     line = file.readline()
                     if not line:
-                        time.sleep(0.5)
-                        self.get_logger().info(f"SLEEP")
-
+                        # time.sleep(0.5)
+                        # self.get_logger().info(f"SLEEP")
+                        rclpy.spin_once(self, timeout_sec=0.1)
                         continue  # Wait for new data
 
                     line = line.strip()

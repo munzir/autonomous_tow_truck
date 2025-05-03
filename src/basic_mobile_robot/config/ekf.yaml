@@ -252,7 +252,7 @@ ekf_filter_node_map:
     publish_tf: true
 
     # If the filter sees a jump back in time, the filter is reset (convenient for testing with rosbags!)
-    reset_on_time_jump: true
+    # reset_on_time_jump: true
 
     map_frame: map
     odom_frame: odom
@@ -333,7 +333,7 @@ ekf_filter_node_map:
 navsat_transform:
   ros__parameters:
     use_sim_time: false
-    frequency: 20.0
+    frequency: 10.0
     delay: 3.0
     magnetic_declination_radians: 0.0  # For lat/long of Atlanta, Georgia
     yaw_offset: 0.0  # if IMU reads 0 when facing magnetic north instead of east then set parameter to pi/2
