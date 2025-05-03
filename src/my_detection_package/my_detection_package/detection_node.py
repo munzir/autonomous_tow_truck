@@ -100,6 +100,7 @@ class ObstacleDetectionNode(Node):
         results = self.model(color_image)
         obstacle_detected = False
         current_time = time.time()
+        obstacles_detected_in_current_frame = False
 
         # Reset visibility for all obstacles (will be set to True if detected again)
         for obs_id in self.obstacles:
@@ -111,9 +112,11 @@ class ObstacleDetectionNode(Node):
         header.frame_id = "camera_link_optical"  # Match your TF tree
 
         for *box, conf, cls in results.pred[0]:
+            obstacles_detected_in_current_frame = True
             x1, y1, x2, y2 = map(int, box)
             label = f"{results.names[int(cls)]} {conf:.2f}"
             obstacle_detected = True
+            no_obstacles_detected = False
 
             center_x = int((x1 + x2) / 2)
             center_y = int((y1 + y2) / 2)
@@ -141,8 +144,56 @@ class ObstacleDetectionNode(Node):
             self.obstacles[obstacle_id]['visible'] = True
             self.obstacles[obstacle_id]['position'] = (X, Y, Z)
 
+            # # Visualization
+            # if ((X > -self.width_t/2 - 0.1) or (X < self.width_t/2 + 0.1)) and (Y > -self.height_t/2 - 0.3) and (Z < 9):
+            #     cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Red for close obstacles
+            # else:
+            #     cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Green for far obstacles
+        # if not obstacles_detected_in_current_frame and not any(obs['visible'] for obs in self.obstacles.values()):
+        #     empty_cloud = PointCloud2(
+        #         header=Header(
+        #             stamp=self.get_clock().now().to_msg(),
+        #             frame_id="camera_link_optical"
+        #         ),
+        #         height=1,
+        #         width=0,
+        #         fields=[
+        #             PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+        #             PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+        #             PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+        #         ],
+        #         is_bigendian=False,
+        #         point_step=12,
+        #         row_step=0,
+        #         data=bytes(),
+        #         is_dense=True
+        #     )
+        #     self.pointcloud_publisher_.publish(empty_cloud)
+
+        if not obstacles_detected_in_current_frame:
+            self.obstacles.clear()
+            empty_cloud = PointCloud2(
+                header=Header(
+                    stamp=self.get_clock().now().to_msg(),
+                    frame_id="camera_link_optical"
+                ),
+                height=1,
+                width=0,
+                fields=[
+                    PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+                    PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+                    PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+                ],
+                is_bigendian=False,
+                point_step=12,
+                row_step=0,
+                data=bytes(),
+                is_dense=True
+            )
+            self.pointcloud_publisher_.publish(empty_cloud)
+
         return obstacle_detected, color_image, True
-    
+   
     def match_or_create_obstacle(self, x, y, z):
         # Simple obstacle matching based on position (could be improved)
         for obs_id, obs_data in self.obstacles.items():
@@ -171,17 +222,26 @@ class ObstacleDetectionNode(Node):
         point_cloud = []
         depth_image = np.asanyarray(depth_frame.get_data())
                
-        for y in range(y_min, y_max, 2):  # Sample with stride
-            for x in range(x_min, x_max, 2):
+        for y in range(y_min, y_max, 1):  # Sample with stride
+            for x in range(x_min, x_max, 1):
                 if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
                     depth = depth_image[y, x] * self.depth_scale  # Convert to meters
-                    if depth > 0:
+                    if 0.1 < depth < 5.0:
                         # Convert to 3D coordinates
                         point = rs.rs2_deproject_pixel_to_point(
                             self.depth_intrinsics, 
                             [x, y], 
                             depth
                         )
+                        # Add some artificial inflation points around edges
+                        if x == x_min or x == x_max-1 or y == y_min or y == y_max-1:
+                            for i in range(-3, 4):  # Create points around edges
+                                inflated_point = (
+                                    point[0] + i*0.05,
+                                    point[1] + i*0.05,
+                                    point[2]
+                                )
+                                point_cloud.append(inflated_point)
                         point_cloud.append(point)
         return point_cloud
 
@@ -196,12 +256,29 @@ class ObstacleDetectionNode(Node):
         header.stamp = self.get_clock().now().to_msg()
         header.frame_id = "camera_link_optical"
         
-        if not all_points:
-            # Publish empty point cloud to signal clearing
-            pc_msg = PointCloud2(
+        # if not all_points:
+        #     # Publish empty point cloud to signal clearing
+        #     pc_msg = PointCloud2(
+        #     header=header,
+        #     height=1,
+        #     width=0,
+        #     fields=[
+        #         PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+        #         PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+        #         PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+        #     ],
+        #     is_bigendian=False,
+        #     point_step=12,
+        #     row_step=0,
+        #     data=bytes(),
+        #     is_dense=True
+        # )
+            
+        # else:
+        pc_msg = PointCloud2(
             header=header,
             height=1,
-            width=0,
+            width=len(all_points),
             fields=[
                 PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
                 PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
@@ -209,27 +286,10 @@ class ObstacleDetectionNode(Node):
             ],
             is_bigendian=False,
             point_step=12,
-            row_step=0,
-            data=bytes(),
-            is_dense=True
+            row_step=12 * len(all_points),
+            data=np.array(all_points, dtype=np.float32).tobytes(),
+            is_dense = True
         )
-            
-        else:
-            pc_msg = PointCloud2(
-                header=header,
-                height=1,
-                width=len(all_points),
-                fields=[
-                    PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-                    PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-                    PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-                ],
-                is_bigendian=False,
-                point_step=12,
-                row_step=12 * len(all_points),
-                data=np.array(all_points, dtype=np.float32).tobytes(),
-                is_dense = True
-            )
             
         self.pointcloud_publisher_.publish(pc_msg)
 
