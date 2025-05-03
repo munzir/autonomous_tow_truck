@@ -320,41 +320,55 @@ local_costmap:
         z_voxels: 16
         max_obstacle_height: 2.0
         mark_threshold: 0
-        observation_sources: scan  
+        observation_sources: scan yolo_detections
         scan:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
-
-      obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
-        observation_sources: yolo_detections 
         yolo_detections: 
           topic: /yolo_detections
           max_obstacle_height: 3.0
           min_obstacle_height: 0.0
-          obstacle_max_range: 4.0
+          obstacle_max_range: 5.0
           clearing: true
           marking: true
           data_type: "PointCloud2"
           expected_update_rate: 0.5
           observation_persistence: 0.2
-          # decay: 0.2
+          decay: 0.1
           sensor_frame: camera_link_optical
+          combination_method: 1
 
-        lane_markings:
-          topic: /safety_marker_points 
-          data_type: "PointCloud2"
-          sensor_frame: camera_link_optical
-          marking: true
-          clearing: true
-          max_obstacle_height: 0.2      # Lower if tape is at ground level
-          min_obstacle_height: 0.0
-          obstacle_max_range: 6.0
-          expected_update_rate: 1.0
-          observation_persistence: 1.0
+      # obstacle_layer:
+      #   plugin: "nav2_costmap_2d::ObstacleLayer"
+      #   observation_sources: yolo_detections 
+      #   yolo_detections: 
+      #     topic: /yolo_detections
+      #     max_obstacle_height: 3.0
+      #     min_obstacle_height: 0.0
+      #     obstacle_max_range: 5.0
+      #     clearing: true
+      #     marking: true
+      #     data_type: "PointCloud2"
+      #     expected_update_rate: 0.5
+      #     observation_persistence: 0.2
+      #     decay: 0.1
+      #     sensor_frame: camera_link_optical
+      #     combination_method: 1
+
+        # lane_markings:
+        #   topic: /safety_marker_points 
+        #   data_type: "PointCloud2"
+        #   sensor_frame: camera_link_optical
+        #   marking: true
+        #   clearing: true
+        #   max_obstacle_height: 0.2      # Lower if tape is at ground level
+        #   min_obstacle_height: 0.0
+        #   obstacle_max_range: 6.0
+        #   expected_update_rate: 1.0
+        #   observation_persistence: 1.0
 
 
       static_layer:
