@@ -15,6 +15,7 @@ from cv_bridge import CvBridge
 import tf2_ros
 from geometry_msgs.msg import TransformStamped
 from collections import defaultdict
+from scipy.spatial import KDTree # new
 
 class ObstacleDetectionNode(Node):
     def __init__(self):
@@ -34,6 +35,8 @@ class ObstacleDetectionNode(Node):
 
         self.bridge = CvBridge()
 
+        # self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True, autoshape=False)
+        # self.model = self.model.to('cuda' if torch.cuda.is_available() else 'cpu').eval()
         self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n')
 
         # Initialize RealSense pipeline and alignment for depth data
@@ -66,12 +69,17 @@ class ObstacleDetectionNode(Node):
         # Record the timestamp when the frame is captured
         start_capture_time = time.time()
 
-        # frames = self.pipeline.wait_for_frames()
-
         # Wait for frames and align the depth frame with the color frame
-        frames = self.pipeline.wait_for_frames()  
+        frames = self.pipeline.wait_for_frames()
         aligned_frames = self.align.process(frames)
 
+        # # Optimized (use poll_for_frames for non-blocking check) # new
+        # frames = self.pipeline.poll_for_frames()
+        # if frames:
+        #     aligned_frames = self.align.process(frames)
+        # else:
+        #     return  # Skip this iteration if no new frames  
+       
         # Get the aligned depth and color frames
         depth_frame = aligned_frames.get_depth_frame()
         color_frame = aligned_frames.get_color_frame()
@@ -89,7 +97,6 @@ class ObstacleDetectionNode(Node):
         self.remove_old_obstacles(start_capture_time)
 
         # Publish updates
-        # self.publish_marker_array()
         self.publish_combined_pointcloud()
 
         # Display the camera stream with bounding boxes
@@ -144,32 +151,6 @@ class ObstacleDetectionNode(Node):
             self.obstacles[obstacle_id]['visible'] = True
             self.obstacles[obstacle_id]['position'] = (X, Y, Z)
 
-            # # Visualization
-            # if ((X > -self.width_t/2 - 0.1) or (X < self.width_t/2 + 0.1)) and (Y > -self.height_t/2 - 0.3) and (Z < 9):
-            #     cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Red for close obstacles
-            # else:
-            #     cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Green for far obstacles
-        # if not obstacles_detected_in_current_frame and not any(obs['visible'] for obs in self.obstacles.values()):
-        #     empty_cloud = PointCloud2(
-        #         header=Header(
-        #             stamp=self.get_clock().now().to_msg(),
-        #             frame_id="camera_link_optical"
-        #         ),
-        #         height=1,
-        #         width=0,
-        #         fields=[
-        #             PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-        #             PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-        #             PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-        #         ],
-        #         is_bigendian=False,
-        #         point_step=12,
-        #         row_step=0,
-        #         data=bytes(),
-        #         is_dense=True
-        #     )
-        #     self.pointcloud_publisher_.publish(empty_cloud)
-
         if not obstacles_detected_in_current_frame:
             self.obstacles.clear()
             empty_cloud = PointCloud2(
@@ -206,6 +187,18 @@ class ObstacleDetectionNode(Node):
         # If no match found, create new obstacle
         self.obstacle_id_counter += 1
         return self.obstacle_id_counter
+        # if len(self.obstacles) > 0: # new
+        #     if not hasattr(self, 'obstacle_kdtree') or self.obstacle_kdtree is None:
+        #         positions = [obs['position'] for obs in self.obstacles.values()]
+        #         self.obstacle_kdtree = KDTree(positions)
+            
+        #     dist, idx = self.obstacle_kdtree.query([(x, y, z)], k=1)
+        #     if dist[0] < 0.5:  # Matching threshold
+        #         return list(self.obstacles.keys())[idx[0]]
+        
+        # # Create new obstacle
+        # self.obstacle_id_counter += 1
+        # return self.obstacle_id_counter
     
     def remove_old_obstacles(self, current_time):
         to_remove = []
@@ -221,6 +214,20 @@ class ObstacleDetectionNode(Node):
     def bbox_to_points(self, x_min, y_min, x_max, y_max, depth_frame):
         point_cloud = []
         depth_image = np.asanyarray(depth_frame.get_data())
+        # roi = depth_image[y_min:y_max, x_min:x_max]
+
+        # # Create coordinate grids
+        # y_coords, x_coords = np.mgrid[y_min:y_max, x_min:x_max]
+        # valid_mask = (roi > 0.1 * 1000) & (roi < 5.0 * 1000)  # Convert meters to mm
+        
+        # # Vectorized deprojection
+        # points = []
+        # for y, x in zip(y_coords[valid_mask], x_coords[valid_mask]):
+        #     depth = depth_image[y, x] * self.depth_scale
+        #     point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
+        #     points.append(point)
+        
+        # return points
                
         for y in range(y_min, y_max, 1):  # Sample with stride
             for x in range(x_min, x_max, 1):
@@ -245,7 +252,7 @@ class ObstacleDetectionNode(Node):
                         point_cloud.append(point)
         return point_cloud
 
-    def publish_combined_pointcloud(self):           
+    def publish_combined_pointcloud(self, points):           
         # Combine all obstacle points
         all_points = []
         for obs_data in self.obstacles.values():
@@ -255,25 +262,7 @@ class ObstacleDetectionNode(Node):
         header = Header()
         header.stamp = self.get_clock().now().to_msg()
         header.frame_id = "camera_link_optical"
-        
-        # if not all_points:
-        #     # Publish empty point cloud to signal clearing
-        #     pc_msg = PointCloud2(
-        #     header=header,
-        #     height=1,
-        #     width=0,
-        #     fields=[
-        #         PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-        #         PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-        #         PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-        #     ],
-        #     is_bigendian=False,
-        #     point_step=12,
-        #     row_step=0,
-        #     data=bytes(),
-        #     is_dense=True
-        # )
-            
+                   
         # else:
         pc_msg = PointCloud2(
             header=header,
@@ -291,7 +280,26 @@ class ObstacleDetectionNode(Node):
             is_dense = True
         )
             
-        self.pointcloud_publisher_.publish(pc_msg)
+        self.pointcloud_publisher_.publish(pc_msg) 
+
+        # if self.reuse_buffer is None or len(self.reuse_buffer) < len(points): # new
+        #     self.reuse_buffer = np.zeros((len(points), 3), dtype=np.float32)
+        
+        # # Copy data into existing buffer
+        # np.copyto(self.reuse_buffer[:len(points)], points)
+        
+        # pc_msg = PointCloud2(
+        #     header=Header(stamp=self.get_clock().now().to_msg(), frame_id="camera_link_optical"),
+        #     height=1,
+        #     width=len(points),
+        #     fields=[...],  # Same as before
+        #     is_bigendian=False,
+        #     point_step=12,
+        #     row_step=12 * len(points),
+        #     data=self.reuse_buffer[:len(points)].tobytes(),
+        #     is_dense=True
+        # )
+        # self.pointcloud_publisher_.publish(pc_msg)
 
     def destroy_node(self):
         # Stop the RealSense pipeline
