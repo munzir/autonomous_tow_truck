@@ -28,10 +28,10 @@ void ai0_handler() {
     interesting_edges_0++;
       if (digitalRead(2) == HIGH) {
         anti_clockwise_edges_0++;
-        steering_angle++;
+        steering_angle--;
       } else {
         clockwise_edges_0++;
-        steering_angle--;
+        steering_angle++;
       }
   }
 }
@@ -42,10 +42,10 @@ void ai1_handler() {
     interesting_edges_1++;
       if (digitalRead(3) == HIGH) {
         clockwise_edges_1++;
-        steering_angle--;
+        steering_angle++;
       } else {
         anti_clockwise_edges_1++;
-        steering_angle++;
+        steering_angle--;
       }
   }
 }

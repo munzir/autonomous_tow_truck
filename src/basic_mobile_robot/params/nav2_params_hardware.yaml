@@ -304,7 +304,7 @@ local_costmap:
       height: 10
       resolution: 0.05
       robot_radius: 0.75
-      plugins: ["voxel_layer", "inflation_layer", "obstacle_layer"]
+      plugins: ["voxel_layer", "inflation_layer"]
 
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
@@ -325,7 +325,7 @@ local_costmap:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
-          marking: True
+          marking: True        
           data_type: "LaserScan"
         yolo_detections: 
           topic: /yolo_detections
@@ -340,7 +340,6 @@ local_costmap:
           decay: 0.1
           sensor_frame: camera_link_optical
           combination_method: 1
-
       # obstacle_layer:
       #   plugin: "nav2_costmap_2d::ObstacleLayer"
       #   observation_sources: yolo_detections 
@@ -357,20 +356,6 @@ local_costmap:
       #     decay: 0.1
       #     sensor_frame: camera_link_optical
       #     combination_method: 1
-
-        # lane_markings:
-        #   topic: /safety_marker_points 
-        #   data_type: "PointCloud2"
-        #   sensor_frame: camera_link_optical
-        #   marking: true
-        #   clearing: true
-        #   max_obstacle_height: 0.2      # Lower if tape is at ground level
-        #   min_obstacle_height: 0.0
-        #   obstacle_max_range: 6.0
-        #   expected_update_rate: 1.0
-        #   observation_persistence: 1.0
-
-
       static_layer:
         map_subscribe_transient_local: True
       always_send_full_costmap: True
