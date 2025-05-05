@@ -43,13 +43,13 @@ void loop()
   if (recalibration_completed == true) { Serial.println (steering_angle); }
   if (reinitialize) { recalibrate(); }
   if (debug == true){
-      Serial.print("Reinitialize: "); Serial.print(reinitialize);
-      Serial.print(", Manual: "); Serial.print(manual);
-      Serial.print(", Brake: "); Serial.print(brake);
-      Serial.print(", Reverse: "); Serial.print(reverse);
-      Serial.print(", Speed: "); Serial.print(ref_speed);
+//      Serial.print("Reinitialize: "); Serial.print(reinitialize);
+//      Serial.print(", Manual: "); Serial.print(manual);
+//      Serial.print(", Brake: "); Serial.print(brake);
+//      Serial.print(", Reverse: "); Serial.print(reverse);
+//      Serial.print(", Speed: "); Serial.print(ref_speed);
       Serial.print(", Steering Angle: "); Serial.println(ref_steering_angle);
-      Serial.print(", Debug Mode: "); Serial.println(debug);
+//      Serial.print(", Debug Mode: "); Serial.println(debug);
   }
 }
 
