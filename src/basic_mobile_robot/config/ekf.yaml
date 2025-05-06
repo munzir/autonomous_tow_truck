@@ -240,7 +240,7 @@ ekf_filter_node_map:
     use_sim_time: false
 
 
-    frequency: 2  0.0
+    frequency: 20.0
     sensor_timeout: 0.1
     two_d_mode: true
     transform_time_offset: 0.0
