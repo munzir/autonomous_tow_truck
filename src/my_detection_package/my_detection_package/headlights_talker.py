@@ -1,18 +1,26 @@
 import rclpy
 from rclpy.node import Node
 import cv2
-from std_msgs.msg import Int8, Float32
+import serial
+from std_msgs.msg import Int8
 
 class LightingConditionNode(Node):
     def __init__(self):
         super().__init__('lighting_condition_node')
-        
+
         # Publishers
-        self.lighting_pub = self.create_publisher(Int8, 'lighting_condition', 10)  # Binary lighting condition
-        # self.brightness_pub = self.create_publisher(Float32, 'average_brightness', 10)  # Raw brightness value
-        
+        self.lighting_pub = self.create_publisher(Int8, 'lighting_condition', 10)
+
+        # Serial connection to Arduino
+        try:
+            self.arduino = serial.Serial('/dev/ttyACM0', 9600, timeout=1)  # Change to match your port
+            self.get_logger().info("Connected to Arduino.")
+        except serial.SerialException:
+            self.get_logger().error("Could not open serial port to Arduino.")
+            self.arduino = None
+
         # Initialize camera
-        self.cap = cv2.VideoCapture(6)  # Change index if needed
+        self.cap = cv2.VideoCapture(6)
         if not self.cap.isOpened():
             self.get_logger().error("Failed to open camera!")
             return
@@ -26,22 +34,23 @@ class LightingConditionNode(Node):
             self.get_logger().warn("Failed to capture frame!")
             return
 
-        # Convert frame to HSV and extract brightness (V channel)
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         v_channel = hsv[:, :, 2]
         avg_brightness = v_channel.mean()
 
-        # Determine binary lighting condition
-        lighting_condition = 1 if avg_brightness < 50 else 0  # 1 = Dark, 0 = Normal/Bright
+        lighting_condition = 1 if avg_brightness < 50 else 0  # 1 = Dark
 
-        # Publish messages
         self.lighting_pub.publish(Int8(data=lighting_condition))
-        # self.brightness_pub.publish(Float32(data=avg_brightness))
 
-        # Log output
+        # Send to Arduino
+        if self.arduino:
+            try:
+                self.arduino.write(f'{lighting_condition}\n'.encode())
+            except Exception as e:
+                self.get_logger().error(f"Failed to write to Arduino: {e}")
+
         self.get_logger().info(f"Lighting Condition (Binary): {lighting_condition}")
 
-        # Show the frame
         cv2.imshow('Frame', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             self.destroy_node()
@@ -51,6 +60,8 @@ class LightingConditionNode(Node):
         if self.cap.isOpened():
             self.cap.release()
         cv2.destroyAllWindows()
+        if self.arduino:
+            self.arduino.close()
 
 def main(args=None):
     rclpy.init(args=args)

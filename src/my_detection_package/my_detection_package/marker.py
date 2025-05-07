@@ -227,21 +227,21 @@ class SafetyMarkerDetectionNode(Node):
 
         return pc_msg
 
-    def create_marker(self, count):
-        marker = Marker()
-        marker.header.frame_id = "camera_link_optical"
-        marker.header.stamp = self.get_clock().now().to_msg()
-        marker.type = Marker.TEXT_VIEW_FACING
-        marker.text = f"{count} Safety Markers"
-        marker.pose.position.x = 0.0
-        marker.pose.position.y = 0.0
-        marker.pose.position.z = 1.0
-        marker.scale.z = 0.1
-        marker.color.a = 1.0
-        marker.color.r = 1.0
-        marker.color.g = 1.0
-        marker.color.b = 0.0
-        return marker
+    # def create_marker(self, count):
+    #     marker = Marker()
+    #     marker.header.frame_id = "camera_link_optical"
+    #     marker.header.stamp = self.get_clock().now().to_msg()
+    #     marker.type = Marker.TEXT_VIEW_FACING
+    #     marker.text = f"{count} Safety Markers"
+    #     marker.pose.position.x = 0.0
+    #     marker.pose.position.y = 0.0
+    #     marker.pose.position.z = 1.0
+    #     marker.scale.z = 0.1
+    #     marker.color.a = 1.0
+    #     marker.color.r = 1.0
+    #     marker.color.g = 1.0
+    #     marker.color.b = 0.0
+    #     return marker
 
     def destroy_node(self):
         self.pipeline.stop()
