@@ -58,7 +58,7 @@ class ObstacleDetectionNode(Node):
 
         # Track obstacles and their last seen time
         self.obstacles = defaultdict(dict)  # {obstacle_id: {'points': [], 'last_seen': timestamp}}
-        self.obstacle_timeout = 1.0  # seconds before removing unseen obstacles
+        self.obstacle_timeout = 0.5  # seconds before removing unseen obstacles
         self.obstacle_id_counter = 0
 
         # Timer to periodically capture frames
@@ -81,7 +81,7 @@ class ObstacleDetectionNode(Node):
             return
 
         # Convert color frame to OpenCV format
-        color_image = np.asarray(color_frame.get_data(), copy=False)
+        color_image = np.asarray(color_frame.get_data())
 
         # # Perform object detection and draw bounding boxes
         _, annotated_frame, _ = self.detect_obstacle(color_image, depth_frame)
@@ -154,14 +154,16 @@ class ObstacleDetectionNode(Node):
             # obstacle_id = self.match_or_create_obstacle(X, Y, Z)
             
             # Update obstacle data
-            self.obstacles[obstacle_id]['points'] = self.bbox_to_points(x1, y1, x2, y2, depth_frame)
+            if Z<7:
+                self.obstacles[obstacle_id]['points'] = self.bbox_to_points(x1, y1, x2, y2, depth_frame)
+                self.get_logger().info(f"{obstacle_id} at {Z:.2f} with {len(self.obstacles[obstacle_id]['points'])} points")
             self.obstacles[obstacle_id]['last_seen'] = current_time
             self.obstacles[obstacle_id]['visible'] = True
             self.obstacles[obstacle_id]['position'] = (X, Y, Z)
 
-        self.get_logger().info("Detected obstacles")
-        self.get_logger().info(str(self.obstacles.keys()))
-        self.get_logger().info("\n")
+        # self.get_logger().info("Detected obstacles")
+        # self.get_logger().info(str(self.obstacles.keys()))
+        # self.get_logger().info("\n")
 
         return obstacle_detected, color_image, True
    
@@ -186,14 +188,16 @@ class ObstacleDetectionNode(Node):
 
         for obs_id in to_remove:
             self.get_logger().info(f"Removing stale obstacle {obs_id}")
+            if 'points' in self.obstacles[obs_id]:
+                self.obstacles[obs_id]['points'].clear()
             del self.obstacles[obs_id]
         
-        if to_remove:
-            self.get_logger().info(f"Removed {len(to_remove)} stale obstacles")
+        # if to_remove:
+        #     self.get_logger().info(f"Removed {len(to_remove)} stale obstacles")
 
-        self.get_logger().info("After removal:")
-        self.get_logger().info(str(self.obstacles.keys()))
-        self.get_logger().info("\n")
+        # self.get_logger().info("After removal:")
+        # self.get_logger().info(str(self.obstacles.keys()))
+        # self.get_logger().info("\n")
 
     
     def bbox_to_points(self, x_min, y_min, x_max, y_max, depth_frame):
@@ -203,7 +207,8 @@ class ObstacleDetectionNode(Node):
             for x in range(x_min, x_max, 1):
                 if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
                     depth = depth_image[y, x] * self.depth_scale  # Convert to meters
-                    if np.isnan(depth) or depth <= 0.1 or depth >= 5.0:
+                    # if np.isnan(depth) or depth <= 0.1 or depth >= 5.0:
+                    if not np.isnan(depth) and 0.1 < depth < 5.0:
                         # Convert to 3D coordinates
                         point = rs.rs2_deproject_pixel_to_point(
                             self.depth_intrinsics, 
@@ -224,11 +229,14 @@ class ObstacleDetectionNode(Node):
     
     def publish_combined_pointcloud(self):
         points = []
+        self.get_logger().info("In publish combine pointcloud")
 
-        for obs_data in self.obstacles.values():
+        for obs_id,obs_data in self.obstacles.items():
             if 'points' in obs_data and obs_data['visible']:
                 # self.get_logger().info(f"Obstacle {obs_id} contributing {len(obs['points'])} points")
                 points.extend(obs_data['points'])
+                self.get_logger().info(f"{obs_id} with {len(obs_data['points'])} points" )
+                # self.get_logger().info(str(points))
 
       
         # If no points, publish empty cloud
@@ -251,16 +259,18 @@ class ObstacleDetectionNode(Node):
         is_dense=True
         )
 
+        self.pointcloud_publisher_.publish(empty_cloud)
+
         if not points:
             self.get_logger().info("No visible obstacles, publishing empty point cloud")
             self.pointcloud_publisher_.publish(empty_cloud)
             return  # Exit after publishing the empty cloud
         
         # Build PointCloud2 from points
-        cloud_data = []
-        for x, y, z in points:
-            cloud_data.extend([x, y, z])
-        self.get_logger().info("getting cloud data")
+        # cloud_data = []
+        # for x, y, z in points:
+        #     cloud_data.extend([x, y, z])
+        # self.get_logger().info("getting cloud data")
 
         pc_msg = PointCloud2(
             header=Header(

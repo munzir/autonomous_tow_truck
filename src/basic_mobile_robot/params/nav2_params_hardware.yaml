@@ -327,6 +327,7 @@ local_costmap:
           clearing: True
           marking: True        
           data_type: "LaserScan"
+
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         observation_sources: yolo_detections 
@@ -339,14 +340,17 @@ local_costmap:
           marking: true
           data_type: "PointCloud2"
           expected_update_rate: 0.5
-          observation_persistence: 0.2
-          decay: 0.5
+          observation_persistence: 0.1          #initially 0.2
+          decay: 0.1
           sensor_frame: camera_link_optical
-          combination_method: 0
+          raytrace_max_range: 7.0
+          raytrace_min_range: 0.0
+        combination_method: 0
 
       static_layer:
         map_subscribe_transient_local: True
-      always_send_full_costmap: True
+
+      # always_send_full_costmap: False
 
   local_costmap_client:
     ros__parameters:
@@ -371,13 +375,30 @@ global_costmap:
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        observation_sources: scan
+        observation_sources: scan 
         scan:
           topic: /scan
           max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "LaserScan"
+        # yolo_detections:
+        #   topic: /yolo_detections
+        #   max_obstacle_height: 3.0
+        #   min_obstacle_height: 0.0
+        #   obstacle_max_range: 5.0
+        #   clearing: true
+        #   marking: true
+        #   data_type: "PointCloud2"
+        #   expected_update_rate: 0.5
+        #   observation_persistence: 0.1          #initially 0.2
+        #   decay: 0.1
+        #   sensor_frame: camera_link_optical
+        #   raytrace_max_range: 7.0
+        #   raytrace_min_range: 0.0
+        # combination_method: 0
+          
+          
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
@@ -386,6 +407,7 @@ global_costmap:
         cost_scaling_factor: 3.0
         inflation_radius: 0.95
       always_send_full_costmap: True
+
   global_costmap_client:
     ros__parameters:
       use_sim_time: False

@@ -1,0 +1,1004 @@
+Using cache found in /root/.cache/torch/hub/ultralytics_yolov5_master
+/usr/local/lib/python3.10/dist-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+YOLOv5 🚀 2025-4-14 Python-3.10.12 torch-2.6.0+cu124 CPU
+
+Fusing layers... 
+YOLOv5n summary: 213 layers, 1867405 parameters, 0 gradients, 4.5 GFLOPs
+Adding AutoShape... 
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683149.008571471] [obstacle_detection_node]: 1 at 5.71 with 1164 points
+[INFO] [1746683149.096383458] [obstacle_detection_node]: 2 at 6.86 with 51 points
+[INFO] [1746683149.285316568] [obstacle_detection_node]: 3 at 2.25 with 11374 points
+[INFO] [1746683149.286587964] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683149.287725310] [obstacle_detection_node]: 1 with 1164 points
+[INFO] [1746683149.288806177] [obstacle_detection_node]: 2 with 51 points
+[INFO] [1746683149.290019232] [obstacle_detection_node]: 3 with 11374 points
+[INFO] [1746683149.300972531] [obstacle_detection_node]: Publishing 12589 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683150.095865997] [obstacle_detection_node]: 1 at 5.88 with 686 points
+[INFO] [1746683150.096393446] [obstacle_detection_node]: Removing stale obstacle 3
+[INFO] [1746683150.097406343] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683150.097791345] [obstacle_detection_node]: 1 with 686 points
+[INFO] [1746683150.098155865] [obstacle_detection_node]: 2 with 51 points
+[INFO] [1746683150.100453683] [obstacle_detection_node]: Publishing 737 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683150.653858277] [obstacle_detection_node]: 2 at 6.93 with 153 points
+[INFO] [1746683150.796825196] [obstacle_detection_node]: 1 at 5.82 with 618 points
+[INFO] [1746683150.836976545] [obstacle_detection_node]: 5 at 6.93 with 586 points
+[INFO] [1746683150.837774250] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683150.838186198] [obstacle_detection_node]: 1 with 618 points
+[INFO] [1746683150.838591443] [obstacle_detection_node]: 2 with 153 points
+[INFO] [1746683150.838972686] [obstacle_detection_node]: 5 with 586 points
+[INFO] [1746683150.840225265] [obstacle_detection_node]: Publishing 1357 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683151.267224847] [obstacle_detection_node]: 7 at 6.23 with 870 points
+[INFO] [1746683151.291072580] [obstacle_detection_node]: 2 at 6.86 with 48 points
+[INFO] [1746683151.291960727] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683151.292486493] [obstacle_detection_node]: 2 with 48 points
+[INFO] [1746683151.292933131] [obstacle_detection_node]: 5 with 586 points
+[INFO] [1746683151.293402602] [obstacle_detection_node]: 7 with 870 points
+[INFO] [1746683151.294781838] [obstacle_detection_node]: Publishing 1504 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683151.706897032] [obstacle_detection_node]: 7 at 6.36 with 1076 points
+[INFO] [1746683151.730542836] [obstacle_detection_node]: 2 at 6.93 with 220 points
+[INFO] [1746683151.731388103] [obstacle_detection_node]: Removing stale obstacle 1
+[INFO] [1746683151.731907222] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683151.732369975] [obstacle_detection_node]: 2 with 220 points
+[INFO] [1746683151.732767344] [obstacle_detection_node]: 7 with 1076 points
+[INFO] [1746683151.733956129] [obstacle_detection_node]: Publishing 1296 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683152.165154737] [obstacle_detection_node]: 7 at 6.17 with 1005 points
+[INFO] [1746683152.166335932] [obstacle_detection_node]: Removing stale obstacle 4
+[INFO] [1746683152.166958535] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683152.167485305] [obstacle_detection_node]: 2 with 220 points
+[INFO] [1746683152.167995760] [obstacle_detection_node]: 5 with 586 points
+[INFO] [1746683152.168459800] [obstacle_detection_node]: 7 with 1005 points
+[INFO] [1746683152.170430523] [obstacle_detection_node]: Publishing 1811 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683152.767725388] [obstacle_detection_node]: 2 at 6.86 with 169 points
+[INFO] [1746683152.863961162] [obstacle_detection_node]: 7 at 6.30 with 889 points
+[INFO] [1746683152.865790666] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683152.867007423] [obstacle_detection_node]: 2 with 169 points
+[INFO] [1746683152.868170186] [obstacle_detection_node]: 5 with 586 points
+[INFO] [1746683152.869342581] [obstacle_detection_node]: 7 with 889 points
+[INFO] [1746683152.872410722] [obstacle_detection_node]: Publishing 1644 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683153.147149692] [obstacle_detection_node]: 2 at 6.93 with 250 points
+[INFO] [1746683153.194857626] [obstacle_detection_node]: 7 at 6.17 with 826 points
+[INFO] [1746683153.195770539] [obstacle_detection_node]: Removing stale obstacle 8
+[INFO] [1746683153.196213727] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683153.196620216] [obstacle_detection_node]: 2 with 250 points
+[INFO] [1746683153.197005122] [obstacle_detection_node]: 5 with 586 points
+[INFO] [1746683153.197451385] [obstacle_detection_node]: 7 with 826 points
+[INFO] [1746683153.198881592] [obstacle_detection_node]: Publishing 1662 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683153.458807249] [obstacle_detection_node]: 2 at 6.93 with 92 points
+[INFO] [1746683153.601621814] [obstacle_detection_node]: 7 at 6.11 with 871 points
+[INFO] [1746683153.603037955] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683153.604132405] [obstacle_detection_node]: 2 with 92 points
+[INFO] [1746683153.605106985] [obstacle_detection_node]: 5 with 586 points
+[INFO] [1746683153.606030878] [obstacle_detection_node]: 7 with 871 points
+[INFO] [1746683153.608539381] [obstacle_detection_node]: Publishing 1549 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683154.231795344] [obstacle_detection_node]: 7 at 6.05 with 707 points
+[INFO] [1746683154.317048415] [obstacle_detection_node]: 2 at 6.93 with 190 points
+[INFO] [1746683154.318474979] [obstacle_detection_node]: Removing stale obstacle 6
+[INFO] [1746683154.319480008] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683154.320441919] [obstacle_detection_node]: 2 with 190 points
+[INFO] [1746683154.321434112] [obstacle_detection_node]: 5 with 586 points
+[INFO] [1746683154.322399684] [obstacle_detection_node]: 7 with 707 points
+[INFO] [1746683154.324977102] [obstacle_detection_node]: Publishing 1483 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683155.324697457] [obstacle_detection_node]: 7 at 5.93 with 609 points
+[INFO] [1746683155.357220755] [obstacle_detection_node]: 9 at 6.78 with 0 points
+[INFO] [1746683155.411053108] [obstacle_detection_node]: 10 at 6.71 with 778 points
+[INFO] [1746683155.411752742] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683155.412117635] [obstacle_detection_node]: 2 with 190 points
+[INFO] [1746683155.412489703] [obstacle_detection_node]: 7 with 609 points
+[INFO] [1746683155.412824034] [obstacle_detection_node]: 9 with 0 points
+[INFO] [1746683155.413162704] [obstacle_detection_node]: 10 with 778 points
+[INFO] [1746683155.414496687] [obstacle_detection_node]: Publishing 1577 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683155.949468791] [obstacle_detection_node]: 7 at 5.71 with 691 points
+[INFO] [1746683156.021783793] [obstacle_detection_node]: 2 at 6.86 with 121 points
+[INFO] [1746683156.083709355] [obstacle_detection_node]: 5 at 6.86 with 0 points
+[INFO] [1746683156.180356778] [obstacle_detection_node]: 9 at 6.56 with 803 points
+[INFO] [1746683156.239589802] [obstacle_detection_node]: 12 at 6.64 with 0 points
+[INFO] [1746683156.240652299] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683156.241566043] [obstacle_detection_node]: 2 with 121 points
+[INFO] [1746683156.242488758] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683156.243406392] [obstacle_detection_node]: 7 with 691 points
+[INFO] [1746683156.244288019] [obstacle_detection_node]: 9 with 803 points
+[INFO] [1746683156.245159475] [obstacle_detection_node]: 12 with 0 points
+[INFO] [1746683156.247799024] [obstacle_detection_node]: Publishing 1615 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683156.835226046] [obstacle_detection_node]: 7 at 5.77 with 729 points
+[INFO] [1746683156.928890097] [obstacle_detection_node]: 2 at 6.93 with 277 points
+[INFO] [1746683156.974177782] [obstacle_detection_node]: 5 at 6.93 with 0 points
+[INFO] [1746683157.003587805] [obstacle_detection_node]: 9 at 6.64 with 784 points
+[INFO] [1746683157.004338249] [obstacle_detection_node]: Removing stale obstacle 10
+[INFO] [1746683157.004744664] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683157.005104913] [obstacle_detection_node]: 2 with 277 points
+[INFO] [1746683157.005452133] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683157.005787751] [obstacle_detection_node]: 7 with 729 points
+[INFO] [1746683157.006155540] [obstacle_detection_node]: 9 with 784 points
+[INFO] [1746683157.007443960] [obstacle_detection_node]: Publishing 1790 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683157.659178159] [obstacle_detection_node]: 7 at 5.93 with 744 points
+[INFO] [1746683157.744192880] [obstacle_detection_node]: 2 at 6.93 with 307 points
+[INFO] [1746683157.899736416] [obstacle_detection_node]: 13 at 5.66 with 1207 points
+[INFO] [1746683157.900819698] [obstacle_detection_node]: Removing stale obstacle 12
+[INFO] [1746683157.901757136] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683157.902723330] [obstacle_detection_node]: 2 with 307 points
+[INFO] [1746683157.903669980] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683157.904596314] [obstacle_detection_node]: 7 with 744 points
+[INFO] [1746683157.905502542] [obstacle_detection_node]: 13 with 1207 points
+[INFO] [1746683157.908346216] [obstacle_detection_node]: Publishing 2258 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683158.470793210] [obstacle_detection_node]: 7 at 5.51 with 773 points
+[INFO] [1746683158.472623652] [obstacle_detection_node]: Removing stale obstacle 9
+[INFO] [1746683158.473713230] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683158.474657335] [obstacle_detection_node]: 2 with 307 points
+[INFO] [1746683158.475599216] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683158.476553155] [obstacle_detection_node]: 7 with 773 points
+[INFO] [1746683158.479039278] [obstacle_detection_node]: Publishing 1080 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683159.253941817] [obstacle_detection_node]: 7 at 5.88 with 670 points
+[INFO] [1746683159.254801326] [obstacle_detection_node]: Removing stale obstacle 11
+[INFO] [1746683159.255231726] [obstacle_detection_node]: Removing stale obstacle 13
+[INFO] [1746683159.255731131] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683159.256099565] [obstacle_detection_node]: 2 with 307 points
+[INFO] [1746683159.256471022] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683159.256831930] [obstacle_detection_node]: 7 with 670 points
+[INFO] [1746683159.257960797] [obstacle_detection_node]: Publishing 977 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683159.924327299] [obstacle_detection_node]: 7 at 5.66 with 963 points
+[INFO] [1746683159.949465220] [obstacle_detection_node]: 2 at 6.93 with 178 points
+[INFO] [1746683160.014686424] [obstacle_detection_node]: 15 at 6.78 with 1575 points
+[INFO] [1746683160.015819383] [obstacle_detection_node]: Removing stale obstacle 14
+[INFO] [1746683160.016797444] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683160.017747689] [obstacle_detection_node]: 2 with 178 points
+[INFO] [1746683160.018698354] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683160.019639315] [obstacle_detection_node]: 7 with 963 points
+[INFO] [1746683160.020605367] [obstacle_detection_node]: 15 with 1575 points
+[INFO] [1746683160.023967501] [obstacle_detection_node]: Publishing 2716 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683160.430776822] [obstacle_detection_node]: 16 at 6.30 with 919 points
+[INFO] [1746683160.452731424] [obstacle_detection_node]: 2 at 6.93 with 56 points
+[INFO] [1746683160.468402003] [obstacle_detection_node]: 5 at 6.86 with 0 points
+[INFO] [1746683160.500218900] [obstacle_detection_node]: 18 at 6.64 with 1062 points
+[INFO] [1746683160.509307253] [obstacle_detection_node]: 19 at 6.56 with 0 points
+[INFO] [1746683160.509770743] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683160.510138758] [obstacle_detection_node]: 2 with 56 points
+[INFO] [1746683160.510496972] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683160.510839602] [obstacle_detection_node]: 16 with 919 points
+[INFO] [1746683160.511207317] [obstacle_detection_node]: 18 with 1062 points
+[INFO] [1746683160.511555967] [obstacle_detection_node]: 19 with 0 points
+[INFO] [1746683160.512933044] [obstacle_detection_node]: Publishing 2037 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683161.004766882] [obstacle_detection_node]: 16 at 6.11 with 1503 points
+[INFO] [1746683161.072865105] [obstacle_detection_node]: 15 at 6.78 with 1404 points
+[INFO] [1746683161.073912579] [obstacle_detection_node]: Removing stale obstacle 7
+[INFO] [1746683161.074941638] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683161.075850291] [obstacle_detection_node]: 2 with 56 points
+[INFO] [1746683161.076741047] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683161.077735462] [obstacle_detection_node]: 15 with 1404 points
+[INFO] [1746683161.078674132] [obstacle_detection_node]: 16 with 1503 points
+[INFO] [1746683161.082293063] [obstacle_detection_node]: Publishing 2963 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683161.593091161] [obstacle_detection_node]: 16 at 6.17 with 1309 points
+[INFO] [1746683161.676229329] [obstacle_detection_node]: 2 at 6.93 with 40 points
+[INFO] [1746683161.677548941] [obstacle_detection_node]: Removing stale obstacle 17
+[INFO] [1746683161.678413544] [obstacle_detection_node]: Removing stale obstacle 18
+[INFO] [1746683161.679377326] [obstacle_detection_node]: Removing stale obstacle 19
+[INFO] [1746683161.680266030] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683161.681155338] [obstacle_detection_node]: 2 with 40 points
+[INFO] [1746683161.682089860] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683161.683073923] [obstacle_detection_node]: 16 with 1309 points
+[INFO] [1746683161.685654089] [obstacle_detection_node]: Publishing 1349 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683162.124859864] [obstacle_detection_node]: 16 at 6.11 with 1247 points
+[INFO] [1746683162.204691454] [obstacle_detection_node]: 2 at 6.86 with 74 points
+[INFO] [1746683162.205923691] [obstacle_detection_node]: Removing stale obstacle 15
+[INFO] [1746683162.206930518] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683162.207775238] [obstacle_detection_node]: 2 with 74 points
+[INFO] [1746683162.208601382] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683162.209441826] [obstacle_detection_node]: 16 with 1247 points
+[INFO] [1746683162.211601753] [obstacle_detection_node]: Publishing 1321 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683162.557238741] [obstacle_detection_node]: 16 at 6.23 with 776 points
+[INFO] [1746683162.600857538] [obstacle_detection_node]: 2 at 6.93 with 70 points
+[INFO] [1746683162.601639270] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683162.602038205] [obstacle_detection_node]: 2 with 70 points
+[INFO] [1746683162.602390927] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683162.602713028] [obstacle_detection_node]: 16 with 776 points
+[INFO] [1746683162.603728526] [obstacle_detection_node]: Publishing 846 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683162.987991439] [obstacle_detection_node]: 16 at 5.82 with 1266 points
+[INFO] [1746683162.989614311] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683162.990636834] [obstacle_detection_node]: 2 with 70 points
+[INFO] [1746683162.991588440] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683162.992532963] [obstacle_detection_node]: 16 with 1266 points
+[INFO] [1746683162.995151816] [obstacle_detection_node]: Publishing 1336 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683163.690730277] [obstacle_detection_node]: 16 at 5.88 with 1550 points
+[INFO] [1746683163.770211124] [obstacle_detection_node]: 2 at 6.93 with 187 points
+[INFO] [1746683163.771508098] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683163.772361204] [obstacle_detection_node]: 2 with 187 points
+[INFO] [1746683163.773148191] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683163.773994368] [obstacle_detection_node]: 16 with 1550 points
+[INFO] [1746683163.776489695] [obstacle_detection_node]: Publishing 1737 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683164.107510467] [obstacle_detection_node]: 16 at 5.82 with 1057 points
+[INFO] [1746683164.108158731] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683164.108491847] [obstacle_detection_node]: 2 with 187 points
+[INFO] [1746683164.108800590] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683164.109117678] [obstacle_detection_node]: 16 with 1057 points
+[INFO] [1746683164.110180543] [obstacle_detection_node]: Publishing 1244 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683164.542790237] [obstacle_detection_node]: 16 at 6.23 with 0 points
+[INFO] [1746683164.565937674] [obstacle_detection_node]: 2 at 6.78 with 157 points
+[INFO] [1746683164.581495015] [obstacle_detection_node]: 20 at 6.43 with 1047 points
+[INFO] [1746683164.582116230] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683164.582661463] [obstacle_detection_node]: 2 with 157 points
+[INFO] [1746683164.583200511] [obstacle_detection_node]: 5 with 0 points
+[INFO] [1746683164.583644208] [obstacle_detection_node]: 16 with 0 points
+[INFO] [1746683164.584138450] [obstacle_detection_node]: 20 with 1047 points
+[INFO] [1746683164.585616125] [obstacle_detection_node]: Publishing 1204 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683164.899572621] [obstacle_detection_node]: 2 at 6.93 with 200 points
+[INFO] [1746683164.946670700] [obstacle_detection_node]: 16 at 5.93 with 84 points
+[INFO] [1746683165.056522635] [obstacle_detection_node]: 21 at 6.23 with 946 points
+[INFO] [1746683165.057833335] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683165.058734826] [obstacle_detection_node]: 2 with 200 points
+[INFO] [1746683165.059633442] [obstacle_detection_node]: 16 with 84 points
+[INFO] [1746683165.060519154] [obstacle_detection_node]: 21 with 946 points
+[INFO] [1746683165.062642510] [obstacle_detection_node]: Publishing 1230 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683165.456838027] [obstacle_detection_node]: 23 at 6.71 with 352 points
+[INFO] [1746683165.494626897] [obstacle_detection_node]: 16 at 5.99 with 0 points
+[INFO] [1746683165.495407251] [obstacle_detection_node]: Removing stale obstacle 5
+[INFO] [1746683165.495807103] [obstacle_detection_node]: Removing stale obstacle 20
+[INFO] [1746683165.496363500] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683165.496772864] [obstacle_detection_node]: 2 with 200 points
+[INFO] [1746683165.497173159] [obstacle_detection_node]: 16 with 0 points
+[INFO] [1746683165.497644463] [obstacle_detection_node]: 23 with 352 points
+[INFO] [1746683165.498664449] [obstacle_detection_node]: Publishing 552 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683165.912667675] [obstacle_detection_node]: 21 at 6.36 with 372 points
+[INFO] [1746683165.913130708] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683165.913482115] [obstacle_detection_node]: 2 with 200 points
+[INFO] [1746683165.913809380] [obstacle_detection_node]: 21 with 372 points
+[INFO] [1746683165.915005292] [obstacle_detection_node]: Publishing 572 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683166.239940550] [obstacle_detection_node]: 2 at 6.93 with 473 points
+[INFO] [1746683166.318574284] [obstacle_detection_node]: 21 at 6.50 with 350 points
+[INFO] [1746683166.379062225] [obstacle_detection_node]: 16 at 6.23 with 0 points
+[INFO] [1746683166.380021613] [obstacle_detection_node]: Removing stale obstacle 23
+[INFO] [1746683166.380670853] [obstacle_detection_node]: Removing stale obstacle 24
+[INFO] [1746683166.381183063] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683166.381695782] [obstacle_detection_node]: 2 with 473 points
+[INFO] [1746683166.382169169] [obstacle_detection_node]: 16 with 0 points
+[INFO] [1746683166.382665163] [obstacle_detection_node]: 21 with 350 points
+[INFO] [1746683166.384035093] [obstacle_detection_node]: Publishing 823 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683166.783269341] [obstacle_detection_node]: 2 at 6.93 with 195 points
+[INFO] [1746683166.828836512] [obstacle_detection_node]: 16 at 6.17 with 208 points
+[INFO] [1746683166.921337471] [obstacle_detection_node]: 21 at 6.17 with 103 points
+[INFO] [1746683166.922689840] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683166.923588570] [obstacle_detection_node]: 2 with 195 points
+[INFO] [1746683166.924468098] [obstacle_detection_node]: 16 with 208 points
+[INFO] [1746683166.925342805] [obstacle_detection_node]: 21 with 103 points
+[INFO] [1746683166.927182149] [obstacle_detection_node]: Publishing 506 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683167.452085737] [obstacle_detection_node]: 16 at 6.17 with 203 points
+[INFO] [1746683167.543624407] [obstacle_detection_node]: 21 at 6.23 with 390 points
+[INFO] [1746683167.544951696] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683167.545848736] [obstacle_detection_node]: 2 with 195 points
+[INFO] [1746683167.546720508] [obstacle_detection_node]: 16 with 203 points
+[INFO] [1746683167.547589090] [obstacle_detection_node]: 21 with 390 points
+[INFO] [1746683167.549720627] [obstacle_detection_node]: Publishing 788 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683167.914057965] [obstacle_detection_node]: 16 at 5.71 with 333 points
+[INFO] [1746683167.915520131] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683167.916438983] [obstacle_detection_node]: 2 with 195 points
+[INFO] [1746683167.917348879] [obstacle_detection_node]: 16 with 333 points
+[INFO] [1746683167.918780276] [obstacle_detection_node]: Publishing 528 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683168.387073187] [obstacle_detection_node]: 16 at 5.93 with 414 points
+[INFO] [1746683168.482370549] [obstacle_detection_node]: 21 at 6.23 with 805 points
+[INFO] [1746683168.484069230] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683168.485099370] [obstacle_detection_node]: 2 with 195 points
+[INFO] [1746683168.486139344] [obstacle_detection_node]: 16 with 414 points
+[INFO] [1746683168.487161302] [obstacle_detection_node]: 21 with 805 points
+[INFO] [1746683168.489764622] [obstacle_detection_node]: Publishing 1414 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683169.064908269] [obstacle_detection_node]: 27 at 6.93 with 164 points
+[INFO] [1746683169.177591016] [obstacle_detection_node]: 16 at 5.99 with 745 points
+[INFO] [1746683169.277249698] [obstacle_detection_node]: 21 at 6.64 with 593 points
+[INFO] [1746683169.335905885] [obstacle_detection_node]: 26 at 6.93 with 0 points
+[INFO] [1746683169.337075017] [obstacle_detection_node]: Removing stale obstacle 25
+[INFO] [1746683169.337987825] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683169.338883090] [obstacle_detection_node]: 16 with 745 points
+[INFO] [1746683169.339774476] [obstacle_detection_node]: 21 with 593 points
+[INFO] [1746683169.340637304] [obstacle_detection_node]: 26 with 0 points
+[INFO] [1746683169.341475805] [obstacle_detection_node]: 27 with 164 points
+[INFO] [1746683169.343988415] [obstacle_detection_node]: Publishing 1502 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683170.100519731] [obstacle_detection_node]: 16 at 6.11 with 191 points
+[INFO] [1746683170.174593585] [obstacle_detection_node]: 27 at 6.86 with 183 points
+[INFO] [1746683170.209559095] [obstacle_detection_node]: 29 at 6.64 with 0 points
+[INFO] [1746683170.303881607] [obstacle_detection_node]: 21 at 6.43 with 845 points
+[INFO] [1746683170.360164472] [obstacle_detection_node]: 26 at 6.93 with 0 points
+[INFO] [1746683170.361430458] [obstacle_detection_node]: Removing stale obstacle 2
+[INFO] [1746683170.362314229] [obstacle_detection_node]: Removing stale obstacle 22
+[INFO] [1746683170.363196072] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683170.364146098] [obstacle_detection_node]: 16 with 191 points
+[INFO] [1746683170.365064642] [obstacle_detection_node]: 21 with 845 points
+[INFO] [1746683170.365941127] [obstacle_detection_node]: 26 with 0 points
+[INFO] [1746683170.366842586] [obstacle_detection_node]: 27 with 183 points
+[INFO] [1746683170.367762139] [obstacle_detection_node]: 29 with 0 points
+[INFO] [1746683170.370150046] [obstacle_detection_node]: Publishing 1219 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683170.821273436] [obstacle_detection_node]: 16 at 6.11 with 938 points
+[INFO] [1746683170.902152950] [obstacle_detection_node]: 27 at 6.71 with 40 points
+[INFO] [1746683170.903946856] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683170.905037700] [obstacle_detection_node]: 16 with 938 points
+[INFO] [1746683170.905971009] [obstacle_detection_node]: 27 with 40 points
+[INFO] [1746683170.908321058] [obstacle_detection_node]: Publishing 978 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683171.983698110] [obstacle_detection_node]: 16 at 6.05 with 791 points
+[INFO] [1746683172.062540708] [obstacle_detection_node]: 21 at 6.23 with 1198 points
+[INFO] [1746683172.063717629] [obstacle_detection_node]: Removing stale obstacle 26
+[INFO] [1746683172.064823091] [obstacle_detection_node]: Removing stale obstacle 29
+[INFO] [1746683172.065802587] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683172.066791200] [obstacle_detection_node]: 16 with 791 points
+[INFO] [1746683172.067824457] [obstacle_detection_node]: 21 with 1198 points
+[INFO] [1746683172.068762753] [obstacle_detection_node]: 27 with 40 points
+[INFO] [1746683172.071940267] [obstacle_detection_node]: Publishing 2029 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683173.235142895] [obstacle_detection_node]: 32 at 5.66 with 509 points
+[INFO] [1746683173.256482225] [obstacle_detection_node]: 33 at 6.64 with 113 points
+[INFO] [1746683173.281341624] [obstacle_detection_node]: 27 at 6.93 with 329 points
+[INFO] [1746683173.282213006] [obstacle_detection_node]: Removing stale obstacle 31
+[INFO] [1746683173.282741409] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683173.283291912] [obstacle_detection_node]: 27 with 329 points
+[INFO] [1746683173.283736727] [obstacle_detection_node]: 32 with 509 points
+[INFO] [1746683173.284199439] [obstacle_detection_node]: 33 with 113 points
+[INFO] [1746683173.285427422] [obstacle_detection_node]: Publishing 951 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683174.014562948] [obstacle_detection_node]: 34 at 4.78 with 11884 points
+[INFO] [1746683174.016061883] [obstacle_detection_node]: Removing stale obstacle 16
+[INFO] [1746683174.017196922] [obstacle_detection_node]: Removing stale obstacle 21
+[INFO] [1746683174.018367300] [obstacle_detection_node]: Removing stale obstacle 30
+[INFO] [1746683174.019334210] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683174.020267309] [obstacle_detection_node]: 27 with 329 points
+[INFO] [1746683174.021394702] [obstacle_detection_node]: 34 with 11884 points
+[INFO] [1746683174.030987197] [obstacle_detection_node]: Publishing 12213 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683175.002583558] [obstacle_detection_node]: 35 at 3.76 with 24349 points
+[INFO] [1746683175.003270202] [obstacle_detection_node]: Removing stale obstacle 28
+[INFO] [1746683175.003721232] [obstacle_detection_node]: Removing stale obstacle 32
+[INFO] [1746683175.004167233] [obstacle_detection_node]: Removing stale obstacle 33
+[INFO] [1746683175.004572194] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683175.005120856] [obstacle_detection_node]: 35 with 24349 points
+[INFO] [1746683175.013420824] [obstacle_detection_node]: Publishing 24349 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683175.783421337] [obstacle_detection_node]: 36 at 2.82 with 35771 points
+[INFO] [1746683175.784339155] [obstacle_detection_node]: Removing stale obstacle 27
+[INFO] [1746683175.784797555] [obstacle_detection_node]: Removing stale obstacle 34
+[INFO] [1746683175.785868623] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683175.786493964] [obstacle_detection_node]: 36 with 35771 points
+[INFO] [1746683175.797624640] [obstacle_detection_node]: Publishing 35771 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683176.595618584] [obstacle_detection_node]: 39 at 2.47 with 43160 points
+[INFO] [1746683176.597514148] [obstacle_detection_node]: Removing stale obstacle 35
+[INFO] [1746683176.601276947] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683176.602922483] [obstacle_detection_node]: 39 with 43160 points
+[INFO] [1746683176.630751740] [obstacle_detection_node]: Publishing 43160 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683178.166267088] [obstacle_detection_node]: 39 at 2.18 with 55830 points
+[INFO] [1746683178.168083670] [obstacle_detection_node]: Removing stale obstacle 36
+[INFO] [1746683178.173542512] [obstacle_detection_node]: Removing stale obstacle 40
+[INFO] [1746683178.174513979] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683178.176071337] [obstacle_detection_node]: 39 with 55830 points
+[INFO] [1746683178.211525707] [obstacle_detection_node]: Publishing 55830 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683180.360719290] [obstacle_detection_node]: 42 at 1.17 with 98185 points
+[INFO] [1746683180.391600037] [obstacle_detection_node]: 43 at 2.29 with 7731 points
+[INFO] [1746683180.392288415] [obstacle_detection_node]: Removing stale obstacle 37
+[INFO] [1746683180.393239001] [obstacle_detection_node]: Removing stale obstacle 39
+[INFO] [1746683180.399869454] [obstacle_detection_node]: Removing stale obstacle 41
+[INFO] [1746683180.400847132] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683180.403687711] [obstacle_detection_node]: 42 with 98185 points
+[INFO] [1746683180.405223283] [obstacle_detection_node]: 43 with 7731 points
+[INFO] [1746683180.471617291] [obstacle_detection_node]: Publishing 105916 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683182.688433365] [obstacle_detection_node]: 44 at 0.56 with 171256 points
+[INFO] [1746683182.754632527] [obstacle_detection_node]: 45 at 6.50 with 1621 points
+[INFO] [1746683182.768123620] [obstacle_detection_node]: 46 at 6.93 with 399 points
+[INFO] [1746683182.769089085] [obstacle_detection_node]: Removing stale obstacle 38
+[INFO] [1746683182.769941537] [obstacle_detection_node]: Removing stale obstacle 42
+[INFO] [1746683182.780555258] [obstacle_detection_node]: Removing stale obstacle 43
+[INFO] [1746683182.782521445] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683182.785829421] [obstacle_detection_node]: 44 with 171256 points
+[INFO] [1746683182.786724692] [obstacle_detection_node]: 45 with 1621 points
+[INFO] [1746683182.787535000] [obstacle_detection_node]: 46 with 399 points
+[INFO] [1746683182.889156722] [obstacle_detection_node]: Publishing 173276 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683184.805917324] [obstacle_detection_node]: 44 at 0.55 with 163389 points
+[INFO] [1746683184.807050893] [obstacle_detection_node]: Removing stale obstacle 45
+[INFO] [1746683184.808209811] [obstacle_detection_node]: Removing stale obstacle 46
+[INFO] [1746683184.809190385] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683184.812273271] [obstacle_detection_node]: 44 with 163389 points
+[INFO] [1746683184.916984618] [obstacle_detection_node]: Publishing 163389 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683187.297173791] [obstacle_detection_node]: 44 at 0.49 with 201271 points
+[INFO] [1746683187.297721188] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683187.299705525] [obstacle_detection_node]: 44 with 201271 points
+[INFO] [1746683187.357488150] [obstacle_detection_node]: Publishing 201271 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683187.784780794] [obstacle_detection_node]: 47 at 6.86 with 0 points
+[INFO] [1746683187.862044417] [obstacle_detection_node]: 48 at 6.86 with 110 points
+[INFO] [1746683187.863409908] [obstacle_detection_node]: Removing stale obstacle 44
+[INFO] [1746683187.886608217] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683187.887511424] [obstacle_detection_node]: 47 with 0 points
+[INFO] [1746683187.888345398] [obstacle_detection_node]: 48 with 110 points
+[INFO] [1746683187.889785459] [obstacle_detection_node]: Publishing 110 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683188.663608699] [obstacle_detection_node]: 47 at 6.71 with 206 points
+[INFO] [1746683188.665266474] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683188.666229920] [obstacle_detection_node]: 47 with 206 points
+[INFO] [1746683188.667202521] [obstacle_detection_node]: 48 with 110 points
+[INFO] [1746683188.669085149] [obstacle_detection_node]: Publishing 316 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683189.524784106] [obstacle_detection_node]: 48 at 6.93 with 348 points
+[INFO] [1746683189.526171350] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683189.527178816] [obstacle_detection_node]: 47 with 206 points
+[INFO] [1746683189.528104284] [obstacle_detection_node]: 48 with 348 points
+[INFO] [1746683189.530168418] [obstacle_detection_node]: Publishing 554 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683189.940775273] [obstacle_detection_node]: 47 at 6.86 with 260 points
+[INFO] [1746683189.966920886] [obstacle_detection_node]: 48 at 6.93 with 389 points
+[INFO] [1746683189.974290357] [obstacle_detection_node]: 51 at 0.00 with 1323 points
+[INFO] [1746683189.975014243] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683189.975442317] [obstacle_detection_node]: 47 with 260 points
+[INFO] [1746683189.975786587] [obstacle_detection_node]: 48 with 389 points
+[INFO] [1746683189.976158729] [obstacle_detection_node]: 51 with 1323 points
+[INFO] [1746683189.977693245] [obstacle_detection_node]: Publishing 1972 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683190.415747167] [obstacle_detection_node]: 53 at 3.61 with 8625 points
+[INFO] [1746683190.416770139] [obstacle_detection_node]: Removing stale obstacle 49
+[INFO] [1746683190.417382121] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683190.417897768] [obstacle_detection_node]: 47 with 260 points
+[INFO] [1746683190.418288442] [obstacle_detection_node]: 48 with 389 points
+[INFO] [1746683190.418785606] [obstacle_detection_node]: 53 with 8625 points
+[INFO] [1746683190.422588307] [obstacle_detection_node]: Publishing 9274 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683191.024939161] [obstacle_detection_node]: 54 at 4.44 with 12458 points
+[INFO] [1746683191.104882138] [obstacle_detection_node]: 47 at 6.86 with 502 points
+[INFO] [1746683191.125610207] [obstacle_detection_node]: 52 at 6.78 with 0 points
+[INFO] [1746683191.126578793] [obstacle_detection_node]: Removing stale obstacle 50
+[INFO] [1746683191.127479300] [obstacle_detection_node]: Removing stale obstacle 51
+[INFO] [1746683191.128558669] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683191.129422264] [obstacle_detection_node]: 47 with 502 points
+[INFO] [1746683191.130276563] [obstacle_detection_node]: 48 with 389 points
+[INFO] [1746683191.131191593] [obstacle_detection_node]: 52 with 0 points
+[INFO] [1746683191.132260355] [obstacle_detection_node]: 54 with 12458 points
+[INFO] [1746683191.141413377] [obstacle_detection_node]: Publishing 13349 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683191.574750117] [obstacle_detection_node]: 55 at 4.86 with 3983 points
+[INFO] [1746683191.575476553] [obstacle_detection_node]: Removing stale obstacle 53
+[INFO] [1746683191.576335084] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683191.576678461] [obstacle_detection_node]: 48 with 389 points
+[INFO] [1746683191.577147585] [obstacle_detection_node]: 55 with 3983 points
+[INFO] [1746683191.579495477] [obstacle_detection_node]: Publishing 4372 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683192.122616470] [obstacle_detection_node]: 57 at 5.82 with 1438 points
+[INFO] [1746683192.205287687] [obstacle_detection_node]: 58 at 5.82 with 1297 points
+[INFO] [1746683192.206722343] [obstacle_detection_node]: Removing stale obstacle 47
+[INFO] [1746683192.207738418] [obstacle_detection_node]: Removing stale obstacle 52
+[INFO] [1746683192.208692887] [obstacle_detection_node]: Removing stale obstacle 54
+[INFO] [1746683192.210897152] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683192.211918423] [obstacle_detection_node]: 48 with 389 points
+[INFO] [1746683192.212886645] [obstacle_detection_node]: 57 with 1438 points
+[INFO] [1746683192.213904722] [obstacle_detection_node]: 58 with 1297 points
+[INFO] [1746683192.217739633] [obstacle_detection_node]: Publishing 3124 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683192.835007590] [obstacle_detection_node]: 60 at 6.93 with 112 points
+[INFO] [1746683192.926079774] [obstacle_detection_node]: 57 at 6.05 with 514 points
+[INFO] [1746683193.007075747] [obstacle_detection_node]: 58 at 6.23 with 611 points
+[INFO] [1746683193.007550602] [obstacle_detection_node]: Removing stale obstacle 55
+[INFO] [1746683193.008173515] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683193.008514941] [obstacle_detection_node]: 48 with 389 points
+[INFO] [1746683193.008824817] [obstacle_detection_node]: 57 with 514 points
+[INFO] [1746683193.009135110] [obstacle_detection_node]: 58 with 611 points
+[INFO] [1746683193.009449839] [obstacle_detection_node]: 60 with 112 points
+[INFO] [1746683193.010647158] [obstacle_detection_node]: Publishing 1626 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683193.436656403] [obstacle_detection_node]: 57 at 5.99 with 415 points
+[INFO] [1746683193.487922596] [obstacle_detection_node]: 48 at 6.86 with 70 points
+[INFO] [1746683193.496550785] [obstacle_detection_node]: 62 at 6.64 with 0 points
+[INFO] [1746683193.496993938] [obstacle_detection_node]: Removing stale obstacle 56
+[INFO] [1746683193.497437045] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683193.497782680] [obstacle_detection_node]: 48 with 70 points
+[INFO] [1746683193.498152258] [obstacle_detection_node]: 57 with 415 points
+[INFO] [1746683193.498617063] [obstacle_detection_node]: 62 with 0 points
+[INFO] [1746683193.499844170] [obstacle_detection_node]: Publishing 485 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683193.745988773] [obstacle_detection_node]: 57 at 6.23 with 189 points
+[INFO] [1746683193.790427818] [obstacle_detection_node]: 48 at 6.56 with 0 points
+[INFO] [1746683193.825177129] [obstacle_detection_node]: 58 at 6.56 with 564 points
+[INFO] [1746683193.825857008] [obstacle_detection_node]: Removing stale obstacle 60
+[INFO] [1746683193.826212526] [obstacle_detection_node]: Removing stale obstacle 61
+[INFO] [1746683193.826547312] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683193.826883892] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683193.827225690] [obstacle_detection_node]: 57 with 189 points
+[INFO] [1746683193.827593162] [obstacle_detection_node]: 58 with 564 points
+[INFO] [1746683193.828663356] [obstacle_detection_node]: Publishing 753 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683194.275373910] [obstacle_detection_node]: 48 at 6.71 with 8 points
+[INFO] [1746683194.313141827] [obstacle_detection_node]: 57 at 6.11 with 446 points
+[INFO] [1746683194.313958809] [obstacle_detection_node]: Removing stale obstacle 62
+[INFO] [1746683194.314561783] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683194.315019016] [obstacle_detection_node]: 48 with 8 points
+[INFO] [1746683194.315451600] [obstacle_detection_node]: 57 with 446 points
+[INFO] [1746683194.316461558] [obstacle_detection_node]: Publishing 454 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683194.670835543] [obstacle_detection_node]: 48 at 6.71 with 136 points
+[INFO] [1746683194.781009854] [obstacle_detection_node]: 57 at 6.50 with 526 points
+[INFO] [1746683194.782501132] [obstacle_detection_node]: Removing stale obstacle 58
+[INFO] [1746683194.783464329] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683194.784356855] [obstacle_detection_node]: 48 with 136 points
+[INFO] [1746683194.785201334] [obstacle_detection_node]: 57 with 526 points
+[INFO] [1746683194.787118945] [obstacle_detection_node]: Publishing 662 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683195.263010344] [obstacle_detection_node]: 48 at 6.86 with 118 points
+[INFO] [1746683195.302338336] [obstacle_detection_node]: 57 at 6.30 with 411 points
+[INFO] [1746683195.303178533] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683195.303584388] [obstacle_detection_node]: 48 with 118 points
+[INFO] [1746683195.303959967] [obstacle_detection_node]: 57 with 411 points
+[INFO] [1746683195.304909943] [obstacle_detection_node]: Publishing 529 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683195.708616454] [obstacle_detection_node]: 57 at 6.50 with 652 points
+[INFO] [1746683195.750526957] [obstacle_detection_node]: 64 at 6.93 with 949 points
+[INFO] [1746683195.751007526] [obstacle_detection_node]: Removing stale obstacle 63
+[INFO] [1746683195.751396355] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683195.751761421] [obstacle_detection_node]: 48 with 118 points
+[INFO] [1746683195.752130751] [obstacle_detection_node]: 57 with 652 points
+[INFO] [1746683195.752495615] [obstacle_detection_node]: 64 with 949 points
+[INFO] [1746683195.753778157] [obstacle_detection_node]: Publishing 1719 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683196.080712808] [obstacle_detection_node]: 65 at 6.43 with 135 points
+[INFO] [1746683196.131348318] [obstacle_detection_node]: 57 at 6.30 with 98 points
+[INFO] [1746683196.132086504] [obstacle_detection_node]: Removing stale obstacle 59
+[INFO] [1746683196.132433984] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683196.132795622] [obstacle_detection_node]: 57 with 98 points
+[INFO] [1746683196.133145260] [obstacle_detection_node]: 64 with 949 points
+[INFO] [1746683196.133527215] [obstacle_detection_node]: 65 with 135 points
+[INFO] [1746683196.134706558] [obstacle_detection_node]: Publishing 1182 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683196.484899621] [obstacle_detection_node]: 48 at 6.71 with 243 points
+[INFO] [1746683196.590371354] [obstacle_detection_node]: 64 at 6.71 with 744 points
+[INFO] [1746683196.682213617] [obstacle_detection_node]: 57 at 6.23 with 407 points
+[INFO] [1746683196.695681794] [obstacle_detection_node]: 67 at 4.98 with 1465 points
+[INFO] [1746683196.696180637] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683196.696619775] [obstacle_detection_node]: 48 with 243 points
+[INFO] [1746683196.697007939] [obstacle_detection_node]: 57 with 407 points
+[INFO] [1746683196.697551965] [obstacle_detection_node]: 64 with 744 points
+[INFO] [1746683196.698004828] [obstacle_detection_node]: 67 with 1465 points
+[INFO] [1746683196.699804379] [obstacle_detection_node]: Publishing 2859 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683197.382210617] [obstacle_detection_node]: 57 at 5.88 with 297 points
+[INFO] [1746683197.417859385] [obstacle_detection_node]: 48 at 6.71 with 0 points
+[INFO] [1746683197.491509745] [obstacle_detection_node]: 68 at 6.17 with 802 points
+[INFO] [1746683197.492465393] [obstacle_detection_node]: Removing stale obstacle 65
+[INFO] [1746683197.493390849] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683197.494236259] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683197.495086520] [obstacle_detection_node]: 57 with 297 points
+[INFO] [1746683197.495926402] [obstacle_detection_node]: 68 with 802 points
+[INFO] [1746683197.497969446] [obstacle_detection_node]: Publishing 1099 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683197.960143986] [obstacle_detection_node]: 57 at 6.11 with 330 points
+[INFO] [1746683198.054030673] [obstacle_detection_node]: 48 at 6.93 with 128 points
+[INFO] [1746683198.055385330] [obstacle_detection_node]: Removing stale obstacle 64
+[INFO] [1746683198.056419502] [obstacle_detection_node]: Removing stale obstacle 67
+[INFO] [1746683198.057518096] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683198.058388666] [obstacle_detection_node]: 48 with 128 points
+[INFO] [1746683198.059236151] [obstacle_detection_node]: 57 with 330 points
+[INFO] [1746683198.061005407] [obstacle_detection_node]: Publishing 458 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683198.920730866] [obstacle_detection_node]: 57 at 5.88 with 255 points
+[INFO] [1746683198.992019888] [obstacle_detection_node]: 69 at 6.43 with 132 points
+[INFO] [1746683199.064764122] [obstacle_detection_node]: 70 at 6.71 with 127 points
+[INFO] [1746683199.066075845] [obstacle_detection_node]: Removing stale obstacle 68
+[INFO] [1746683199.067144994] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683199.068184802] [obstacle_detection_node]: 57 with 255 points
+[INFO] [1746683199.069099783] [obstacle_detection_node]: 69 with 132 points
+[INFO] [1746683199.069958988] [obstacle_detection_node]: 70 with 127 points
+[INFO] [1746683199.071741481] [obstacle_detection_node]: Publishing 514 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683199.710594034] [obstacle_detection_node]: 57 at 5.99 with 0 points
+[INFO] [1746683199.739049534] [obstacle_detection_node]: 48 at 6.71 with 0 points
+[INFO] [1746683199.750625265] [obstacle_detection_node]: 71 at 6.36 with 277 points
+[INFO] [1746683199.762831737] [obstacle_detection_node]: 72 at 5.02 with 1911 points
+[INFO] [1746683199.807380298] [obstacle_detection_node]: 73 at 5.88 with 0 points
+[INFO] [1746683199.808022700] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683199.808558717] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683199.809151333] [obstacle_detection_node]: 57 with 0 points
+[INFO] [1746683199.809648124] [obstacle_detection_node]: 71 with 277 points
+[INFO] [1746683199.810050227] [obstacle_detection_node]: 72 with 1911 points
+[INFO] [1746683199.810422128] [obstacle_detection_node]: 73 with 0 points
+[INFO] [1746683199.811930111] [obstacle_detection_node]: Publishing 2188 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683200.278564901] [obstacle_detection_node]: 70 at 6.56 with 244 points
+[INFO] [1746683200.382038370] [obstacle_detection_node]: 57 at 6.30 with 262 points
+[INFO] [1746683200.418642377] [obstacle_detection_node]: 48 at 6.86 with 0 points
+[INFO] [1746683200.458545807] [obstacle_detection_node]: 74 at 6.30 with 0 points
+[INFO] [1746683200.505260632] [obstacle_detection_node]: 75 at 5.56 with 1267 points
+[INFO] [1746683200.506252556] [obstacle_detection_node]: Removing stale obstacle 69
+[INFO] [1746683200.507214761] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683200.508126119] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683200.509001520] [obstacle_detection_node]: 57 with 262 points
+[INFO] [1746683200.509862322] [obstacle_detection_node]: 70 with 244 points
+[INFO] [1746683200.510735249] [obstacle_detection_node]: 74 with 0 points
+[INFO] [1746683200.511687028] [obstacle_detection_node]: 75 with 1267 points
+[INFO] [1746683200.514424686] [obstacle_detection_node]: Publishing 1773 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683201.096527784] [obstacle_detection_node]: 57 at 6.23 with 631 points
+[INFO] [1746683201.280759198] [obstacle_detection_node]: 76 at 2.30 with 11985 points
+[INFO] [1746683201.281894687] [obstacle_detection_node]: Removing stale obstacle 71
+[INFO] [1746683201.282952183] [obstacle_detection_node]: Removing stale obstacle 72
+[INFO] [1746683201.284270767] [obstacle_detection_node]: Removing stale obstacle 73
+[INFO] [1746683201.285278331] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683201.286272654] [obstacle_detection_node]: 57 with 631 points
+[INFO] [1746683201.287429838] [obstacle_detection_node]: 76 with 11985 points
+[INFO] [1746683201.296828907] [obstacle_detection_node]: Publishing 12616 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683202.175870957] [obstacle_detection_node]: 57 at 6.17 with 439 points
+[INFO] [1746683202.217595545] [obstacle_detection_node]: 48 at 6.93 with 0 points
+[INFO] [1746683202.218401083] [obstacle_detection_node]: Removing stale obstacle 70
+[INFO] [1746683202.219208560] [obstacle_detection_node]: Removing stale obstacle 74
+[INFO] [1746683202.220175763] [obstacle_detection_node]: Removing stale obstacle 75
+[INFO] [1746683202.220814692] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683202.221851951] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683202.222762191] [obstacle_detection_node]: 57 with 439 points
+[INFO] [1746683202.224560085] [obstacle_detection_node]: Publishing 439 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683202.642168096] [obstacle_detection_node]: 57 at 6.17 with 582 points
+[INFO] [1746683202.642969097] [obstacle_detection_node]: Removing stale obstacle 76
+[INFO] [1746683202.643970904] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683202.644309252] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683202.644666602] [obstacle_detection_node]: 57 with 582 points
+[INFO] [1746683202.645602161] [obstacle_detection_node]: Publishing 582 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683202.953603533] [obstacle_detection_node]: 57 at 6.17 with 698 points
+[INFO] [1746683202.995219475] [obstacle_detection_node]: 48 at 6.93 with 106 points
+[INFO] [1746683202.996663502] [obstacle_detection_node]: Removing stale obstacle 66
+[INFO] [1746683202.997571662] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683202.998497823] [obstacle_detection_node]: 48 with 106 points
+[INFO] [1746683202.999433250] [obstacle_detection_node]: 57 with 698 points
+[INFO] [1746683203.001478755] [obstacle_detection_node]: Publishing 804 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683203.520870825] [obstacle_detection_node]: 57 at 6.17 with 644 points
+[INFO] [1746683203.521751095] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683203.522130726] [obstacle_detection_node]: 48 with 106 points
+[INFO] [1746683203.522482083] [obstacle_detection_node]: 57 with 644 points
+[INFO] [1746683203.523491961] [obstacle_detection_node]: Publishing 750 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683203.893376948] [obstacle_detection_node]: 57 at 6.43 with 678 points
+[INFO] [1746683203.894954444] [obstacle_detection_node]: Removing stale obstacle 79
+[INFO] [1746683203.895863089] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683203.896747203] [obstacle_detection_node]: 48 with 106 points
+[INFO] [1746683203.897716036] [obstacle_detection_node]: 57 with 678 points
+[INFO] [1746683203.899762161] [obstacle_detection_node]: Publishing 784 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683204.320215846] [obstacle_detection_node]: 80 at 5.99 with 635 points
+[INFO] [1746683204.321291657] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683204.321673988] [obstacle_detection_node]: 48 with 106 points
+[INFO] [1746683204.322186340] [obstacle_detection_node]: 80 with 635 points
+[INFO] [1746683204.323282212] [obstacle_detection_node]: Publishing 741 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683204.800084537] [obstacle_detection_node]: 57 at 6.23 with 719 points
+[INFO] [1746683204.877038815] [obstacle_detection_node]: 48 at 6.93 with 61 points
+[INFO] [1746683204.878522195] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683204.879434043] [obstacle_detection_node]: 48 with 61 points
+[INFO] [1746683204.880339834] [obstacle_detection_node]: 57 with 719 points
+[INFO] [1746683204.882445121] [obstacle_detection_node]: Publishing 780 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683205.278529537] [obstacle_detection_node]: 57 at 5.88 with 489 points
+[INFO] [1746683205.355188954] [obstacle_detection_node]: 48 at 6.93 with 214 points
+[INFO] [1746683205.355888299] [obstacle_detection_node]: Removing stale obstacle 78
+[INFO] [1746683205.356239862] [obstacle_detection_node]: Removing stale obstacle 80
+[INFO] [1746683205.356645691] [obstacle_detection_node]: Removing stale obstacle 82
+[INFO] [1746683205.357000629] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683205.357329557] [obstacle_detection_node]: 48 with 214 points
+[INFO] [1746683205.357660699] [obstacle_detection_node]: 57 with 489 points
+[INFO] [1746683205.358615715] [obstacle_detection_node]: Publishing 703 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683206.249593913] [obstacle_detection_node]: 83 at 6.30 with 604 points
+[INFO] [1746683206.304507349] [obstacle_detection_node]: 48 at 6.86 with 0 points
+[INFO] [1746683206.305313338] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683206.305706708] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683206.306045054] [obstacle_detection_node]: 83 with 604 points
+[INFO] [1746683206.306966088] [obstacle_detection_node]: Publishing 604 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683206.868532844] [obstacle_detection_node]: 57 at 6.23 with 373 points
+[INFO] [1746683206.906304790] [obstacle_detection_node]: 48 at 6.93 with 40 points
+[INFO] [1746683206.907169678] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683206.908242308] [obstacle_detection_node]: 48 with 40 points
+[INFO] [1746683206.909192965] [obstacle_detection_node]: 57 with 373 points
+[INFO] [1746683206.910933640] [obstacle_detection_node]: Publishing 413 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683207.357743384] [obstacle_detection_node]: 57 at 6.11 with 341 points
+[INFO] [1746683207.381318097] [obstacle_detection_node]: 48 at 6.86 with 270 points
+[INFO] [1746683207.382368239] [obstacle_detection_node]: Removing stale obstacle 83
+[INFO] [1746683207.382914438] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683207.383378523] [obstacle_detection_node]: 48 with 270 points
+[INFO] [1746683207.383856283] [obstacle_detection_node]: 57 with 341 points
+[INFO] [1746683207.385098556] [obstacle_detection_node]: Publishing 611 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683207.748351150] [obstacle_detection_node]: 57 at 6.17 with 381 points
+[INFO] [1746683207.758567006] [obstacle_detection_node]: 84 at 6.93 with 0 points
+[INFO] [1746683207.759197301] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683207.759596989] [obstacle_detection_node]: 48 with 270 points
+[INFO] [1746683207.759948851] [obstacle_detection_node]: 57 with 381 points
+[INFO] [1746683207.760275222] [obstacle_detection_node]: 84 with 0 points
+[INFO] [1746683207.761278569] [obstacle_detection_node]: Publishing 651 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683208.093257148] [obstacle_detection_node]: 57 at 6.17 with 352 points
+[INFO] [1746683208.094223956] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683208.094793934] [obstacle_detection_node]: 48 with 270 points
+[INFO] [1746683208.095329770] [obstacle_detection_node]: 57 with 352 points
+[INFO] [1746683208.095786481] [obstacle_detection_node]: 84 with 0 points
+[INFO] [1746683208.096894993] [obstacle_detection_node]: Publishing 622 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683208.531711289] [obstacle_detection_node]: 57 at 6.23 with 499 points
+[INFO] [1746683208.583178981] [obstacle_detection_node]: 48 at 6.93 with 0 points
+[INFO] [1746683208.584888560] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683208.585822149] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683208.586729637] [obstacle_detection_node]: 57 with 499 points
+[INFO] [1746683208.587642696] [obstacle_detection_node]: 84 with 0 points
+[INFO] [1746683208.589406641] [obstacle_detection_node]: Publishing 499 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683208.930855494] [obstacle_detection_node]: 48 at 6.86 with 128 points
+[INFO] [1746683208.970544634] [obstacle_detection_node]: 57 at 5.93 with 420 points
+[INFO] [1746683209.000401112] [obstacle_detection_node]: 87 at 6.78 with 548 points
+[INFO] [1746683209.008605543] [obstacle_detection_node]: 84 at 6.93 with 0 points
+[INFO] [1746683209.008995352] [obstacle_detection_node]: Removing stale obstacle 85
+[INFO] [1746683209.009319299] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683209.009633882] [obstacle_detection_node]: 48 with 128 points
+[INFO] [1746683209.009942157] [obstacle_detection_node]: 57 with 420 points
+[INFO] [1746683209.010236934] [obstacle_detection_node]: 84 with 0 points
+[INFO] [1746683209.010541427] [obstacle_detection_node]: 87 with 548 points
+[INFO] [1746683209.011862350] [obstacle_detection_node]: Publishing 1096 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683209.390565815] [obstacle_detection_node]: 57 at 6.05 with 664 points
+[INFO] [1746683209.411734964] [obstacle_detection_node]: 48 at 6.93 with 0 points
+[INFO] [1746683209.412555660] [obstacle_detection_node]: Removing stale obstacle 81
+[INFO] [1746683209.412982566] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683209.413380005] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683209.413753115] [obstacle_detection_node]: 57 with 664 points
+[INFO] [1746683209.414983784] [obstacle_detection_node]: Publishing 664 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683209.848976446] [obstacle_detection_node]: 57 at 6.23 with 518 points
+[INFO] [1746683209.899590447] [obstacle_detection_node]: 48 at 6.86 with 425 points
+[INFO] [1746683209.900435003] [obstacle_detection_node]: Removing stale obstacle 84
+[INFO] [1746683209.900797270] [obstacle_detection_node]: Removing stale obstacle 86
+[INFO] [1746683209.901105442] [obstacle_detection_node]: Removing stale obstacle 87
+[INFO] [1746683209.901962505] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683209.903058168] [obstacle_detection_node]: 48 with 425 points
+[INFO] [1746683209.904133552] [obstacle_detection_node]: 57 with 518 points
+[INFO] [1746683209.906588659] [obstacle_detection_node]: Publishing 943 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683210.285312743] [obstacle_detection_node]: 57 at 6.30 with 512 points
+[INFO] [1746683210.286153405] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683210.286662632] [obstacle_detection_node]: 48 with 425 points
+[INFO] [1746683210.287096266] [obstacle_detection_node]: 57 with 512 points
+[INFO] [1746683210.288771306] [obstacle_detection_node]: Publishing 937 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683210.648277726] [obstacle_detection_node]: 48 at 6.78 with 88 points
+[INFO] [1746683210.701314461] [obstacle_detection_node]: 57 at 6.50 with 0 points
+[INFO] [1746683210.748454894] [obstacle_detection_node]: 90 at 6.93 with 571 points
+[INFO] [1746683210.749533053] [obstacle_detection_node]: Removing stale obstacle 88
+[INFO] [1746683210.750461502] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683210.751332844] [obstacle_detection_node]: 48 with 88 points
+[INFO] [1746683210.752152032] [obstacle_detection_node]: 57 with 0 points
+[INFO] [1746683210.752974543] [obstacle_detection_node]: 90 with 571 points
+[INFO] [1746683210.754931757] [obstacle_detection_node]: Publishing 659 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683211.104039458] [obstacle_detection_node]: 91 at 6.05 with 89 points
+[INFO] [1746683211.126680280] [obstacle_detection_node]: 48 at 6.86 with 49 points
+[INFO] [1746683211.156702270] [obstacle_detection_node]: 90 at 6.71 with 702 points
+[INFO] [1746683211.157167849] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683211.157523481] [obstacle_detection_node]: 48 with 49 points
+[INFO] [1746683211.157856856] [obstacle_detection_node]: 90 with 702 points
+[INFO] [1746683211.158178652] [obstacle_detection_node]: 91 with 89 points
+[INFO] [1746683211.159175189] [obstacle_detection_node]: Publishing 840 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683211.578138943] [obstacle_detection_node]: 57 at 6.17 with 16 points
+[INFO] [1746683211.605330140] [obstacle_detection_node]: 48 at 6.93 with 185 points
+[INFO] [1746683211.692645159] [obstacle_detection_node]: 90 at 6.86 with 823 points
+[INFO] [1746683211.694080205] [obstacle_detection_node]: Removing stale obstacle 77
+[INFO] [1746683211.695241477] [obstacle_detection_node]: Removing stale obstacle 89
+[INFO] [1746683211.696219301] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683211.697273683] [obstacle_detection_node]: 48 with 185 points
+[INFO] [1746683211.698206177] [obstacle_detection_node]: 57 with 16 points
+[INFO] [1746683211.699129046] [obstacle_detection_node]: 90 with 823 points
+[INFO] [1746683211.701427403] [obstacle_detection_node]: Publishing 1024 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683212.370399867] [obstacle_detection_node]: 57 at 6.50 with 0 points
+[INFO] [1746683212.391685665] [obstacle_detection_node]: 48 at 6.78 with 16 points
+[INFO] [1746683212.415738411] [obstacle_detection_node]: 90 at 6.86 with 633 points
+[INFO] [1746683212.416206920] [obstacle_detection_node]: Removing stale obstacle 91
+[INFO] [1746683212.416614215] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683212.416972864] [obstacle_detection_node]: 48 with 16 points
+[INFO] [1746683212.417338765] [obstacle_detection_node]: 57 with 0 points
+[INFO] [1746683212.417680000] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683212.418627436] [obstacle_detection_node]: Publishing 649 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683212.813981866] [obstacle_detection_node]: 95 at 5.99 with 649 points
+[INFO] [1746683212.836962758] [obstacle_detection_node]: 48 at 6.78 with 245 points
+[INFO] [1746683212.837748703] [obstacle_detection_node]: Removing stale obstacle 92
+[INFO] [1746683212.838097316] [obstacle_detection_node]: Removing stale obstacle 93
+[INFO] [1746683212.838465102] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683212.838792134] [obstacle_detection_node]: 48 with 245 points
+[INFO] [1746683212.839107249] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683212.840050705] [obstacle_detection_node]: 95 with 649 points
+[INFO] [1746683212.842592836] [obstacle_detection_node]: Publishing 1527 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683213.228739701] [obstacle_detection_node]: 57 at 6.17 with 550 points
+[INFO] [1746683213.296712999] [obstacle_detection_node]: 48 at 6.86 with 0 points
+[INFO] [1746683213.324533375] [obstacle_detection_node]: 96 at 6.86 with 0 points
+[INFO] [1746683213.325498093] [obstacle_detection_node]: Removing stale obstacle 94
+[INFO] [1746683213.326350451] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683213.327175515] [obstacle_detection_node]: 48 with 0 points
+[INFO] [1746683213.328037687] [obstacle_detection_node]: 57 with 550 points
+[INFO] [1746683213.328933362] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683213.329784511] [obstacle_detection_node]: 96 with 0 points
+[INFO] [1746683213.332046630] [obstacle_detection_node]: Publishing 1183 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683214.030037497] [obstacle_detection_node]: 57 at 5.99 with 226 points
+[INFO] [1746683214.052969413] [obstacle_detection_node]: 48 at 6.93 with 16 points
+[INFO] [1746683214.053727847] [obstacle_detection_node]: Removing stale obstacle 95
+[INFO] [1746683214.054227564] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683214.054684061] [obstacle_detection_node]: 48 with 16 points
+[INFO] [1746683214.055112335] [obstacle_detection_node]: 57 with 226 points
+[INFO] [1746683214.055593759] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683214.056810567] [obstacle_detection_node]: Publishing 875 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683214.503632821] [obstacle_detection_node]: 57 at 5.88 with 297 points
+[INFO] [1746683214.504479345] [obstacle_detection_node]: Removing stale obstacle 96
+[INFO] [1746683214.504870114] [obstacle_detection_node]: Removing stale obstacle 97
+[INFO] [1746683214.505212446] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683214.505594264] [obstacle_detection_node]: 48 with 16 points
+[INFO] [1746683214.506029167] [obstacle_detection_node]: 57 with 297 points
+[INFO] [1746683214.506408031] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683214.507452211] [obstacle_detection_node]: Publishing 946 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683215.084518619] [obstacle_detection_node]: 57 at 5.93 with 281 points
+[INFO] [1746683215.155455837] [obstacle_detection_node]: 48 at 6.93 with 147 points
+[INFO] [1746683215.156718026] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683215.157570059] [obstacle_detection_node]: 48 with 147 points
+[INFO] [1746683215.158405394] [obstacle_detection_node]: 57 with 281 points
+[INFO] [1746683215.159229545] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683215.161349598] [obstacle_detection_node]: Publishing 1061 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683215.902961889] [obstacle_detection_node]: 57 at 6.05 with 340 points
+[INFO] [1746683215.904781935] [obstacle_detection_node]: Removing stale obstacle 98
+[INFO] [1746683215.905747421] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683215.906667158] [obstacle_detection_node]: 48 with 147 points
+[INFO] [1746683215.907612091] [obstacle_detection_node]: 57 with 340 points
+[INFO] [1746683215.908478280] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683215.910624634] [obstacle_detection_node]: Publishing 1120 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
+[INFO] [1746683216.276209706] [obstacle_detection_node]: 57 at 5.99 with 308 points
+[INFO] [1746683216.301250352] [obstacle_detection_node]: 48 at 6.78 with 52 points
+[INFO] [1746683216.302280375] [obstacle_detection_node]: In publish combine pointcloud
+[INFO] [1746683216.302744235] [obstacle_detection_node]: 48 with 52 points
+[INFO] [1746683216.303168208] [obstacle_detection_node]: 57 with 308 points
+[INFO] [1746683216.303626942] [obstacle_detection_node]: 90 with 633 points
+[INFO] [1746683216.304780143] [obstacle_detection_node]: Publishing 993 points
+/root/.cache/torch/hub/ultralytics_yolov5_master/models/common.py:906: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(autocast):
