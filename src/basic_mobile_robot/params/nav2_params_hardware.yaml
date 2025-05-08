@@ -54,7 +54,7 @@ bt_navigator:
   ros__parameters:
     debug_logging: true
     use_sim_time: False
-    global_frame: map
+    global_frame: odom
     robot_base_frame: base_link
     odom_topic: /wheel/odometry
     enable_groot_monitoring: True
