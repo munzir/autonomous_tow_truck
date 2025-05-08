@@ -41,8 +41,8 @@ class ObstacleDetectionNode(Node):
         # Initialize RealSense pipeline and alignment for depth data
         self.pipeline = rs.pipeline()
         config = rs.config()
-        config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)  # Camera resolution
-        config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)  # Camera resolution
+        config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 15)  # Camera resolution
+        config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 15)  # Camera resolution
         self.pipeline.start(config)
         self.align = rs.align(rs.stream.color)
 
@@ -229,6 +229,7 @@ class ObstacleDetectionNode(Node):
     
     def publish_combined_pointcloud(self):
         points = []
+
         self.get_logger().info("In publish combine pointcloud")
 
         for obs_id,obs_data in self.obstacles.items():
@@ -238,7 +239,9 @@ class ObstacleDetectionNode(Node):
                 self.get_logger().info(f"{obs_id} with {len(obs_data['points'])} points" )
                 # self.get_logger().info(str(points))
 
-      
+         # Filter points: remove invalid or too close points
+        points = [p for p in points if np.isfinite(p[2]) and p[2] > 0.1]
+        
         # If no points, publish empty cloud
         empty_cloud = PointCloud2(
         header=Header(
@@ -258,8 +261,6 @@ class ObstacleDetectionNode(Node):
         data=bytes(),
         is_dense=True
         )
-
-        self.pointcloud_publisher_.publish(empty_cloud)
 
         if not points:
             self.get_logger().info("No visible obstacles, publishing empty point cloud")
