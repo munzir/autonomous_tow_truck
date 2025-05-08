@@ -340,7 +340,7 @@ local_costmap:
           marking: true
           data_type: "PointCloud2"
           expected_update_rate: 0.5
-          observation_persistence: 0.1          #initially 0.2
+          observation_persistence: 0.1         #initially 0.2
           decay: 0.1
           sensor_frame: camera_link_optical
           raytrace_max_range: 7.0
