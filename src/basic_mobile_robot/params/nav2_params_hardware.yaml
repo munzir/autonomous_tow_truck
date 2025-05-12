@@ -54,12 +54,17 @@ bt_navigator:
   ros__parameters:
     debug_logging: true
     use_sim_time: False
-    global_frame: odom
+    global_frame: map
     robot_base_frame: base_link
     odom_topic: /wheel/odometry
     enable_groot_monitoring: True
     groot_zmq_publisher_port: 1666
     groot_zmq_server_port: 1667
+    navigators: ["navigate_to_pose", "navigate_through_poses"]
+    # navigate_to_pose:
+    #   plugin: "nav2_bt_navigator/NavigateToPoseNavigator"
+    # navigate_through_poses:
+    #   plugin: "nav2_bt_navigator/NavigateThroughPosesNavigator"
     default_nav_to_pose_bt_xml: "/root/autonomous_tow_truck/src/basic_mobile_robot/params/sadaf_navigate_to_pose_w_replanning_and_recovery.xml"
     default_nav_through_poses_bt_xml: "/root/autonomous_tow_truck/src/basic_mobile_robot/params/sadaf_navigate_through_poses_w_replanning_and_recovery.xml"
     plugin_lib_names:

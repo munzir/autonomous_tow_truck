@@ -22,7 +22,7 @@ from rclpy.duration import Duration # Handles time for ROS 2
 import rclpy # Python client library for ROS 2
 import csv
 
-from robot_navigator import BasicNavigator
+from nav2_simple_commander.robot_navigator import BasicNavigator
  
 '''
 Navigates a robot through goal poses.
@@ -37,17 +37,17 @@ def main():
   navigator = BasicNavigator()
 
   # Set the robot's initial pose if necessary
-  initial_pose = PoseStamped()
-  initial_pose.header.frame_id = 'map'
-  initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  initial_pose.pose.position.x = 287.4729309082031
-  initial_pose.pose.position.y = -14.669928550720215
-  initial_pose.pose.position.z = 0.0
-  initial_pose.pose.orientation.x = 0.0
-  initial_pose.pose.orientation.y = 0.0
-  initial_pose.pose.orientation.z =-0.9999373025858765
-  initial_pose.pose.orientation.w = 0.01119780769976286
-  navigator.setInitialPose(initial_pose)
+    # initial_pose = PoseStamped()
+    # initial_pose.header.frame_id = 'map'
+    # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+    # initial_pose.pose.position.x = 287.4729309082031
+    # initial_pose.pose.position.y = -14.669928550720215
+    # initial_pose.pose.position.z = 0.0
+    # initial_pose.pose.orientation.x = 0.0
+    # initial_pose.pose.orientation.y = 0.0
+    # initial_pose.pose.orientation.z =-0.9999373025858765
+    # initial_pose.pose.orientation.w = 0.01119780769976286
+    # navigator.setInitialPose(initial_pose)
  
   # Activate navigation, if not autostarted. This should be called after setInitialPose()
   # or this will initialize at the origin of the map and update the costmap with bogus readings.
@@ -55,7 +55,7 @@ def main():
   # navigator.lifecycleStartup()
  
   # Wait for navigation to fully activate. Use this line if autostart is set to true.
-  navigator.waitUntilNav2Active()
+  navigator.waitUntilNav2Active(localizer='robot_localization')
  
   # If desired, you can change or load the map as well
   # navigator.changeMap('/path/to/map.yaml')
@@ -94,11 +94,11 @@ def main():
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   # Go through the goal poses
-  navigator.goThroughPoses(goal_poses[0:26])
+  navigator.goThroughPoses(goal_poses)
  
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses
-  while not navigator.isNavComplete():
+  while not navigator.isTaskComplete():
     ################################################
     #
     # Implement some code here for your application!
