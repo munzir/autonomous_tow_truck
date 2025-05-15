@@ -218,6 +218,16 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('amcl'))  # Run this when 'amcl' is true
     )
 
+  # Static transform from map to odom when AMCL is OFF
+  static_tf_map_to_odom_cmd = Node(
+      condition=UnlessCondition(amcl),
+      package='tf2_ros',
+      executable='static_transform_publisher',
+      name='static_map_to_odom',
+      arguments=['-2.0', '1.0', '0.0', '0.0', '0.0', '0.977902', '0.209059', 'map', 'odom'],
+      output='screen'
+  )
+
   # Create the launch description and populate
   ld = LaunchDescription()
 
@@ -246,5 +256,6 @@ def generate_launch_description():
   ld.add_action(start_ros2_navigation_cmd_amcl) #amcl on, using the nav2 available directory
   ld.add_action(start_odometry_cmd) #single odometry launch
   ld.add_action(start_joy_node)
+  ld.add_action(static_tf_map_to_odom_cmd)
   # ld.add_action(start_robot_localization_cmd) 
   return ld
