@@ -114,8 +114,8 @@ controller_server:
     # Goal checker parameters
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 1.0
-      yaw_goal_tolerance: 1.0
+      xy_goal_tolerance: 0.8
+      yaw_goal_tolerance: 0.1 #1.0
       stateful: True
      #Controller parameters
     FollowPath:
@@ -123,7 +123,7 @@ controller_server:
       time_steps: 60
       model_dt: 0.05 
       batch_size: 2000
-      vx_std: 0.2 # was 0.275
+      vx_std: 0.275 # was 0.275
       vy_std: 0.2 # was 0.1
       wz_std: 0.15 # was 0.4
       vx_max: 2.8
@@ -191,13 +191,13 @@ controller_server:
           cost_weight: 50.0 # was 120.0
           max_path_occupancy_ratio: 0.07 # was 0.05
           trajectory_point_step: 4
-          threshold_to_consider: 0.5
+          threshold_to_consider: 0.4 #0.5
           offset_from_furthest: 20 # was 55 
           use_path_orientations: false
         PathFollowCritic:
           enabled: true
           cost_power: 1 # was 20
-          cost_weight: 50.0 # was 200.0  # was 100.0
+          cost_weight: 45.0 #50.0 # was 200.0  # was 100.0
           offset_from_furthest: 35
           threshold_to_consider: 1.4
         PathAngleCritic:
