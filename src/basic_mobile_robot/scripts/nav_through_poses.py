@@ -94,7 +94,7 @@ def main():
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   # Go through the goal poses
-  navigator.goThroughPoses(goal_poses[0:8])
+  navigator.goThroughPoses(goal_poses[0:7])
  
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses
