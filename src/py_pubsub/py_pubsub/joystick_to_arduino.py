@@ -150,7 +150,7 @@ class JoystickToArduino(Node):
                 if (self.autonom_mode == True):
                     self.speed = int(self.auto_speed)
                 else:
-                    self.speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
+                    self.speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 1200]))
                 # If brake is active, force speed to 0
                 if self.brake_active:
                     self.speed = 0
@@ -193,7 +193,7 @@ class JoystickToArduino(Node):
                 if (self.autonom_mode == True):
                     self.speed = int(self.auto_speed)
                 else:
-                    self.speed = int(interp(4.4 - (1 + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
+                    self.speed = int(interp(4.4 - (1 + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 1200]))
                 # If brake is active, force speed to 0
                 if self.brake_active:
                     self.speed = 0

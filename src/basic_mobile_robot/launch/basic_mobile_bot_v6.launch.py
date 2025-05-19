@@ -224,7 +224,7 @@ def generate_launch_description():
       package='tf2_ros',
       executable='static_transform_publisher',
       name='static_map_to_odom',
-      arguments=['-2.0', '1.0', '0.0', '0.0', '0.0', '0.977902', '0.209059', 'map', 'odom'],
+      arguments=['28.181461334228516', '1.0', '0.0', '0.0', '0.0', '0.977902', '0.209059', 'map', 'odom'],
       output='screen'
   )
 
