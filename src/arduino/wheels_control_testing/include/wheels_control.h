@@ -123,9 +123,9 @@ bool ControlLoop() {
         } else {
           vvv = pidOutput;
         }
-
-        dacValue =
-            int(4095 / 5.0 * vvv); // Convert 0-5V range to 0-4095 range for DAC
+        dacValue = 4.4;
+        // dacValue =
+        //     int(4095 / 5.0 * vvv); // Convert 0-5V range to 0-4095 range for DAC
         // Serial.println(dacValue);                   // Print the DAC value
         // for debugging
       }
