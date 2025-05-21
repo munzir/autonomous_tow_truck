@@ -39,9 +39,6 @@ class ObstacleDetectionNode(Node):
         self.align = rs.align(rs.stream.color)
         profile = self.pipeline.get_active_profile()
         depth_profile = rs.video_stream_profile(profile.get_stream(rs.stream.depth)) 
-        # self.intrinsics = profile.get_stream(rs.stream.color).as_video_stream_profile().get_intrinsics()
-        # self.depth_intrinsics = profile.get_stream(rs.stream.depth).as_video_stream_profile().get_intrinsics()
-        # self.depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
         self.depth_intrinsics = depth_profile.get_intrinsics()
         depth_sensor = profile.get_device().first_depth_sensor()
         self.depth_scale = depth_sensor.get_depth_scale()
@@ -73,20 +70,6 @@ class ObstacleDetectionNode(Node):
         self.timer = self.create_timer(0.1, self.capture_frame)
 
     def capture_frame(self):
-        # Record the timestamp when the frame is captured
-        # start_capture_time = time.time()
-
-        # # Wait for frames and align the depth frame with the color frame
-        # frames = self.pipeline.wait_for_frames()
-        # aligned_frames = self.align.process(frames)
-       
-        # # Get the aligned depth and color frames
-        # depth_frame = aligned_frames.get_depth_frame()
-        # color_frame = aligned_frames.get_color_frame()
-
-        # if not depth_frame or not color_frame:
-        #     self.get_logger().error('Failed to capture depth or color frame')
-        #     return
         with self.frame_lock:
             frames = self.pipeline.wait_for_frames()
             aligned_frames = self.align.process(frames)
@@ -100,31 +83,9 @@ class ObstacleDetectionNode(Node):
         # Convert color frame to OpenCV format
         color_image = np.asarray(color_frame.get_data())
 
-        # # # Perform object detection and draw bounding boxes
-        # _, annotated_frame, _ = self.detect_obstacle(color_image, depth_frame)
-
-        # self.remove_old_obstacles(start_capture_time)
-
-        # # Publish updates
-        # self.publish_combined_pointcloud()
-
-        # # Display the camera stream with bounding boxes
-        # cv2.imshow("Camera Stream", annotated_frame)
-        # cv2.waitKey(1)  # Wait for 1 ms to update the windo
-        # with self.frame_lock:
         obstacle_detected, annotated_frame, header = self.detect_obstacle(color_image, depth_frame)
         current_time = self.get_clock().now()
         self.remove_old_obstacles(current_time)
-
-        # if not obstacle_detected and not any(obs_data['visible'] for obs_data in self.obstacles.values()):
-        #     self.get_logger().info("No obstacles detected, publishing empty point cloud")
-        #     self.publish_empty_pointcloud(header)
-        # else:
-        #     self.get_logger().info("Publishing combined point cloud")
-        #     self.publish_combined_pointcloud(header)
-
-        # cv2.imshow("Camera Stream", annotated_frame)
-        # cv2.waitKey(1)
         self.publish_combined_pointcloud(header)
 
         cv2.imshow("Camera Stream", annotated_frame)
@@ -180,6 +141,11 @@ class ObstacleDetectionNode(Node):
 
             if np.isnan(Z) or Z < 0.1 or Z > 10.0:
                 self.get_logger().debug(f"Invalid center depth: {Z}m at ({center_x}, {center_y})")
+                continue
+
+            # Skip points too close to camera (possible tow truck body)
+            if Z < 0.2:
+                self.get_logger().debug(f"Point too close to camera: Z={Z}m at ({center_x}, {center_y})")
                 continue
 
             X, Y, Z = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [center_x, center_y], Z)
@@ -240,138 +206,40 @@ class ObstacleDetectionNode(Node):
         }
 
         return obstacle_detected, annotated_frame, header
-            # if np.isnan(Z) or Z < 0.1 or Z > 10.0:
-            #     self.get_logger().debug(f"Invalid center depth: {Z}m at ({center_x}, {center_y})")
-            #     continue
 
-            # X, Y, Z = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [center_x, center_y], Z)
+    # def generate_clearing_pointcloud(self, depth_image):
+    #     points = []
+    #     height, width = depth_image.shape  # (480, 640)
+    #     step = 5  # ~0.75° resolution, ~4000 points
+    #     depth_scale = self.depth_scale
 
-            # # Compute corner depth (for range check)
-            # if X < 0:
-            #     corner_y, corner_x = y2, x2  # Bottom-right
-            # else:
-            #     corner_y, corner_x = y1, x1  # Top-left
+    #     for y in range(0, height, step):
+    #         for x in range(0, width, step):
+    #             depth = depth_image[y, x] * depth_scale
+    #             if not np.isnan(depth) and 0.1 < depth < 10.0:
+    #                 point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
+    #                 points.append(point)
 
-            # corner_depth = depth_image[corner_y, corner_x] * depth_scale
-
-            # if np.isnan(corner_depth) or corner_depth < 0.1 or corner_depth > 7.0:
-            #     self.get_logger().debug(f"Invalid corner depth: {corner_depth}m at ({corner_x}, {corner_y})")
-            #     continue
-
-            # corner_x_3d, corner_y_3d, corner_z_3d = rs.rs2_deproject_pixel_to_point(
-            #     self.depth_intrinsics, [corner_x, corner_y], corner_depth
-            # )
-            # range_within = 0
-
-            # # Check if obstacle is within tow truck's range
-            # if (
-            #     (-self.width_t / 2 - 0.1 < corner_x_3d < self.width_t / 2 + 0.1)
-            #     and (corner_y_3d > -self.height_t / 2 - 0.3)
-            #     and (Z < 10)
-            # ):
-            #     range_within = 1
-            #     cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Red for in-range
-            # else:
-            #     cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Green for out-of-range
-
-            # obstacle_id = self.match_or_create_obstacle(X, Y, Z, results.names[int(cls)])
-            # cv2.putText(
-            #     annotated_frame,
-            #     f"ID:{obstacle_id} Z:{Z:.2f}m",
-            #     (x1, y1 - 10),
-            #     cv2.FONT_HERSHEY_SIMPLEX,
-            #     0.5,
-            #     (255, 255, 255),
-            #     1,
-            # )
-            
-            # # Generate points for point cloud if within range
-            # if Z < 10:
-            #     points = self.bbox_to_points(x1, y1, x2, y2, depth_image)
-            #     self.obstacles[obstacle_id]['points'] = points
-            #     self.get_logger().info(
-            #         f"Obstacle {obstacle_id} at Z={Z:.2f}m with {len(points)} points"
-            #     )
-            # else:
-            #     self.obstacles[obstacle_id]['points'] = []
-
-            # self.obstacles[obstacle_id]['last_seen'] = current_time
-            # self.obstacles[obstacle_id]['visible'] = True
-            # self.obstacles[obstacle_id]['position'] = (X, Y, Z)
-            # self.obstacles[obstacle_id]['class'] = results.names[int(cls)]
-
-        # # Clear stale obstacles (older than observation_persistence)
-        # observation_persistence = 0.2  # Match ObstacleLayer's observation_persistence
-        # stale_ids = []
-        # for obs_id, obs in self.obstacles.items():
-        #     if not obs['visible']:
-        #         try:
-        #             last_seen = obs['last_seen']
-        #             if isinstance(last_seen, float):
-        #                 self.get_logger().warn(
-        #                     f"Obstacle {obs_id} has float last_seen ({last_seen}), converting to Time"
-        #                 )
-        #                 last_seen = Time(seconds=int(last_seen), nanoseconds=int((last_seen % 1) * 1e9))
-        #                 obs['last_seen'] = last_seen  # Update to Time object
-        #             if isinstance(last_seen, Time):
-        #                 time_diff = (current_time - last_seen).nanoseconds / 1e9
-        #                 if time_diff > observation_persistence:
-        #                     stale_ids.append(obs_id)
-        #             else:
-        #                 self.get_logger().warn(f"Invalid last_seen type for obstacle {obs_id}: {type(last_seen)}")
-        #                 stale_ids.append(obs_id)  # Remove invalid entries
-        #         except Exception as e:
-        #             self.get_logger().error(f"Error processing obstacle {obs_id}: {str(e)}")
-        #             stale_ids.append(obs_id)  # Remove problematic entries
-        
-        # for obs_id in stale_ids:
-        #     self.get_logger().info(f"Removing stale obstacle {obs_id}")
-        #     del self.obstacles[obs_id]
-        # Generate clearing points for the entire frame
-        # clearing_points = self.generate_clearing_pointcloud(depth_image)
-        # self.obstacles.setdefault('clearing', {
-        #     'points': clearing_points,
-        #     'last_seen': current_time,
-        #     'visible': True,
-        #     'position': (0, 0, 0),
-        #     'class': 'clearing'
-        # })['points'] = clearing_points
-
-        # # Remove old obstacles
-        # self.remove_old_obstacles(current_time)
-
-        # if not obstacle_detected:
-        #     self.get_logger().info("No obstacles detected")
-
-        # return obstacle_detected, annotated_frame, None
-   
-    # def match_or_create_obstacle(self, x, y, z):
-    #     # Simple obstacle matching based on position (could be improved)
-    #     for obs_id, obs_data in self.obstacles.items():
-    #         # if not obs_data['visible']:  # Only match with currently invisible obstacles
-    #         prev_x, prev_y, prev_z = obs_data['position']
-    #         distance = ((x - prev_x)**2 + (y - prev_y)**2 + (z - prev_z)**2)**0.5
-    #         if distance < 0.7:  # Threshold for matching (in meters)
-    #             return obs_id
-        
-    #     # If no match found, create new obstacle
-    #     self.obstacle_id_counter += 1
-    #     return self.obstacle_id_counter
+    #     self.get_logger().debug(f"Generated {len(points)} clearing points")
+    #     return points
 
     def generate_clearing_pointcloud(self, depth_image):
         points = []
         height, width = depth_image.shape  # (480, 640)
-        step = 10  # ~0.75° resolution, ~4000 points
+        step = 10  # ~4000 points
         depth_scale = self.depth_scale
 
-        for y in range(0, height, step):
-            for x in range(0, width, step):
+        for y in range(10, height-10, step):  # Exclude edge pixels
+            for x in range(10, width-10, step):
                 depth = depth_image[y, x] * depth_scale
-                if not np.isnan(depth) and 0.1 < depth < 10.0:
+                if not np.isnan(depth) and 0.1 < depth < 9.5:
                     point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
+                    # Log corner points for debugging
+                    if x <= 20 or y <= 20:
+                        self.get_logger().debug(f"Corner point: x={x}, y={y}, depth={depth:.2f}, 3D=({point[0]:.2f}, {point[1]:.2f}, {point[2]:.2f})")
                     points.append(point)
 
-        self.get_logger().debug(f"Generated {len(points)} clearing points")
+        self.get_logger().info(f"Generated {len(points)} clearing points")
         return points
 
     def match_or_create_obstacle(self, x, y, z, class_label):
@@ -386,32 +254,6 @@ class ObstacleDetectionNode(Node):
         self.get_logger().info(f"Created new obstacle ID {self.obstacle_id_counter} at ({x:.2f}, {y:.2f}, {z:.2f})")
         return self.obstacle_id_counter
     
-    # def bbox_to_points(self, x_min, y_min, x_max, y_max, depth_image):
-    #     point_cloud = []
-    #     for y in range(y_min, y_max, 2):
-    #         for x in range(x_min, x_max, 2):
-    #             if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
-    #                 depth = depth_image[y, x] * self.depth_scale
-    #                 if not np.isnan(depth) and 0.1 < depth < 5.0:
-    #                     point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
-    #                     point_cloud.append(point)
-    #                     if x == x_min or x == x_max-1 or y == y_min or y == y_max-1:
-    #                         for i in [-1, 1]:
-    #                             inflated_point = (
-    #                                 point[0] + i*0.02,
-    #                                 point[1] + i*0.02,
-    #                                 point[2]
-    #                             )
-    #                             point_cloud.append(inflated_point)
-    #     for y in range(0, 480, 20):
-    #         for x in range(0, 640, 20):
-    #             if not (x_min <= x < x_max and y_min <= y < y_max):
-    #                 depth = depth_image[y, x] * self.depth_scale
-    #                 if not np.isnan(depth) and 0.1 < depth < 7.0:
-    #                     point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
-    #                     point_cloud.append(point)
-    #     return point_cloud
-
     def bbox_to_points(self, x_min, y_min, x_max, y_max, depth_image):
         points = []
         depth_scale = self.depth_scale
@@ -432,40 +274,6 @@ class ObstacleDetectionNode(Node):
                                 points.append(inflated_point)
         return points
     
-    # def remove_old_obstacles(self, current_time):
-    #     to_remove = []
-    #     for obs_id, obs_data in list(self.obstacles.items()):
-    #         if not obs_data['visible'] and current_time - obs_data['last_seen'] > self.obstacle_timeout:
-    #             to_remove.append(obs_id)
-    #     for obs_id in to_remove:
-    #         self.get_logger().info(f"Removing obstacle {obs_id}")
-    #         self.obstacles[obs_id]['points'].clear()
-    #         del self.obstacles[obs_id]
-
-    # def remove_old_obstacles(self, current_time):
-    #     self.obstacle_timeout = 0.2  # Seconds before removing unseen obstacles
-    #     to_remove = []
-    #     for obs_id, obs in self.obstacles.items():
-    #         if obs_id == 'clearing':
-    #             continue  # Keep clearing points
-    #         last_seen = obs['last_seen']
-    #         if isinstance(last_seen, float):
-    #             self.get_logger().warn(
-    #                 f"Obstacle {obs_id} has float last_seen ({last_seen}), converting to Time"
-    #             )
-    #             last_seen = Time(seconds=int(last_seen), nanoseconds=int((last_seen % 1) * 1e9))
-    #             obs['last_seen'] = last_seen
-    #         if not obs['visible'] and isinstance(last_seen, Time):
-    #             time_diff = (current_time - last_seen).nanoseconds / 1e9
-    #             if time_diff > self.obstacle_timeout:
-    #                 to_remove.append(obs_id)
-    #         elif not isinstance(last_seen, Time):
-    #             self.get_logger().warn(f"Invalid last_seen type for obstacle {obs_id}: {type(last_seen)}")
-    #             to_remove.append(obs_id)
-    #     for obs_id in to_remove:
-    #         self.get_logger().info(f"Removing stale obstacle {obs_id}")
-    #         del self.obstacles[obs_id]
-
     def remove_old_obstacles(self, current_time):
         to_remove = []
         for obs_id, obs in self.obstacles.items():
@@ -480,40 +288,6 @@ class ObstacleDetectionNode(Node):
             self.get_logger().info(f"Removing stale obstacle {obs_id}")
             del self.obstacles[obs_id]
         
-        # if to_remove:
-        #     self.get_logger().info(f"Removed {len(to_remove)} stale obstacles")
-
-        # self.get_logger().info("After removal:")
-        # self.get_logger().info(str(self.obstacles.keys()))
-        # self.get_logger().info("\n")
-
-    
-    # def bbox_to_points(self, x_min, y_min, x_max, y_max, depth_frame):
-    #     point_cloud = []
-    #     depth_image = np.asanyarray(depth_frame.get_data())             
-    #     for y in range(y_min, y_max, 1):  # Sample with stride
-    #         for x in range(x_min, x_max, 1):
-    #             if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
-    #                 depth = depth_image[y, x] * self.depth_scale  # Convert to meters
-    #                 # if np.isnan(depth) or depth <= 0.1 or depth >= 5.0:
-    #                 if not np.isnan(depth) and 0.1 < depth < 5.0:
-    #                     # Convert to 3D coordinates
-    #                     point = rs.rs2_deproject_pixel_to_point(
-    #                         self.depth_intrinsics, 
-    #                         [x, y], 
-    #                         depth
-    #                     )
-    #                     # Add some artificial inflation points around edges
-    #                     if x == x_min or x == x_max-1 or y == y_min or y == y_max-1:
-    #                         for i in range(-3, 4):  # Create points around edges
-    #                             inflated_point = (
-    #                                 point[0] + i*0.05,
-    #                                 point[1] + i*0.05,
-    #                                 point[2]
-    #                             )
-    #                             point_cloud.append(inflated_point)
-    #                     point_cloud.append(point)
-    #     return point_cloud
     def publish_empty_pointcloud(self, header):
         empty_cloud = PointCloud2(
             header=header,
@@ -533,73 +307,6 @@ class ObstacleDetectionNode(Node):
         self.pointcloud_publisher_.publish(empty_cloud)
         self.get_logger().info("Published empty point cloud")
 
-    # def publish_combined_pointcloud(self):
-    #     points = []
-
-    #     self.get_logger().info("In publish combine pointcloud")
-
-    #     for obs_id,obs_data in self.obstacles.items():
-    #         if 'points' in obs_data and obs_data['visible']:
-    #             # self.get_logger().info(f"Obstacle {obs_id} contributing {len(obs['points'])} points")
-    #             points.extend(obs_data['points'])
-    #             self.get_logger().info(f"{obs_id} with {len(obs_data['points'])} points" )
-    #             # self.get_logger().info(str(points))
-
-    #      # Filter points: remove invalid or too close points
-    #     points = [p for p in points if np.isfinite(p[2]) and p[2] > 0.1]
-        
-    #     # If no points, publish empty cloud
-    #     empty_cloud = PointCloud2(
-    #     header=Header(
-    #         stamp=self.get_clock().now().to_msg(),
-    #         frame_id="camera_link_optical"
-    #     ),
-    #     height=1,
-    #     width=0,
-    #     fields=[
-    #         PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-    #         PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-    #         PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-    #     ],
-    #     is_bigendian=False,
-    #     point_step=12,
-    #     row_step=0,
-    #     data=bytes(),
-    #     is_dense=True
-    #     )
-
-    #     if not points:
-    #         self.get_logger().info("No visible obstacles, publishing empty point cloud")
-    #         self.pointcloud_publisher_.publish(empty_cloud)
-    #         return  # Exit after publishing the empty cloud
-        
-    #     # Build PointCloud2 from points
-    #     # cloud_data = []
-    #     # for x, y, z in points:
-    #     #     cloud_data.extend([x, y, z])
-    #     # self.get_logger().info("getting cloud data")
-
-    #     pc_msg = PointCloud2(
-    #         header=Header(
-    #         stamp=self.get_clock().now().to_msg(),
-    #         frame_id="camera_link_optical"
-    #     ),
-    #         height=1,
-    #         width=len(points),
-    #         fields=[
-    #             PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-    #             PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-    #             PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-    #         ],
-    #         is_bigendian=False,
-    #         point_step=12,
-    #         row_step=12 * len(points),
-    #         data=np.array(points, dtype=np.float32).tobytes(),
-    #         is_dense = True
-    #     )
-
-    #     self.get_logger().info(f"Publishing {len(points)} points")
-    #     self.pointcloud_publisher_.publish(pc_msg)
 
     def publish_combined_pointcloud(self, header):
         points = []
