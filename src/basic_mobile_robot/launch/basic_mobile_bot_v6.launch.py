@@ -15,8 +15,8 @@ def generate_launch_description():
   robot_localization_file_path = os.path.join(pkg_share, 'config/ekf.yaml')
   robot_name_in_urdf = 'basic_mobile_bot'
   default_rviz_config_path = os.path.join(pkg_share, 'rviz/nav2_config.rviz')
-  # static_map_path = os.path.join(pkg_share, 'maps', 'map_name.yaml')
-  static_map_path = ''
+  static_map_path = os.path.join(pkg_share, 'maps', 'map_name.yaml')
+  # static_map_path = ''
   nav2_params_path = os.path.join(pkg_share, 'params', 'nav2_params_hardware.yaml')
   nav2_bt_path = FindPackageShare(package='nav2_bt_navigator').find('nav2_bt_navigator')
   behavior_tree_xml_path = os.path.join(nav2_bt_path, 'behavior_trees', 'sadaf_navigate_through_poses_w_replanning_and_recovery.xml')
@@ -149,7 +149,7 @@ def generate_launch_description():
     parameters=[robot_localization_file_path, 
     {'use_sim_time': use_sim_time}],
     remappings=[('odometry/filtered', 'odometry/global'),
-                ('/set_pose', '/initialpose')])
+                ('/set_pose', '/initial')])
   # Start robot localization using an Extended Kalman filter...odom->base_footprint transform
   # start_robot_localization_local_cmd = Node(
   #   package='robot_localization',
