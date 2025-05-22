@@ -115,7 +115,7 @@ controller_server:
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.6
-      yaw_goal_tolerance: 0.08 #1.0
+      yaw_goal_tolerance: 1.0 #1.0
       stateful: True
      #Controller parameters
     FollowPath:
@@ -176,7 +176,7 @@ controller_server:
       #   collision_cost: 10000.0
       #   collision_margin_distance: 0.1
       #   near_goal_distance: 0.5
-      CostCritic:
+        CostCritic:
         enabled: true
         cost_power: 1
         cost_weight: 3.81
