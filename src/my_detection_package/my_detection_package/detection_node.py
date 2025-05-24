@@ -18,7 +18,8 @@ class ObstacleDetectionNode(Node):
         qos_profile = rclpy.qos.QoSProfile(
                 durability=rclpy.qos.DurabilityPolicy.VOLATILE,
                 reliability=rclpy.qos.ReliabilityPolicy.BEST_EFFORT,
-                history=rclpy.qos.HistoryPolicy.KEEP_LAST,
+                history=rclpy.qos.HistoryPolicy.KEEP_LAST,# self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
+
                 depth=1
             )
         self.pointcloud_publisher_ = self.create_publisher(
@@ -43,8 +44,6 @@ class ObstacleDetectionNode(Node):
         depth_sensor = profile.get_device().first_depth_sensor()
         self.depth_scale = depth_sensor.get_depth_scale()
 
-        # self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
-
         self.width_t = 0.8
         self.height_t = 1.9
 
@@ -57,14 +56,10 @@ class ObstacleDetectionNode(Node):
             'class': None
             }) # {obstacle_id: {'points': [], 'last_seen': timestamp}}
         
-        self.obstacle_timeout = 0.3  # seconds before removing unseen obstacles
+        self.obstacle_timeout = 0.2  # seconds before removing unseen obstacles
         self.obstacle_id_counter = 0
 
-        # self.width_t = 2.5
-        # self.height_t = 2.0
-        self.frame_lock = Lock()
-        # self.timer = self.create_timer(0.1, self.capture_frame)
-        
+        self.frame_lock = Lock()       
 
         # Timer to periodically capture frames
         self.timer = self.create_timer(0.1, self.capture_frame)
@@ -82,8 +77,8 @@ class ObstacleDetectionNode(Node):
 
         # Convert color frame to OpenCV format
         color_image = np.asarray(color_frame.get_data())
-
         obstacle_detected, annotated_frame, header = self.detect_obstacle(color_image, depth_frame)
+        
         current_time = self.get_clock().now()
         self.remove_old_obstacles(current_time)
         self.publish_combined_pointcloud(header)
@@ -123,6 +118,11 @@ class ObstacleDetectionNode(Node):
                 self.get_logger().debug(f"Invalid box skipped: x1={x1}, y1={y1}, x2={x2}, y2={y2}")
                 continue
 
+            # Skip detections near frame bottom (likely ground)
+            if y2 > 460:
+                self.get_logger().debug(f"Skipping ground detection: y2={y2}")
+                continue
+
             label = f"{results.names[int(cls)]} {conf:.2f}"
             center_x = int((x1 + x2) / 2)
             center_y = int((y1 + y2) / 2)
@@ -149,6 +149,14 @@ class ObstacleDetectionNode(Node):
                 continue
 
             X, Y, Z = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [center_x, center_y], Z)
+
+            # Skip ground points (Y too low)
+            if Y < -0.3:
+                self.get_logger().debug(f"Ground point skipped: Y={Y:.2f}m at ({center_x}, {center_y})")
+                continue
+
+            # Log detection details
+            self.get_logger().info(f"Detection: class={results.names[int(cls)]}, box=({x1},{y1},{x2},{y2}), 3D=({X:.2f},{Y:.2f},{Z:.2f})")
 
             # Corner depth for range check
             corner_y, corner_x = (y2, x2) if X < 0 else (y1, x1)
@@ -195,33 +203,17 @@ class ObstacleDetectionNode(Node):
             self.obstacles[obstacle_id]['position'] = (X, Y, Z)
             self.obstacles[obstacle_id]['class'] = results.names[int(cls)]
 
-        # Generate and store clearing points
-        clearing_points = self.generate_clearing_pointcloud(depth_image)
-        self.obstacles['clearing'] = {
-            'points': clearing_points,
-            'last_seen': current_time,
-            'visible': True,
-            'position': (0, 0, 0),
-            'class': 'clearing'
-        }
+        # # Generate and store clearing points
+        # clearing_points = self.generate_clearing_pointcloud(depth_image)
+        # self.obstacles['clearing'] = {
+        #     'points': clearing_points,
+        #     'last_seen': current_time,
+        #     'visible': True,
+        #     'position': (0, 0, 0),
+        #     'class': 'clearing'
+        # }
 
         return obstacle_detected, annotated_frame, header
-
-    # def generate_clearing_pointcloud(self, depth_image):
-    #     points = []
-    #     height, width = depth_image.shape  # (480, 640)
-    #     step = 5  # ~0.75° resolution, ~4000 points
-    #     depth_scale = self.depth_scale
-
-    #     for y in range(0, height, step):
-    #         for x in range(0, width, step):
-    #             depth = depth_image[y, x] * depth_scale
-    #             if not np.isnan(depth) and 0.1 < depth < 10.0:
-    #                 point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
-    #                 points.append(point)
-
-    #     self.get_logger().debug(f"Generated {len(points)} clearing points")
-    #     return points
 
     def generate_clearing_pointcloud(self, depth_image):
         points = []
@@ -259,11 +251,21 @@ class ObstacleDetectionNode(Node):
         depth_scale = self.depth_scale
         for y in range(y_min, y_max, 2):
             for x in range(x_min, x_max, 2):
+                if x < 20 or x > 620 or y < 20 or y > 460:
+                    self.get_logger().debug(f"Skipping edge pixel: x={x}, y={y}")
+                    continue
                 if 0 <= x < depth_image.shape[1] and 0 <= y < depth_image.shape[0]:
                     depth = depth_image[y, x] * depth_scale
-                    if not np.isnan(depth) and 0.1 < depth < 10.0:
+                    if not np.isnan(depth) and 0.2 < depth < 9.5:
                         point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
+                        # Filter ground points
+                        if point[1] < -0.3:
+                            self.get_logger().debug(f"Ground obstacle point skipped: Y={point[1]:.2f}, 3D=({point[0]:.2f}, {point[1]:.2f}, {point[2]:.2f})")
+                            continue
                         points.append(point)
+                        # Log edge points
+                        if point[2] > 9.0:
+                            self.get_logger().debug(f"Edge point: 3D=({point[0]:.2f}, {point[1]:.2f}, {point[2]:.2f})")
                         if x == x_min or x == x_max-1 or y == y_min or y == y_max-1:
                             for i in [-1, 1]:
                                 inflated_point = (
@@ -271,7 +273,11 @@ class ObstacleDetectionNode(Node):
                                     point[1] + i*0.02,
                                     point[2]
                                 )
+                                 # Filter ground and edge for inflated points
+                                if inflated_point[1] < -0.3 or inflated_point[2] > 9.5:
+                                    continue
                                 points.append(inflated_point)
+        self.get_logger().debug(f"Generated {len(points)} obstacle points for box ({x_min},{y_min},{x_max},{y_max})")
         return points
     
     def remove_old_obstacles(self, current_time):
@@ -314,12 +320,23 @@ class ObstacleDetectionNode(Node):
         for obs_id in visible_obstacles:
             points.extend(self.obstacles[obs_id]['points'])
         
-        points = [p for p in points if np.isfinite(p[2]) and p[2] > 0.1]
+        points = [p for p in points if np.isfinite(p[2]) and 0.2 < p[2] < 9.5]
         
+        # Log point details
+        if points:
+            sample_points = points[:5]  # Sample up to 5 points
+            for p in sample_points:
+                self.get_logger().debug(f"Published point: 3D=({p[0]:.2f}, {p[1]:.2f}, {p[2]:.2f})")
+            # Log edge points
+            edge_points = [p for p in points if p[2] > 9.0]
+            if edge_points:
+                self.get_logger().warn(f"Found {len(edge_points)} points near max range: sample={edge_points[:3]}")
+
         if not points:
-            self.get_logger().info("Publishing empty point cloud")
+            self.get_logger().info("No valid points. Publishing empty point cloud")
             self.publish_empty_pointcloud(header)
             return
+        
         pc_msg = PointCloud2(
             header=header,
             height=1,
