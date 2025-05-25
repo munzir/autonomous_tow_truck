@@ -19,7 +19,6 @@ class ObstacleDetectionNode(Node):
                 durability=rclpy.qos.DurabilityPolicy.VOLATILE,
                 reliability=rclpy.qos.ReliabilityPolicy.BEST_EFFORT,
                 history=rclpy.qos.HistoryPolicy.KEEP_LAST,# self.tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
-
                 depth=1
             )
         self.pointcloud_publisher_ = self.create_publisher(
