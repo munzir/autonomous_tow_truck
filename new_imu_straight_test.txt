@@ -1,0 +1,3100 @@
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 287837015
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4415605068206787
+  y: 0.1738218367099762
+  z: -0.3641743063926697
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 338180276
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44917047023773193
+  y: 0.17417705059051514
+  z: -0.3565714955329895
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 389145491
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4484817385673523
+  y: 0.17289599776268005
+  z: -0.35858896374702454
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 439199715
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4437503218650818
+  y: 0.17685891687870026
+  z: -0.3571447730064392
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 489053903
+  frame_id: imu_link
+magnetic_field:
+  x: 0.443897008895874
+  y: 0.1763542890548706
+  z: -0.3588222861289978
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 538954217
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4384844899177551
+  y: 0.1695263832807541
+  z: -0.3554740250110626
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 589013349
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4417250156402588
+  y: 0.17332980036735535
+  z: -0.3581331670284271
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 639966660
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44541269540786743
+  y: 0.1772497296333313
+  z: -0.35923027992248535
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 692979427
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4468584656715393
+  y: 0.17431622743606567
+  z: -0.36413076519966125
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 743090283
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4422060549259186
+  y: 0.17011304199695587
+  z: -0.35945406556129456
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 792961294
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4476695656776428
+  y: 0.17116567492485046
+  z: -0.35529589653015137
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 846089170
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45256394147872925
+  y: 0.17635607719421387
+  z: -0.35570958256721497
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 895182975
+  frame_id: imu_link
+magnetic_field:
+  x: 0.447673499584198
+  y: 0.17843693494796753
+  z: -0.3604438304901123
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 948042025
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44131600856781006
+  y: 0.18727320432662964
+  z: -0.3600761294364929
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428557
+    nanosec: 998088272
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44058316946029663
+  y: 0.18099528551101685
+  z: -0.3644888699054718
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 50072689
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4402405023574829
+  y: 0.1780596822500229
+  z: -0.36655229330062866
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 99850342
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44479942321777344
+  y: 0.1768495738506317
+  z: -0.3650527596473694
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 149796313
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4427396059036255
+  y: 0.16487637162208557
+  z: -0.3496217131614685
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 199821860
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4434429407119751
+  y: 0.1576913595199585
+  z: -0.34648483991622925
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 250024224
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44612449407577515
+  y: 0.14963483810424805
+  z: -0.34502267837524414
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 300945145
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4493965208530426
+  y: 0.14649686217308044
+  z: -0.34668073058128357
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 350953718
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4525262713432312
+  y: 0.14110495150089264
+  z: -0.343074232339859
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 400816168
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4544641077518463
+  y: 0.14048857986927032
+  z: -0.33912795782089233
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 451113635
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45536792278289795
+  y: 0.13549357652664185
+  z: -0.33964112401008606
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 502107512
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4510379731655121
+  y: 0.13108977675437927
+  z: -0.3398520350456238
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 552071010
+  frame_id: imu_link
+magnetic_field:
+  x: 0.439675509929657
+  y: 0.10703188180923462
+  z: -0.3263989984989166
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 602036489
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4398665428161621
+  y: 0.10053862631320953
+  z: -0.317923903465271
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 651907222
+  frame_id: imu_link
+magnetic_field:
+  x: 0.43994104862213135
+  y: 0.09577544033527374
+  z: -0.3168507218360901
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 702053844
+  frame_id: imu_link
+magnetic_field:
+  x: 0.43762558698654175
+  y: 0.08650697767734528
+  z: -0.31165069341659546
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 753060371
+  frame_id: imu_link
+magnetic_field:
+  x: 0.43525540828704834
+  y: 0.07450619339942932
+  z: -0.2945486307144165
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 803110151
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4403930902481079
+  y: 0.07068364322185516
+  z: -0.29305124282836914
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 852910213
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4425128102302551
+  y: 0.06675581634044647
+  z: -0.28303062915802
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 903097017
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44111108779907227
+  y: 0.05852441117167473
+  z: -0.27464592456817627
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428558
+    nanosec: 954077699
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44018906354904175
+  y: 0.0507599338889122
+  z: -0.25917232036590576
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 4044722
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4400836229324341
+  y: 0.04921989142894745
+  z: -0.2596341669559479
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 53847563
+  frame_id: imu_link
+magnetic_field:
+  x: 0.43768438696861267
+  y: 0.04145286977291107
+  z: -0.25279879570007324
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 104170988
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4389761686325073
+  y: 0.036179669201374054
+  z: -0.24342773854732513
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 153843414
+  frame_id: imu_link
+magnetic_field:
+  x: 0.43845081329345703
+  y: 0.03934883326292038
+  z: -0.21792568266391754
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 204049955
+  frame_id: imu_link
+magnetic_field:
+  x: 0.43485844135284424
+  y: 0.037483908236026764
+  z: -0.2123982012271881
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 255023211
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4425814747810364
+  y: 0.04131326824426651
+  z: -0.20511206984519958
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 305013350
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45046520233154297
+  y: 0.04759199172258377
+  z: -0.19505830109119415
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 355021081
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4451817572116852
+  y: 0.03669480234384537
+  z: -0.1789819598197937
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 405051740
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44683799147605896
+  y: 0.033935774117708206
+  z: -0.17252811789512634
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 456173488
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4430299997329712
+  y: 0.03285776451230049
+  z: -0.1633238047361374
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 506049325
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4388996958732605
+  y: 0.03705400973558426
+  z: -0.15197059512138367
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 556116101
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4485574960708618
+  y: 0.054754771292209625
+  z: -0.14337167143821716
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 606107818
+  frame_id: imu_link
+magnetic_field:
+  x: 0.44587987661361694
+  y: 0.053136274218559265
+  z: -0.14609092473983765
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 656105637
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4471258521080017
+  y: 0.05011780187487602
+  z: -0.135459303855896
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 706788077
+  frame_id: imu_link
+magnetic_field:
+  x: 0.452076256275177
+  y: 0.05116777494549751
+  z: -0.12460410594940186
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 757052296
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45767319202423096
+  y: 0.06415130943059921
+  z: -0.1075197383761406
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 807018900
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45897120237350464
+  y: 0.06406690925359726
+  z: -0.1100190281867981
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 857231373
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45487546920776367
+  y: 0.06637769937515259
+  z: -0.10883279889822006
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 906935691
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45318564772605896
+  y: 0.07673393189907074
+  z: -0.09894055128097534
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428559
+    nanosec: 957055868
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4522172212600708
+  y: 0.08032258599996567
+  z: -0.0890832245349884
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 7069046
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45208975672721863
+  y: 0.08248035609722137
+  z: -0.08844763040542603
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 58198521
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4520397186279297
+  y: 0.08555945008993149
+  z: -0.08819793164730072
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 108201388
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4520164132118225
+  y: 0.08934344351291656
+  z: -0.08338144421577454
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 157756662
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45527058839797974
+  y: 0.10250380635261536
+  z: -0.07616406679153442
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 207840266
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4556991457939148
+  y: 0.10338285565376282
+  z: -0.07136747241020203
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 257978507
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45822668075561523
+  y: 0.10139483213424683
+  z: -0.0693884864449501
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 309320288
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4592142701148987
+  y: 0.10284562408924103
+  z: -0.06193258985877037
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 358912298
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4549757242202759
+  y: 0.1105741560459137
+  z: -0.053746841847896576
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 409239414
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45268532633781433
+  y: 0.10847236216068268
+  z: -0.058991774916648865
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 459175552
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4546297788619995
+  y: 0.11758106201887131
+  z: -0.05489031970500946
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 509105499
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45073360204696655
+  y: 0.12135332822799683
+  z: -0.04849032312631607
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 559195815
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45143887400627136
+  y: 0.12282723188400269
+  z: -0.045989714562892914
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 610172163
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4575696587562561
+  y: 0.12808945775032043
+  z: -0.041020944714546204
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 660175917
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4566940665245056
+  y: 0.12580819427967072
+  z: -0.040451422333717346
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 710211804
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45863640308380127
+  y: 0.12474583834409714
+  z: -0.04018620401620865
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 760188159
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4641392230987549
+  y: 0.1243075281381607
+  z: -0.03772606700658798
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 810184967
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4560653865337372
+  y: 0.12967008352279663
+  z: -0.039583470672369
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 860179179
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4583776593208313
+  y: 0.13809145987033844
+  z: -0.035126835107803345
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 910913284
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4659768342971802
+  y: 0.13915613293647766
+  z: -0.03338255733251572
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428560
+    nanosec: 961204372
+  frame_id: imu_link
+magnetic_field:
+  x: 0.46716368198394775
+  y: 0.13495826721191406
+  z: -0.027878642082214355
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 11214091
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4613116681575775
+  y: 0.1511034518480301
+  z: -0.023666303604841232
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 60931550
+  frame_id: imu_link
+magnetic_field:
+  x: 0.462891161441803
+  y: 0.1445799022912979
+  z: -0.021512258797883987
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 111935396
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4611921012401581
+  y: 0.14658981561660767
+  z: -0.015922117978334427
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 162024416
+  frame_id: imu_link
+magnetic_field:
+  x: 0.45830070972442627
+  y: 0.156285360455513
+  z: -0.01596549153327942
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 211825881
+  frame_id: imu_link
+magnetic_field:
+  x: 0.46772053837776184
+  y: 0.16365176439285278
+  z: -0.02028043195605278
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 261933409
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47010374069213867
+  y: 0.16161814332008362
+  z: -0.017896708101034164
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 311800347
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4665176570415497
+  y: 0.16536764800548553
+  z: -0.014432243071496487
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 362063387
+  frame_id: imu_link
+magnetic_field:
+  x: 0.46033668518066406
+  y: 0.16926534473896027
+  z: -0.008301449008286
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 412234066
+  frame_id: imu_link
+magnetic_field:
+  x: 0.464754581451416
+  y: 0.17711281776428223
+  z: -0.006213526241481304
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 462185621
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4690059423446655
+  y: 0.17411281168460846
+  z: -0.007261764258146286
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 513086053
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47290754318237305
+  y: 0.1773969531059265
+  z: -0.007673583459109068
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 563085120
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4723743498325348
+  y: 0.17892631888389587
+  z: -0.010215463116765022
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 613082905
+  frame_id: imu_link
+magnetic_field:
+  x: 0.46226590871810913
+  y: 0.16450560092926025
+  z: -0.011673234403133392
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 662956878
+  frame_id: imu_link
+magnetic_field:
+  x: 0.46328476071357727
+  y: 0.1665586531162262
+  z: -0.011865217238664627
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 713110325
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4637051224708557
+  y: 0.16740570962429047
+  z: -0.009593715891242027
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 764306768
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4660969078540802
+  y: 0.1721917688846588
+  z: -0.006478637456893921
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 814266156
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47196489572525024
+  y: 0.1819828599691391
+  z: -0.003450121032074094
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 864346863
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4675217866897583
+  y: 0.18757085502147675
+  z: -0.005988233722746372
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 914282345
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4725029468536377
+  y: 0.18782299757003784
+  z: -0.0024699948262423277
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428561
+    nanosec: 963888962
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47690194845199585
+  y: 0.18792685866355896
+  z: -0.003367746714502573
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 14134416
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4761655926704407
+  y: 0.18564380705356598
+  z: 0.001724526286125183
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 63908508
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47372138500213623
+  y: 0.1846792846918106
+  z: 0.0007126366253942251
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 113938954
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4727611541748047
+  y: 0.18430036306381226
+  z: 0.0025464652571827173
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 164953185
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4723146855831146
+  y: 0.1817777305841446
+  z: 0.005745571106672287
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 214948109
+  frame_id: imu_link
+magnetic_field:
+  x: 0.474281370639801
+  y: 0.186996728181839
+  z: 0.008767090737819672
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 265063833
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4799913167953491
+  y: 0.1922863870859146
+  z: 0.015366708859801292
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 314894264
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4799964129924774
+  y: 0.1921183466911316
+  z: 0.02043241076171398
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 365846486
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47776710987091064
+  y: 0.19428370893001556
+  z: 0.020191196352243423
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 416070206
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4767305254936218
+  y: 0.19294406473636627
+  z: 0.015386147424578667
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 466121896
+  frame_id: imu_link
+magnetic_field:
+  x: 0.48058125376701355
+  y: 0.20864690840244293
+  z: 0.020199082791805267
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 516154900
+  frame_id: imu_link
+magnetic_field:
+  x: 0.48023974895477295
+  y: 0.20591673254966736
+  z: 0.01538191456347704
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 565944640
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4753974378108978
+  y: 0.20479030907154083
+  z: 0.01809585839509964
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 616204048
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47350549697875977
+  y: 0.20657776296138763
+  z: 0.016928698867559433
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 665867317
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47791174054145813
+  y: 0.20210257172584534
+  z: 0.011871753260493279
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 716190417
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47913676500320435
+  y: 0.20556208491325378
+  z: 0.00960053876042366
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 766242939
+  frame_id: imu_link
+magnetic_field:
+  x: 0.48184508085250854
+  y: 0.21137484908103943
+  z: 0.004254104569554329
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 816184629
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4831095039844513
+  y: 0.21408870816230774
+  z: 0.0041050054132938385
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 866201048
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4773075580596924
+  y: 0.2113441824913025
+  z: 0.012772394344210625
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 916156048
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4788845181465149
+  y: 0.21875664591789246
+  z: 0.01700557768344879
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428562
+    nanosec: 967123203
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4724995493888855
+  y: 0.22183246910572052
+  z: 0.021108586341142654
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 17080115
+  frame_id: imu_link
+magnetic_field:
+  x: 0.46775686740875244
+  y: 0.2252739816904068
+  z: 0.020489996299147606
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 67201104
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47265884280204773
+  y: 0.2195165455341339
+  z: 0.020083365961909294
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 117154046
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4767552614212036
+  y: 0.21755433082580566
+  z: 0.015572845935821533
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 168275701
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47631150484085083
+  y: 0.2166411280632019
+  z: 0.01112360693514347
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 218180037
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4784819483757019
+  y: 0.21391011774539948
+  z: 0.01634681411087513
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 268204250
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47737497091293335
+  y: 0.21000272035598755
+  z: 0.018825024366378784
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 318273320
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4742121696472168
+  y: 0.2088242471218109
+  z: 0.01245516911149025
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 368877266
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4752095341682434
+  y: 0.21059584617614746
+  z: 0.012201257050037384
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 418850610
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4803755283355713
+  y: 0.2090703248977661
+  z: 0.012082982808351517
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 469259631
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4723464250564575
+  y: 0.21369093656539917
+  z: 0.008747909218072891
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 519251187
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4674414396286011
+  y: 0.21269720792770386
+  z: 0.005957670044153929
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 569262119
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4654195308685303
+  y: 0.2075873762369156
+  z: 0.004807489458471537
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 620562411
+  frame_id: imu_link
+magnetic_field:
+  x: 0.464627742767334
+  y: 0.20112347602844238
+  z: 0.002125671599060297
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 670274013
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4744645655155182
+  y: 0.21054905652999878
+  z: -0.006274085491895676
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 720198783
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4753211438655853
+  y: 0.21582120656967163
+  z: -0.002774139167740941
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 770142942
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47807082533836365
+  y: 0.2135755717754364
+  z: -0.0011438400251790881
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 820193167
+  frame_id: imu_link
+magnetic_field:
+  x: 0.48360979557037354
+  y: 0.21046531200408936
+  z: -0.0027371253818273544
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 870287255
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47495949268341064
+  y: 0.19807672500610352
+  z: 0.009476926177740097
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 921257790
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4779209494590759
+  y: 0.19685660302639008
+  z: 0.008609194308519363
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428563
+    nanosec: 970931005
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47908076643943787
+  y: 0.20084148645401
+  z: 0.012732095085084438
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 21225945
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4749259948730469
+  y: 0.20034772157669067
+  z: 0.014649583026766777
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 71289001
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4780265986919403
+  y: 0.19575615227222443
+  z: 0.012486387975513935
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 121199599
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47683560848236084
+  y: 0.19589945673942566
+  z: 0.012200549244880676
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 171147637
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4739989936351776
+  y: 0.1936119943857193
+  z: 0.007390013430267572
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 222187006
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4706525206565857
+  y: 0.19494414329528809
+  z: 0.009961657226085663
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 272193833
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4737902283668518
+  y: 0.20260484516620636
+  z: 0.011157682165503502
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 322187032
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47782278060913086
+  y: 0.20805148780345917
+  z: -0.00122346100397408
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 372343379
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4838036894798279
+  y: 0.2103719413280487
+  z: 0.004196959547698498
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 421848650
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4839188754558563
+  y: 0.2136734426021576
+  z: 0.00877431221306324
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 472146811
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4795089662075043
+  y: 0.21051397919654846
+  z: 0.0061155506409704685
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 522252461
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4789435565471649
+  y: 0.1961420774459839
+  z: 0.009047764353454113
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 572263852
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4817643165588379
+  y: 0.196062833070755
+  z: 0.01292601227760315
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 622963240
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4830782115459442
+  y: 0.1936751902103424
+  z: 0.01238181535154581
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 673142744
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4812697172164917
+  y: 0.19739118218421936
+  z: 0.014507589861750603
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 723264893
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4778849482536316
+  y: 0.20698368549346924
+  z: 0.005417010746896267
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 773632781
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47677749395370483
+  y: 0.2028805911540985
+  z: -0.00011572148650884628
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 824143245
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4763430655002594
+  y: 0.1968005895614624
+  z: 0.006654460448771715
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 874417164
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4784916043281555
+  y: 0.1986803263425827
+  z: 0.014495303854346275
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 925303174
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47972923517227173
+  y: 0.2063269019126892
+  z: 0.01007966510951519
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428564
+    nanosec: 976031346
+  frame_id: imu_link
+magnetic_field:
+  x: 0.4798815846443176
+  y: 0.20726817846298218
+  z: 0.008909674361348152
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
+header:
+  stamp:
+    sec: 1748428565
+    nanosec: 26997090
+  frame_id: imu_link
+magnetic_field:
+  x: 0.47757989168167114
+  y: 0.20533019304275513
+  z: 0.013114122673869133
+magnetic_field_covariance:
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+---
