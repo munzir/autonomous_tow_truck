@@ -26,7 +26,8 @@ class ObstacleDetectionNode(Node):
             qos_profile
         )
 
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
+        # self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
+        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path='src/my_detection_package/my_detection_package/best.pt')
 
         self.pipeline = rs.pipeline()
         config = rs.config()
@@ -301,7 +302,7 @@ class ObstacleDetectionNode(Node):
                 PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
                 PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
             ],
-            is_maxendian=False,
+            is_bigendian=False,
             point_step=12,
             row_step=0,
             data=bytes(),
