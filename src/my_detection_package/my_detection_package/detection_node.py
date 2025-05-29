@@ -27,8 +27,8 @@ class ObstacleDetectionNode(Node):
             qos_profile
         )        
 
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
-        # self.model = torch.hub.load('ultralytics/yolov5', 'custom', path='src/my_detection_package/my_detection_package/best.pt')
+        # self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
+        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path='src/my_detection_package/my_detection_package/best.pt')
 
         # Initialize RealSense pipeline and alignment for depth data
         self.pipeline = rs.pipeline()
