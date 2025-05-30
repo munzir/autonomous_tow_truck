@@ -115,7 +115,7 @@ controller_server:
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
       xy_goal_tolerance: 0.6
-      yaw_goal_tolerance: 1.0 #1.0
+      yaw_goal_tolerance: 0.1 #1.0
       stateful: True
      #Controller parameters
     FollowPath:
@@ -123,15 +123,15 @@ controller_server:
       time_steps: 60
       model_dt: 0.05 
       batch_size: 2000
-      vx_std: 0.275  # was 0.275
+      vx_std: 0.275 # was 0.275
       vy_std: 0.2 # was 0.1
-      wz_std: 0.1 #0.15 # was 0.4
+      wz_std: 0.13 # was 0.4
       vx_max: 2.8
       vx_min: 0.0
       vy_max: 0.0
-      wz_max: 1.5 #1.7 # was 0.55
+      wz_max: 1.0 # was 0.55
       iteration_count: 1
-      prune_distance: 1.5
+      prune_distance: 1.3
       transform_tolerance: 0.1
       temperature: 0.3 # was 0.1552 
       gamma: 0.015 # was 0.03121
@@ -176,7 +176,7 @@ controller_server:
       #   collision_cost: 10000.0
       #   collision_margin_distance: 0.1
       #   near_goal_distance: 0.5
-        CostCritic:
+      CostCritic:
         enabled: true
         cost_power: 1
         cost_weight: 3.81
@@ -188,7 +188,7 @@ controller_server:
         PathAlignCritic:
           enabled: true
           cost_power: 1 # was 2
-          cost_weight: 50.0  #50.0 # was 120.0
+          cost_weight: 50.0 # was 120.0
           max_path_occupancy_ratio: 0.07 # was 0.05
           trajectory_point_step: 4
           threshold_to_consider: 0.4 #0.5
@@ -197,13 +197,13 @@ controller_server:
         PathFollowCritic:
           enabled: true
           cost_power: 1 # was 20
-          cost_weight: 50.0 #50.0 # was 200.0  # was 100.0
+          cost_weight: 45.0 #50.0 # was 200.0  # was 100.0
           offset_from_furthest: 35
           threshold_to_consider: 1.4
         PathAngleCritic:
           enabled: true
           cost_power: 1 # was 2
-          cost_weight: 43.0 # was 120.0  #was 60.0 # sul - setting to 40
+          cost_weight: 40.0 # was 120.0  #was 60.0 # sul - setting to 40
           offset_from_furthest: 4 # was 20 # was 4 # sul - setting to 4
           threshold_to_consider: 0.4 # sul setting to 0.4
           max_angle_to_furthest: 0.45 # was 0.7 #sul - setting to 0.45
