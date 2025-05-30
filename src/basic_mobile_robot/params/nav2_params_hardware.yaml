@@ -97,12 +97,13 @@ bt_navigator_rclcpp_node:
   ros__parameters:
     use_sim_time: False
 
+# Ehzem edits
 controller_server:
   ros__parameters:
     use_sim_time: False
     controller_frequency: 32.0 
-    min_x_velocity_threshold: 0.015
-    min_y_velocity_threshold: 0.5
+    min_x_velocity_threshold: 0.9
+    min_y_velocity_threshold: 0.9
     min_theta_velocity_threshold: 0.001
     progress_checker_plugin: "progress_checker"
     goal_checker_plugin: "goal_checker"
@@ -116,27 +117,27 @@ controller_server:
     # Goal checker parameters
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
-      xy_goal_tolerance: 1.0
-      yaw_goal_tolerance: 7.0
+      xy_goal_tolerance: 0.6
+      yaw_goal_tolerance: 0.1 #1.0
       stateful: True
      #Controller parameters
     FollowPath:
       plugin: "nav2_mppi_controller::MPPIController"
-      time_steps: 56
-      model_dt: 0.03125
+      time_steps: 60
+      model_dt: 0.05 
       batch_size: 2000
-      vx_std: 0.275
-      vy_std: 0.3
-      wz_std: 0.486
+      vx_std: 0.275 # was 0.275
+      vy_std: 0.2 # was 0.1
+      wz_std: 0.15 # was 0.4
       vx_max: 2.8
       vx_min: 0.0
       vy_max: 0.0
-      wz_max: 0.7
+      wz_max: 1.7 # was 0.55
       iteration_count: 1
-      prune_distance: 1.3
+      prune_distance: 1.5
       transform_tolerance: 0.1
-      temperature: 0.1552 
-      gamma: 0.03121
+      temperature: 0.3 # was 0.1552 
+      gamma: 0.015 # was 0.03121
       motion_model: "Ackermann"
       visualize: false
       TrajectoryVisualizer:
@@ -147,7 +148,7 @@ controller_server:
         inversion_xy_tolerance: 0.2
         inversion_yaw_tolerance: 0.4
       AckermannConstraints:
-        min_turning_r: 1.6
+        min_turning_r: 0.2 # was 1.6
       critics: ["ConstraintCritic", "CostCritic", "GoalCritic", "GoalAngleCritic", "PathAlignCritic", "PathFollowCritic", "PathAngleCritic", "PreferForwardCritic"]
       ConstraintCritic:
         enabled: true
@@ -185,30 +186,30 @@ controller_server:
         critical_cost: 300.0
         consider_footprint: true
         collision_cost: 1000000.0
-        near_goal_distance: 1.0
+        near_goal_distance: 0.5 # was 1.0
         trajectory_point_step: 2
         PathAlignCritic:
           enabled: true
-          cost_power: 2
-          cost_weight: 120.0
-          max_path_occupancy_ratio: 0.05
+          cost_power: 1 # was 2
+          cost_weight: 50.0 # was 120.0
+          max_path_occupancy_ratio: 0.07 # was 0.05
           trajectory_point_step: 4
-          threshold_to_consider: 0.5
-          offset_from_furthest: 55 
+          threshold_to_consider: 0.4 #0.5
+          offset_from_furthest: 20 # was 55 
           use_path_orientations: false
         PathFollowCritic:
           enabled: true
-          cost_power: 20
-          cost_weight: 100.0
+          cost_power: 1 # was 20
+          cost_weight: 45.0 #50.0 # was 200.0  # was 100.0
           offset_from_furthest: 35
           threshold_to_consider: 1.4
         PathAngleCritic:
           enabled: true
-          cost_power: 2
-          cost_weight: 60.0
-          offset_from_furthest: 4
-          threshold_to_consider: 0.5
-          max_angle_to_furthest: 0.7
+          cost_power: 1 # was 2
+          cost_weight: 40.0 # was 120.0  #was 60.0 # sul - setting to 40
+          offset_from_furthest: 4 # was 20 # was 4 # sul - setting to 4
+          threshold_to_consider: 0.4 # sul setting to 0.4
+          max_angle_to_furthest: 0.45 # was 0.7 #sul - setting to 0.45
           #forward_preference: true
           mode: 0
      # VelocityDeadbandCritic:
