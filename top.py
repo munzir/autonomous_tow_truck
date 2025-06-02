@@ -200,6 +200,7 @@ def main():
 
                 elif line in ["A", "T", "M"]:
                     mode = line
+                    
                     print(f">>> Mode changed to: {mode}")
 
                 elif line == "C":
