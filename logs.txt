@@ -1,0 +1,60 @@
+Traceback (most recent call last):
+  File "/opt/ros/humble/bin/ros2", line 33, in <module>
+    sys.exit(load_entry_point('ros2cli==0.18.11', 'console_scripts', 'ros2')())
+  File "/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py", line 91, in main
+    rc = extension.main(parser=parser, args=args)
+  File "/opt/ros/humble/lib/python3.10/site-packages/ros2run/command/run.py", line 70, in main
+    return run_executable(path=path, argv=args.argv, prefix=prefix)
+  File "/opt/ros/humble/lib/python3.10/site-packages/ros2run/api/__init__.py", line 64, in run_executable
+    process = subprocess.Popen(cmd)
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+OSError: [Errno 8] Exec format error: '/root/autonomous_tow_truck/install/basic_mobile_robot/lib/basic_mobile_robot/mode_switch.py'
+Traceback (most recent call last):
+  File "/opt/ros/humble/bin/ros2", line 33, in <module>
+    sys.exit(load_entry_point('ros2cli==0.18.11', 'console_scripts', 'ros2')())
+  File "/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py", line 91, in main
+    rc = extension.main(parser=parser, args=args)
+  File "/opt/ros/humble/lib/python3.10/site-packages/ros2run/command/run.py", line 70, in main
+    return run_executable(path=path, argv=args.argv, prefix=prefix)
+  File "/opt/ros/humble/lib/python3.10/site-packages/ros2run/api/__init__.py", line 64, in run_executable
+    process = subprocess.Popen(cmd)
+  File "/usr/lib/python3.10/subprocess.py", line 971, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.10/subprocess.py", line 1863, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+OSError: [Errno 8] Exec format error: '/root/autonomous_tow_truck/install/basic_mobile_robot/lib/basic_mobile_robot/mode_switch.py'
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
+/bin/sh: 1: ./mode_switch.sh: Permission denied
