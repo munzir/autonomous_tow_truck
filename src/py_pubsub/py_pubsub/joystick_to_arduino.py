@@ -77,9 +77,9 @@ class JoystickToArduino(Node):
         self.timer_wheels = self.create_timer(self.control_update_period, lambda: self.periodic_log_callback(self.link_wheels, "arduino_wheels"))
 
         # State variables
-        self.manual_mode = True
+        self.manual_mode = False
         self.teleop_mode = False
-        self.autonom_mode = False
+        self.autonom_mode = True
         self.brake_active = False
         self.reverse_mode = False
         self.auto_steering_angle = 0
