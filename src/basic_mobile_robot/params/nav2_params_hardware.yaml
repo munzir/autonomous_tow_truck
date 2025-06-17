@@ -343,7 +343,7 @@ local_costmap:
           observation_persistence: 0.1      #initially 0.2
           decay: 0.1
           sensor_frame: camera_link_optical
-          raytrace_max_range: 9.0
+          raytrace_max_range: 12.0
           raytrace_min_range: 0.2
         combination_method: 0
 
