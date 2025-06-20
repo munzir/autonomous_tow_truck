@@ -57,7 +57,7 @@ class ObstacleDetectionNode(Node):
             'class': None
             }) # {obstacle_id: {'points': [], 'last_seen': timestamp}}
         
-        self.obstacle_timeout = 0.3  # seconds before removing unseen obstacles
+        self.obstacle_timeout = 0.1  # seconds before removing unseen obstacles
         self.obstacle_id_counter = 0
 
         # self.width_t = 2.5
@@ -109,6 +109,7 @@ class ObstacleDetectionNode(Node):
         header = Header()
         header.stamp = current_time.to_msg()  # ROS 2 way to get time
         header.frame_id = "camera_link_optical"  # Match your TF tree
+        current_bboxes = []
 
         for *box, conf, cls in results.pred[0]:
             obstacle_detected = True
@@ -117,6 +118,9 @@ class ObstacleDetectionNode(Node):
             y1 = max(0, min(y1, height - 1))  # 0 to 479
             x2 = max(0, min(x2, width - 1))
             y2 = max(0, min(y2, height - 1))
+
+            x1, y1, x2, y2 = map(int, box)
+            current_bboxes.append((x1, y1, x2, y2))
 
             # Skip invalid boxes
             if x1 >= x2 or y1 >= y2:
@@ -152,6 +156,8 @@ class ObstacleDetectionNode(Node):
 
             # Corner depth for range check
             corner_y, corner_x = (y2, x2) if X < 0 else (y1, x1)
+            corner_y = max(0, min(corner_y, height - 1))
+            corner_x = max(0, min(corner_x, width - 1))
             corner_depth = depth_image[corner_y, corner_x] * depth_scale
             if np.isnan(corner_depth) or corner_depth < 0.1 or corner_depth > 10.0:
                 self.get_logger().debug(f"Invalid corner depth: {corner_depth}m at ({corner_x}, {corner_y})")
@@ -196,7 +202,8 @@ class ObstacleDetectionNode(Node):
             self.obstacles[obstacle_id]['class'] = results.names[int(cls)]
 
         # Generate and store clearing points
-        clearing_points = self.generate_clearing_pointcloud(depth_image)
+        clearing_points = self.generate_clearing_pointcloud(depth_image, current_bboxes)
+
         self.obstacles['clearing'] = {
             'points': clearing_points,
             'last_seen': current_time,
@@ -223,20 +230,31 @@ class ObstacleDetectionNode(Node):
     #     self.get_logger().debug(f"Generated {len(points)} clearing points")
     #     return points
 
-    def generate_clearing_pointcloud(self, depth_image):
+    def generate_clearing_pointcloud(self, depth_image, current_bboxes):
         points = []
         height, width = depth_image.shape  # (480, 640)
-        step = 10  # ~4,096 points (640x480/10^2)
+        step = 10  # ~1,024 points (640x480/20^2)
         depth_scale = self.depth_scale
 
-        for y in range(0, height, step):  # Include edges: 0 to 479
-            for x in range(0, width, step):  # Include edges: 0 to 639
+        for y in range(0, height, step):
+            for x in range(0, width, step):
+                in_bbox = False
+                for x1, y1, x2, y2 in current_bboxes:
+                    if x1 <= x <= x2 and y1 <= y <= y2:
+                        in_bbox = True
+                        break
+                if in_bbox:
+                    self.get_logger().debug(f"Skipping clearing point at ({x},{y}) in current YOLO box")
+                    continue
+
                 depth = depth_image[y, x] * depth_scale
-                if not np.isnan(depth) and 0.1 < depth < 9.5:
+                if not np.isnan(depth) and 0.2 < depth < 9.5:  # Exclude near-camera points
                     point = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [x, y], depth)
-                    # Log edge points for debugging
-                    if x < 10 or x > 629 or y < 10 or y > 469:
-                        self.get_logger().debug(f"Edge point: x={x}, y={y}, depth={depth:.2f}, 3D=({point[0]:.2f}, {point[1]:.2f}, {point[2]:.2f})")
+                    X, Y, Z = point
+                    if abs(X) > 0.4 or Y < -0.3:  # Exclude walls and ground
+                        self.get_logger().debug(f"Excluding point at ({x},{y}): X={X:.2f}, Y={Y:.2f}, Z={Z:.2f}")
+                        continue
+                    self.get_logger().debug(f"Clearing point at ({x},{y}): 3D=({X:.2f}, {Y:.2f}, {Z:.2f})")
                     points.append(point)
 
         self.get_logger().info(f"Generated {len(points)} clearing points")
@@ -280,13 +298,16 @@ class ObstacleDetectionNode(Node):
             if obs_id == 'clearing':
                 continue
             last_seen = obs['last_seen']
-            if not obs['visible'] and isinstance(last_seen, Time):
+            if not obs['visible']:
+                to_remove.append(obs_id)  # remove immediately if not visible
+            elif isinstance(last_seen, Time):
                 time_diff = (current_time - last_seen).nanoseconds / 1e9
                 if time_diff > self.obstacle_timeout:
                     to_remove.append(obs_id)
         for obs_id in to_remove:
-            self.get_logger().info(f"Removing stale obstacle {obs_id}")
+            self.get_logger().info(f"Removing obstacle {obs_id}")
             del self.obstacles[obs_id]
+
         
     def publish_empty_pointcloud(self, header):
         empty_cloud = PointCloud2(
