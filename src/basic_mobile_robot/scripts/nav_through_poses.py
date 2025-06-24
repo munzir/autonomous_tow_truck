@@ -35,18 +35,18 @@ def main():
  
   # Launch the ROS 2 Navigation Stack
   navigator = BasicNavigator()
-
+  
   # Set the robot's initial pose if necessary
   initial_pose = PoseStamped()
   initial_pose.header.frame_id = 'map'
   initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  initial_pose.pose.position.x = 287.4729309082031
-  initial_pose.pose.position.y = -14.669928550720215
+  initial_pose.pose.position.x = 107.86442565917969
+  initial_pose.pose.position.y = -14.0
   initial_pose.pose.position.z = 0.0
   initial_pose.pose.orientation.x = 0.0
   initial_pose.pose.orientation.y = 0.0
-  initial_pose.pose.orientation.z =-0.9999373025858765
-  initial_pose.pose.orientation.w = 0.01119780769976286
+  initial_pose.pose.orientation.z = 0.008792553406408657
+  initial_pose.pose.orientation.w = 0.9999613447551837
   navigator.setInitialPose(initial_pose)
  
   # Activate navigation, if not autostarted. This should be called after setInitialPose()
@@ -94,7 +94,7 @@ def main():
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   # Go through the goal poses
-  navigator.goThroughPoses(goal_poses[0:26])
+  navigator.goThroughPoses(goal_poses[0:10])
  
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses
