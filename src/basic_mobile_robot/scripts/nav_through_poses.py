@@ -22,7 +22,7 @@ from rclpy.duration import Duration # Handles time for ROS 2
 import rclpy # Python client library for ROS 2
 import csv
 
-from robot_navigator import BasicNavigator
+from robot_navigator import BasicNavigator, NavigationResult
  
 '''
 Navigates a robot through goal poses.
@@ -32,44 +32,43 @@ def main():
   # Start the ROS 2 Python Client Library
   rclpy.init()
  
+ 
   # Launch the ROS 2 Navigation Stack
   navigator = BasicNavigator()
-  # Set the robot's initial pose if necessary
-  initial_pose = PoseStamped()
-  initial_pose.header.frame_id = 'map'
-  initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  initial_pose.pose.position.x = 301.098876953125
-  initial_pose.pose.position.y = 86.50146484375
-  initial_pose.pose.position.z = 0.0
-  initial_pose.pose.orientation.x = 0.0
-  initial_pose.pose.orientation.y = 0.0
-  initial_pose.pose.orientation.z = 1.0
-  initial_pose.pose.orientation.w = 0.0
-  navigator.setInitialPose(initial_pose)
- 
-  # Activate navigation, if not autostarted. This should be called after setInitialPose()
-  # or this will initialize at the origin of the map and update the costmap with bogus readings.
-  # If autostart, you should `waitUntilNav2Active()` instead.
-  # navigator.lifecycleStartup()
- 
-  # Wait for navigation to fully activate. Use this line if autostart is set to true.
-  navigator.waitUntilNav2Active()
- 
-  # If desired, you can change or load the map as well
-  # navigator.changeMap('/path/to/map.yaml')
- 
-  # You may use the navigator to clear or obtain costmaps
-  # navigator.clearAllCostmaps()  # also have clearLocalCostmap() and clearGlobalCostmap()
-  # global_costmap = navigator.getGlobalCostmap()
-  # local_costmap = navigator.getLocalCostmap()
- 
-  # Set the robot's goal poses
-  file_path='/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv'
+  temp_node = rclpy.create_node('nav_through_poses_param_node')
+  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv').get_parameter_value().string_value
+  temp_node.destroy_node()
+  file_path = csv_filename
   goal_poses = []
   try:
       with open(file_path, mode='r') as file:
           reader = csv.reader(file)
-          for row in reader:
+          all_rows = list(reader)
+          
+          # First row is initial pose
+          if len(all_rows[0]) == 4:
+              x, y, w, z = map(float, all_rows[0])
+              initial_pose = PoseStamped()
+              initial_pose.header.frame_id = 'map'
+              initial_pose.header.stamp = navigator.get_clock().now().to_msg()
+              initial_pose.pose.position.x = x
+              initial_pose.pose.position.y = y
+              initial_pose.pose.position.z = 0.0
+              initial_pose.pose.orientation.x = 0.0
+              initial_pose.pose.orientation.y = 0.0
+              initial_pose.pose.orientation.z = z
+              initial_pose.pose.orientation.w = w
+              navigator.setInitialPose(initial_pose)
+              # navigator.waitUntilNav2Active()
+
+              # # ✅ Give AMCL some time to localize
+              # print("Waiting for localization...")
+              # navigator.waitForInitialPose(timeout=Duration(seconds=5))
+              navigator.lifecycleStartup()
+              navigator.waitUntilNav2Active() 
+          
+          # Remaining rows are goals
+          for row in all_rows[1:]:
               if len(row) == 4:
                   x, y, w, z = map(float, row)
                   goal_pose = PoseStamped()
@@ -83,7 +82,7 @@ def main():
                   goal_pose.pose.orientation.z = z
                   goal_pose.pose.orientation.w = w
                   goal_poses.append(goal_pose)
-              print(goal_pose)
+                  print(goal_pose)
       print(f'Loaded {len(goal_poses)} goal_poses from {file_path}')
   except Exception as e:
       print(f'Failed to load goal_poses: {e}')
@@ -92,7 +91,7 @@ def main():
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   # Go through the goal poses
-  navigator.goThroughPoses(goal_poses[40:48])
+  navigator.goThroughPoses(goal_poses[0:10])
  
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses
@@ -119,6 +118,7 @@ def main():
         goal_pose_alt = PoseStamped()
         goal_pose_alt.header.frame_id = 'map'
         goal_pose_alt.header.stamp = navigator.get_clock().now().to_msg()
+        # 291.1080766192939,86.93031060800634,0,1
         goal_pose_alt.pose.position.x = -6.5
         goal_pose_alt.pose.position.y = -4.2
         goal_pose_alt.pose.position.z = 0.0
@@ -130,17 +130,38 @@ def main():
  
   # Do something depending on the return code
   result = navigator.getResult()
-#   if result == TaskResult.SUCCEEDED:
-#     print('Goal succeeded!')
-#   elif result == TaskResult.CANCELED:
-#     print('Goal was canceled!')
-#   elif result == TaskResult.FAILED:
-#     print('Goal failed!')
-#   else:
-#     print('Goal has an invalid return status!')
+  # if result == TaskResult.SUCCEEDED:
+  #   print('Goal succeeded!')
+  # elif result == TaskResult.CANCELED:
+  #   print('Goal was canceled!')
+  # elif result == TaskResult.FAILED:
+  #   print('Goal failed!')
+  # else:
+  #   print('Goal has an invalid return status!')
+  
+  
+  if result == 0:  # SUCCEEDED
+    print('Goal succeeded!')
+    navigator.last_reached_index += 1
+  elif result == 1:  # CANCELED
+    print('Goal was canceled!')
+  elif result == 2:  # FAILED
+    print('Goal failed!')
+    # Add here which was the last waypoint executed and what is next
+  else:
+    print('Goal has an invalid return status!')
+    if navigator.last_reached_index >= 0 and navigator.last_reached_index < len(goal_poses):
+        last_pose = goal_poses[navigator.last_reached_index]
+        print(f"Last successfully reached waypoint index: {navigator.last_reached_index}")
+        print(f"Coordinates: x={last_pose.pose.position.x:.2f}, y={last_pose.pose.position.y:.2f}")
+        if navigator.last_reached_index + 1 < len(goal_poses):
+            next_pose = goal_poses[navigator.last_reached_index + 1]
+            print(f"Next intended waypoint index: {navigator.last_reached_index + 1}")
+            print(f"Coordinates: x={next_pose.pose.position.x:.2f}, y={next_pose.pose.position.y:.2f}")
+
  
   # Close the ROS 2 Navigation Stack
-  navigator.lifecycleShutdown()
+  # navigator.lifecycleShutdown()
  
   exit(0)
  
