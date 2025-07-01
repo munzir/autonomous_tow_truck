@@ -34,6 +34,7 @@ install(
   scripts/nav_through_poses.py
   scripts/waypoint_follower.py
   scripts/mode_switch.py
+  scripts/supervisor_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
