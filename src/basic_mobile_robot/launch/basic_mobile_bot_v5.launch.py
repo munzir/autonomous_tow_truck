@@ -12,6 +12,9 @@ from launch.substitutions import Command, LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+from launch_ros.actions import Node, LifecycleNode
+#from nav2_lifecycle_manager.lifecycle_node import LifecycleNode
+
 def generate_launch_description():
 
   # Set the path to different files and folders.
@@ -151,18 +154,33 @@ def generate_launch_description():
     condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])))
   
   # Start the navsat transform node which converts GPS data into the world coordinate frame
-  start_navsat_transform_cmd = Node(
-    package='robot_localization',
-    executable='navsat_transform_node',
-    name='navsat_transform',
-    output='screen',
-    parameters=[robot_localization_file_path, 
-    {'use_sim_time': use_sim_time}],
-    remappings=[('imu', 'imu/data'),
-                ('gps/fix', 'gps/fix'), 
-                ('gps/filtered', 'gps/filtered'),
-                ('odometry/gps', 'odometry/gps'),
-                ('odometry/filtered', 'odometry/global')])
+  # start_navsat_transform_cmd = Node(
+  #   package='robot_localization',
+  #   executable='navsat_transform_node',
+  #   name='navsat_transform',
+  #   output='screen',
+  #   parameters=[robot_localization_file_path, 
+  #   {'use_sim_time': use_sim_time}],
+  #   remappings=[('imu', 'imu/data'),
+  #               ('gps/fix', 'gps/fix'), 
+  #               ('gps/filtered', 'gps/filtered'),
+  #               ('odometry/gps', 'odometry/gps'),
+  #               ('odometry/filtered', 'odometry/global')])
+
+  # start_navsat_transform_cmd = LifecycleNode(
+  #   package='robot_localization',
+  #   executable='navsat_transform_node',
+  #   name='navsat_transform',
+  #   namespace='',
+  #   output='screen',
+  #   parameters=[robot_localization_file_path, 
+  #               {'use_sim_time': use_sim_time}],
+  #   remappings=[
+  #       ('imu', 'imu/data'),
+  #       ('gps/fix', 'gps/fix'), 
+  #       ('gps/filtered', 'gps/filtered'),
+  #       ('odometry/gps', 'odometry/gps'),
+  #       ('odometry/filtered', 'odometry/global')])
   
 
   # Start robot localization using an Extended Kalman filter
@@ -237,7 +255,7 @@ def generate_launch_description():
   # Add any actions
   ld.add_action(start_gazebo_server_cmd)
   ld.add_action(start_gazebo_client_cmd)
-  ld.add_action(start_navsat_transform_cmd)
+  #ld.add_action(start_navsat_transform_cmd)
   ld.add_action(start_robot_localization_cmd)
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)

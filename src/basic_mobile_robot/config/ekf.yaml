@@ -338,7 +338,8 @@ navsat_transform:
     magnetic_declination_radians: 0.093084220955  # For lat/long of Atlanta, Georgia
     yaw_offset: 0.0  # if IMU reads 0 when facing magnetic north instead of east then set parameter to pi/2
     zero_altitude: true
-    broadcast_utm_transform: true
+    #broadcast_utm_transform: true
+    broadcast_cartesian_transform: true
     broadcast_utm_transform_as_parent_frame: true
     publish_filtered_gps: true
     use_odometry_yaw: false

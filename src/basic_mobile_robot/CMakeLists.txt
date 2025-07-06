@@ -35,6 +35,7 @@ install(
   scripts/waypoint_follower.py
   scripts/mode_switch.py
   scripts/supervisor_node.py
+  scripts/zone_trigger_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
