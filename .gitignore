@@ -8,3 +8,21 @@ src/basic_mobile_robot/maps/automatic_addison_world_map.yaml
 *.swp
 logs.txt
 logs.txt
+
+# Ignore core dumps
+core.*
+
+# Ignore launch files
+*.launch.py
+
+# Ignore temporary or backup files
+*.bak
+*.swp
+*~
+
+# Ignore .pyc files and __pycache__
+__pycache__/
+*.pyc
+
+# Ignore your personal visualize_waypoints script if needed
+src/basic_mobile_robot/scripts/visualize_waypoints.py

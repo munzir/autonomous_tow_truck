@@ -35,66 +35,8 @@ def main():
  
   # Launch the ROS 2 Navigation Stack
   navigator = BasicNavigator()
-  # Set the robot's initial pose if necessary
-  # ==================================================
-  # initial_pose = PoseStamped()
-  # initial_pose.header.frame_id = 'map'
-  # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # initial_pose.pose.position.x = 291.5
-  # initial_pose.pose.position.y = -14.61
-  # initial_pose.pose.position.z = 0.0
-  # initial_pose.pose.orientation.x = 0.0
-  # initial_pose.pose.orientation.y = 0.0
-  # initial_pose.pose.orientation.z = 0.99992
-  # initial_pose.pose.orientation.w = 0.012665
-  # navigator.setInitialPose(initial_pose)
-  # ======================================================
- 
-  # Activate navigation, if not autostarted. This should be called after setInitialPose()
-  # or this will initialize at the origin of the map and update the costmap with bogus readings.
-  # If autostart, you should `waitUntilNav2Active()` instead.
-  # navigator.lifecycleStartup()
- 
-  # Wait for navigation to fully activate. Use this line if autostart is set to true.
-  # navigator.waitUntilNav2Active()
- 
-  # If desired, you can change or load the map as well
-  # navigator.changeMap('/path/to/map.yaml')
- 
-  # You may use the navigator to clear or obtain costmaps
-  # navigator.clearAllCostmaps()  # also have clearLocalCostmap() and clearGlobalCostmap()
-  # global_costmap = navigator.getGlobalCostmap()
-  # local_costmap = navigator.getLocalCostmap()
- 
-  # Set the robot's goal poses
-  # current comment
-  # ========================================================
-  # file_path='/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv'
-  # goal_poses = []
-  # try:
-  #     with open(file_path, mode='r') as file:
-  #         reader = csv.reader(file)
-  #         for row in reader:
-  #             if len(row) == 4:
-  #                 x, y, w, z = map(float, row)
-  #                 goal_pose = PoseStamped()
-  #                 goal_pose.header.frame_id = 'map'
-  #                 goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  #                 goal_pose.pose.position.x = x
-  #                 goal_pose.pose.position.y = y
-  #                 goal_pose.pose.position.z = 0.0
-  #                 goal_pose.pose.orientation.x = 0.0
-  #                 goal_pose.pose.orientation.y = 0.0
-  #                 goal_pose.pose.orientation.z = z
-  #                 goal_pose.pose.orientation.w = w
-  #                 goal_poses.append(goal_pose)
-  #             print(goal_pose)
-  #     print(f'Loaded {len(goal_poses)} goal_poses from {file_path}')
-  # except Exception as e:
-  #     print(f'Failed to load goal_poses: {e}')
-  # ==================================================
   temp_node = rclpy.create_node('nav_through_poses_param_node')
-  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_to_AS.csv').get_parameter_value().string_value
+  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv').get_parameter_value().string_value
   temp_node.destroy_node()
   file_path = csv_filename
   goal_poses = []
@@ -121,9 +63,9 @@ def main():
 
               # # ✅ Give AMCL some time to localize
               # print("Waiting for localization...")
-              # navigator.waitForInitialPose(timeout=Duration(seconds=5))
-              navigator.lifecycleStartup()
-              navigator.waitUntilNav2Active() 
+              # navigator.lifecycleStartup()
+              # navigator.waitUntilNav2Active() 
+              navigator.waitForInitialPose(timeout=Duration(seconds=5))
           
           # Remaining rows are goals
           for row in all_rows[1:]:
@@ -149,7 +91,7 @@ def main():
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   # Go through the goal poses
-  navigator.goThroughPoses(goal_poses[0:24])
+  navigator.goThroughPoses(goal_poses[:])
  
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses
@@ -176,6 +118,7 @@ def main():
         goal_pose_alt = PoseStamped()
         goal_pose_alt.header.frame_id = 'map'
         goal_pose_alt.header.stamp = navigator.get_clock().now().to_msg()
+        # 291.1080766192939,86.93031060800634,0,1
         goal_pose_alt.pose.position.x = -6.5
         goal_pose_alt.pose.position.y = -4.2
         goal_pose_alt.pose.position.z = 0.0
