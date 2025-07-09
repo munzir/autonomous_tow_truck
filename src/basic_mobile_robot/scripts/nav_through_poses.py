@@ -63,9 +63,9 @@ def main():
 
               # # ✅ Give AMCL some time to localize
               # print("Waiting for localization...")
-              # navigator.lifecycleStartup()
-              # navigator.waitUntilNav2Active() 
-              navigator.waitForInitialPose(timeout=Duration(seconds=5))
+              navigator.lifecycleStartup()
+              navigator.waitUntilNav2Active() 
+              # navigator.waitForInitialPose(timeout=Duration(seconds=5))
           
           # Remaining rows are goals
           for row in all_rows[1:]:
@@ -118,9 +118,10 @@ def main():
         goal_pose_alt = PoseStamped()
         goal_pose_alt.header.frame_id = 'map'
         goal_pose_alt.header.stamp = navigator.get_clock().now().to_msg()
-        # 291.1080766192939,86.93031060800634,0,1
-        goal_pose_alt.pose.position.x = -6.5
-        goal_pose_alt.pose.position.y = -4.2
+        # 107.86442565917969,-14.0,1.0,0.0 (fwd)
+        # 20,107.2246,1.000,0.000 (bwd)
+        goal_pose_alt.pose.position.x = 107.86442565917969
+        goal_pose_alt.pose.position.y = -14.0
         goal_pose_alt.pose.position.z = 0.0
         goal_pose_alt.pose.orientation.x = 0.0
         goal_pose_alt.pose.orientation.y = 0.0  
