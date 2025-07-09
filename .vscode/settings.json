@@ -1,0 +1,22 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/abdullah/autonomous_tow_truck/install/waypoint_publisher/lib/python3.10/site-packages",
+        "/home/abdullah/autonomous_tow_truck/install/py_pubsub/lib/python3.10/site-packages",
+        "/home/abdullah/autonomous_tow_truck/install/object_detection_pkg/lib/python3.10/site-packages",
+        "/home/abdullah/autonomous_tow_truck/install/my_detection_package/lib/python3.10/site-packages",
+        "/home/abdullah/ros2_ws2/build/my_towtruck_controller",
+        "/home/abdullah/ros2_ws2/install/my_towtruck_controller/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/abdullah/autonomous_tow_truck/install/waypoint_publisher/lib/python3.10/site-packages",
+        "/home/abdullah/autonomous_tow_truck/install/py_pubsub/lib/python3.10/site-packages",
+        "/home/abdullah/autonomous_tow_truck/install/object_detection_pkg/lib/python3.10/site-packages",
+        "/home/abdullah/autonomous_tow_truck/install/my_detection_package/lib/python3.10/site-packages",
+        "/home/abdullah/ros2_ws2/build/my_towtruck_controller",
+        "/home/abdullah/ros2_ws2/install/my_towtruck_controller/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

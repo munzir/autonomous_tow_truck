@@ -298,7 +298,7 @@ local_costmap:
       publish_frequency: 5.0
       global_frame: odom
       robot_base_frame: base_link
-      use_sim_time: True
+      use_sim_time: False
       rolling_window: true
       width: 10
       height: 10
@@ -354,11 +354,11 @@ local_costmap:
 
   local_costmap_client:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
       
   local_costmap_rclcpp_node:
     ros__parameters:
-      use_sim_time: True
+      use_sim_time: False
 
 global_costmap:
   global_costmap:

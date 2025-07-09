@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
         'object_detection_node = my_detection_package.detection_node:main',
+        'detection2darray_to_pointcloud2 = my_detection_package.detection2darray_to_pointcloud2:main',
         'headlights_talker = my_detection_package.headlights_talker:main',
         'headlights_listener = my_detection_package.headlights_listener:main',
         'marker_node = my_detection_package.marker:main',

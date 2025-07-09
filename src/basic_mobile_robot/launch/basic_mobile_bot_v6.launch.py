@@ -152,17 +152,21 @@ def generate_launch_description():
     output='screen'
   )
 
-  start_camera_node = Node(
+  # Start the YOLO detection node
+  start_detection_node = Node(
     package="my_detection_package",
     executable="object_detection_node",
+    name="obstacle_detection_node",
     output="screen"
   )
-  safety_marker_node = Node(
-        package="my_detection_package",
-        executable="marker_node",  # Second executable name
-        output="screen",
-        # Optional: Add parameters, remappings, etc.
-    )
+
+  # Start the bridge node to convert Detection2DArray to PointCloud2
+  start_detection_bridge_node = Node(
+    package="my_detection_package",
+    executable="detection2darray_to_pointcloud2",
+    name="detection_bridge_node",
+    output="screen"
+  )
   # Launch RViz
   start_rviz_cmd = Node(
     condition=IfCondition(use_rviz),
@@ -270,7 +274,7 @@ def generate_launch_description():
   ld.add_action(start_odometry_cmd) #single odometry launch
   ld.add_action(start_joy_node)
   ld.add_action(static_tf_map_to_odom_cmd)
-  # ld.add_action(start_camera_node)
-  # ld.add_action(safety_marker_node)
+  ld.add_action(start_detection_node)
+  ld.add_action(start_detection_bridge_node)
   # ld.add_action(start_robot_localization_cmd) 
   return ld
