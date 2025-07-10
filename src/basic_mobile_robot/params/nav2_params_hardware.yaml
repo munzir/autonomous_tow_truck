@@ -1,12 +1,11 @@
-
 amcl:
   ros__parameters:
     use_sim_time: False
-    alpha1: 0.185 #decreased from 2
-    alpha2: 0.185
-    alpha3: 0.185
-    alpha4: 0.185
-    alpha5: 0.185
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
     base_frame_id: "base_footprint"
     beam_skip_distance: 0.5
     beam_skip_error_threshold: 0.85
@@ -27,7 +26,7 @@ amcl:
     pf_z: 0.99
     recovery_alpha_fast: 0.0
     recovery_alpha_slow: 0.0
-    resample_interval: 2 #increased from 1
+    resample_interval: 1
     #robot_model_type: "differential"
     motion_model_type: "nav2_amcl::DifferentialMotionModel" 
     save_pose_rate: 0.5
@@ -203,7 +202,7 @@ controller_server:
         PathAngleCritic:
           enabled: true
           cost_power: 1 # was 2
-          cost_weight: 40.0 # was 120.0  #was 60.0 # sul - setting to 40
+          cost_weight: 30.0 # was 120.0  #was 60.0 # sul - setting to 40
           offset_from_furthest: 4 # was 20 # was 4 # sul - setting to 4
           threshold_to_consider: 0.4 # sul setting to 0.4
           max_angle_to_furthest: 0.45 # was 0.7 #sul - setting to 0.45
