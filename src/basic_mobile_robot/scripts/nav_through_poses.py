@@ -96,12 +96,6 @@ def main():
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses
   while not navigator.isNavComplete():
-    ################################################
-    #
-    # Implement some code here for your application!
-    #
-    ################################################
- 
     # Do something with the feedback
     i = i + 1
     feedback = navigator.getFeedback()
@@ -131,15 +125,6 @@ def main():
  
   # Do something depending on the return code
   result = navigator.getResult()
-  # if result == TaskResult.SUCCEEDED:
-  #   print('Goal succeeded!')
-  # elif result == TaskResult.CANCELED:
-  #   print('Goal was canceled!')
-  # elif result == TaskResult.FAILED:
-  #   print('Goal failed!')
-  # else:
-  #   print('Goal has an invalid return status!')
-  
   
   if result == 0:  # SUCCEEDED
     print('Goal succeeded!')
