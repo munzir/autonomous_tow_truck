@@ -155,18 +155,17 @@ def generate_launch_description():
   # Start the YOLO detection node
   start_detection_node = Node(
     package="my_detection_package",
-    executable="object_detection_node",
-    name="obstacle_detection_node",
+    executable="object_detection_node",  # This matches setup.py entry point
     output="screen"
   )
-
+# 
   # Start the bridge node to convert Detection2DArray to PointCloud2
-  start_detection_bridge_node = Node(
-    package="my_detection_package",
-    executable="detection2darray_to_pointcloud2",
-    name="detection_bridge_node",
-    output="screen"
-  )
+  # start_detection_bridge_node = Node(
+  #   package="my_detection_package",
+  #   executable="detection2darray_to_pointcloud2",
+  #   name="detection_bridge_node",
+  #   output="screen"
+  # )
   # Launch RViz
   start_rviz_cmd = Node(
     condition=IfCondition(use_rviz),
