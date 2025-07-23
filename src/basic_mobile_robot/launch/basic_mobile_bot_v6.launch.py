@@ -274,6 +274,6 @@ def generate_launch_description():
   ld.add_action(start_joy_node)
   ld.add_action(static_tf_map_to_odom_cmd)
   ld.add_action(start_detection_node)
-  ld.add_action(start_detection_bridge_node)
+  # ld.add_action(start_detection_bridge_node)
   # ld.add_action(start_robot_localization_cmd) 
   return ld
