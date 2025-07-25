@@ -10,6 +10,7 @@ from enum import Enum
 from pySerialTransfer import pySerialTransfer as txfer
 from numpy import interp
 from collections import deque
+from sensor_msgs.msg import PointCloud2
 
 # button mapping on xbox joystick
 class Button(Enum):
@@ -97,6 +98,27 @@ class JoystickToArduino(Node):
         steering_angle_window_size = int(steering_angle_time_constant / self.control_update_period)
         self.steering_angle_window = deque(maxlen=steering_angle_window_size)
 
+        # Obstacle detection state
+        self.obstacle_detected = False
+        self.obstacle_timeout = 0.5  # seconds
+        self.last_obstacle_time = self.get_clock().now()
+        self.obstacle_sub = self.create_subscription(
+            PointCloud2,
+            '/yolo_detections',
+            self.obstacle_callback,
+            10
+        )
+        self.create_timer(0.1, self.check_obstacle_timeout)
+
+    def obstacle_callback(self, msg):
+        self.obstacle_detected = True
+        self.last_obstacle_time = self.get_clock().now()
+
+    def check_obstacle_timeout(self):
+        now = self.get_clock().now()
+        if self.obstacle_detected and (now - self.last_obstacle_time).nanoseconds * 1e-9 > self.obstacle_timeout:
+            self.obstacle_detected = False
+
     def joystick_callback(self, msg=None):
         self.joystick_mode = self.get_parameter('joystick_mode').value  # Update the value # Access the joystick_mode parameter
         if self.joystick_mode:
@@ -168,6 +190,11 @@ class JoystickToArduino(Node):
                 self.prev_reverse_button = reverse_button
                 self.prev_debug_mode_button = debug_mode_button
 
+                # After computing self.speed and self.auto_speed, force stop if obstacle detected
+                if self.obstacle_detected:
+                    self.speed = 0
+                    self.auto_speed = 0
+
             except Exception as e:
                 self.get_logger().error(f"Unexpected error: {str(e)}")
         else:
@@ -210,6 +237,10 @@ class JoystickToArduino(Node):
                 #self.prev_manual_button = manual_button
                 #self.p     rev_reverse_button = reverse_button
                 #self.prev_debug_mode_button = debug_mode_button
+
+                # After computing self.auto_speed, force stop if obstacle detected
+                if self.obstacle_detected:
+                    self.auto_speed = 0
 
             except Exception as e:
                 self.get_logger().error(f"Unexpected error: {str(e)}")
@@ -307,6 +338,10 @@ class JoystickToArduino(Node):
         # self.v = (self.frequency * 2 * math.pi * wheel_radius) / pulses_per_revolution
         self.auto_speed = target_linear * pulses_per_revolution / \
                           (2 * math.pi * wheel_radius)
+
+        # After computing self.auto_speed, force stop if obstacle detected
+        if self.obstacle_detected:
+            self.auto_speed = 0
 
         # Send the linear speed and steering angle to the Arduinos
         #message = f"Linear Speed (pulses per sec) = {self.auto_speed:.2f}, Steering Angle = {self.auto_steering_angle:.4f}\n"
