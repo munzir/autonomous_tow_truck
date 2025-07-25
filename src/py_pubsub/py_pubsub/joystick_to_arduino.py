@@ -174,7 +174,7 @@ class JoystickToArduino(Node):
                 else:
                     self.speed = int(interp(4.4 - (raw_speed + 1) * ((4.4 - 2.5) / 2), [2.5, 4.4], [0, 600]))
                 # If brake is active, force speed to 0
-                if self.brake_active:
+                if self.brake_active: 
                     self.speed = 0
 
                 # Map joystick index [0] to Steering Angle between -255 and 255
