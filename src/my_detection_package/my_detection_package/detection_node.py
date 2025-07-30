@@ -67,7 +67,6 @@ class YoloDetectionAndPointCloudNode(Node):
                 X, Y, _ = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [cx, cy], Z)
                 points.append([X, Y, Z])
 
-            # Prepare Detection2D message (not published, just for internal use)
             detection = Detection2D()
             detection.header = header
             detection.bbox.center.position.x = float(cx)

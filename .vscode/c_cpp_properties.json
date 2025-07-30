@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/abdullah/autonomous_tow_truck/install/gazebo_ros_ackermann_drive_debug/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/abdullah/autonomous_tow_truck/src/gazebo_ros_ackermann_drive_debug/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
