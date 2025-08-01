@@ -106,26 +106,30 @@ class YoloDetectionAndPointCloudNode(Node):
         # self.detection_pub.publish(msg_array)
         # self.get_logger().info(f"Published {len(detections)} detections to /yolo_bounding_boxes")
 
-        # Publish PointCloud2 if points exist
+        # Always publish PointCloud2 - empty if no obstacles detected
         if points:
             points_np = np.array(points, dtype=np.float32)
-            pc2_msg = PointCloud2(
-                header=header,
-                height=1,
-                width=len(points_np),
-                fields=[
-                    PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
-                    PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
-                    PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
-                ],
-                is_bigendian=False,
-                point_step=12,
-                row_step=12 * len(points_np),
-                data=points_np.tobytes(),
-                is_dense=True
-            )
-            self.pc_pub.publish(pc2_msg)
             self.get_logger().info(f"Published {len(points)} points to /yolo_detections")
+        else:
+            points_np = np.array([], dtype=np.float32).reshape(0, 3)  # Empty array
+            self.get_logger().debug("Published empty pointcloud to /yolo_detections (no obstacles detected)")
+        
+        pc2_msg = PointCloud2(
+            header=header,
+            height=1,
+            width=len(points_np),
+            fields=[
+                PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+                PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+                PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+            ],
+            is_bigendian=False,
+            point_step=12,
+            row_step=12 * len(points_np),
+            data=points_np.tobytes(),
+            is_dense=True
+        )
+        self.pc_pub.publish(pc2_msg)
 
         # Show the camera feed with bounding boxes
         cv2.imshow("Camera Feed", color_image)

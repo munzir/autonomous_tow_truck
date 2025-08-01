@@ -111,8 +111,14 @@ class JoystickToArduino(Node):
         self.create_timer(0.1, self.check_obstacle_timeout)
 
     def obstacle_callback(self, msg):
-        self.obstacle_detected = True
-        self.last_obstacle_time = self.get_clock().now()
+        # Only trigger obstacle detection if there are actual points in the PointCloud2
+        if msg.width > 0:
+            self.obstacle_detected = True
+            self.last_obstacle_time = self.get_clock().now()
+            self.get_logger().info(f"Obstacle detected! PointCloud2 has {msg.width} points")
+        else:
+            # No obstacles detected - let the timeout handle clearing
+            self.get_logger().debug("No obstacles detected in PointCloud2")
 
     def check_obstacle_timeout(self):
         now = self.get_clock().now()
