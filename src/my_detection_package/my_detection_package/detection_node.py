@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Header
-from vision_msgs.msg import Detection2D, Detection2DArray, ObjectHypothesisWithPose
 from sensor_msgs.msg import PointCloud2, PointField
 from visualization_msgs.msg import Marker
 import numpy as np
@@ -12,7 +11,6 @@ import cv2
 class YoloDetectionAndPointCloudNode(Node):
     def __init__(self):
         super().__init__('object_detection_node')
-        # Removed: self.detection_pub = self.create_publisher(Detection2DArray, '/yolo_bounding_boxes', 10)
         self.marker_pub = self.create_publisher(Marker, '/detection_points_marker', 10)
         self.pc_pub = self.create_publisher(PointCloud2, '/yolo_detections', 10)
 
@@ -49,7 +47,6 @@ class YoloDetectionAndPointCloudNode(Node):
 
         # Run YOLO detection
         results = self.model(color_image)
-        detections = []
         points = []
         header = Header()
         header.stamp = self.get_clock().now().to_msg()
@@ -63,23 +60,9 @@ class YoloDetectionAndPointCloudNode(Node):
                 continue
             cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
             Z = depth_image[cy, cx] * self.depth_scale
-            if Z > 0 and Z < 10.0:
+            if Z >= 0 and Z < 3.0:
                 X, Y, _ = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [cx, cy], Z)
                 points.append([X, Y, Z])
-
-            # Prepare Detection2D message (not published, just for internal use)
-            detection = Detection2D()
-            detection.header = header
-            detection.bbox.center.position.x = float(cx)
-            detection.bbox.center.position.y = float(cy)
-            detection.bbox.center.theta = 0.0
-            detection.bbox.size_x = float(x2 - x1)
-            detection.bbox.size_y = float(y2 - y1)
-            hyp = ObjectHypothesisWithPose()
-            hyp.hypothesis.class_id = str(int(cls))
-            hyp.hypothesis.score = float(conf)
-            detection.results.append(hyp)
-            detections.append(detection)
 
             # Draw bounding box for visualization
             cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
@@ -98,13 +81,6 @@ class YoloDetectionAndPointCloudNode(Node):
             marker.color.r = 1.0
             marker.color.a = 1.0
             self.marker_pub.publish(marker)
-
-        # No longer publish Detection2DArray
-        # msg_array = Detection2DArray()
-        # msg_array.header = header
-        # msg_array.detections = detections
-        # self.detection_pub.publish(msg_array)
-        # self.get_logger().info(f"Published {len(detections)} detections to /yolo_bounding_boxes")
 
         # Always publish PointCloud2 - empty if no obstacles detected
         if points:
