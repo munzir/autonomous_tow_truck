@@ -177,7 +177,48 @@ def generate_launch_description():
     executable='rviz2',
     name='rviz2',
     output='screen',
-    arguments=['-d', rviz_config_file])    
+    arguments=['-d', rviz_config_file])
+# Camera driver
+  start_camera = Node(
+            package='realsense2_camera',
+            executable='realsense2_camera_node',
+            name='camera',
+            output='screen',
+            parameters=[{
+                'enable_depth': True,
+                'enable_rgb': True,
+                'publish_tf': True,
+                'pointcloud.enable': False
+            }]
+        )
+  #April Tag detection
+  april_tag = Node(
+            package='apriltag_ros',
+            executable='apriltag_node',
+            name='apriltag_detector',
+            output='screen',
+            parameters=[{
+                'image_transport': 'raw',
+                'camera_frame': 'camera_color_optical_frame',
+                'publish_tag_tf': True,
+                'tag_family': 'tag36h11',
+                'size': 0.1,  # Tag size in meters (adjust accordingly)
+                'use_sim_time': False
+            }],
+            remappings=[
+                ('image_rect', '/camera/color/image_raw'),
+                ('camera_info', '/camera/color/camera_info')
+            ]
+  )
+  # Static TF broadcaster from YAML file (tag positions)
+  tf_tag_1 = Node(
+    package='tf2_ros',
+    executable='static_transform_publisher',
+    name='static_tf_tag1',
+    arguments=['2.0', '0.5', '0.5', '0.707108', '0.0', '0.0', '0.707105', 'world', 'tag_1'],
+    output='screen'
+)
+
 
   # Launch the ROS 2 Navigation Stack
   start_ros2_navigation_cmd = IncludeLaunchDescription(
@@ -226,6 +267,9 @@ def generate_launch_description():
   ld.add_action(start_robot_state_publisher_cmd)
   ld.add_action(start_rviz_cmd)
   ld.add_action(start_ros2_navigation_cmd)
+  ld.add_action(start_camera)
+  ld.add_action(april_tag)
+  ld.add_action(tf_tag_1)
   # ld.add_action(start_waypoint_follower_cmd)  # Add the waypoint follower node here      # changed
 
 
