@@ -199,6 +199,7 @@ def generate_launch_description():
             output='screen',
             parameters=[{
                 'image_transport': 'raw',
+                'image_topic': 'image_rect',
                 'camera_frame': 'camera_color_optical_frame',
                 'publish_tag_tf': True,
                 'tag_family': 'tag36h11',
