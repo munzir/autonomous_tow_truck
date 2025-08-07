@@ -64,25 +64,7 @@ class YoloDetectionAndPointCloudNode(Node):
                 X, Y, _ = rs.rs2_deproject_pixel_to_point(self.depth_intrinsics, [cx, cy], Z)
                 points.append([X, Y, Z])
 
-            # Draw bounding box for visualization
-            cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            label = f"{int(cls)}: {conf:.2f}"
-            cv2.putText(color_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
-            # Optional: publish marker
-            marker = Marker()
-            marker.header = header
-            marker.type = Marker.SPHERE
-            marker.action = Marker.ADD
-            marker.pose.position.x = float(cx)
-            marker.pose.position.y = float(cy)
-            marker.pose.position.z = 0.0
-            marker.scale.x = marker.scale.y = marker.scale.z = 10.0
-            marker.color.r = 1.0
-            marker.color.a = 1.0
-            self.marker_pub.publish(marker)
-
-        # Always publish PointCloud2 - empty if no obstacles detected
+        # PUBLISH POINTCLOUD IMMEDIATELY AFTER DETECTION (before visualization)
         if points:
             points_np = np.array(points, dtype=np.float32)
             self.get_logger().info(f"Published {len(points)} points to /yolo_detections")
@@ -106,6 +88,33 @@ class YoloDetectionAndPointCloudNode(Node):
             is_dense=True
         )
         self.pc_pub.publish(pc2_msg)
+
+        # NOW DO VISUALIZATION (after publishing pointcloud)
+        for *box, conf, cls in results.pred[0]:
+            x1, y1, x2, y2 = map(int, box)
+            x1, y1 = max(0, x1), max(0, y1)
+            x2, y2 = min(x2, 639), min(y2, 479)
+            if x2 <= x1 or y2 <= y1:
+                continue
+            cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+            
+            # Draw bounding box for visualization
+            cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            label = f"{int(cls)}: {conf:.2f}"
+            cv2.putText(color_image, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+            # Optional: publish marker
+            marker = Marker()
+            marker.header = header
+            marker.type = Marker.SPHERE
+            marker.action = Marker.ADD
+            marker.pose.position.x = float(cx)
+            marker.pose.position.y = float(cy)
+            marker.pose.position.z = 0.0
+            marker.scale.x = marker.scale.y = marker.scale.z = 10.0
+            marker.color.r = 1.0
+            marker.color.a = 1.0
+            self.marker_pub.publish(marker)
 
         # Show the camera feed with bounding boxes
         cv2.imshow("Camera Feed", color_image)
