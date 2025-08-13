@@ -197,9 +197,11 @@ def generate_launch_description():
             executable='apriltag_node',
             name='apriltag_detector',
             output='screen',
-            parameters=[{
+            parameters=[
+                '/home/munzir/official-autonomous-tow-truck/autonomous_tow_truck/src/basic_mobile_robot/params/tags.yaml',
+                {
                 'image_transport': 'raw',
-                'image_topic': 'image_rect',
+                'image_topic': 'image_raw',
                 'camera_frame': 'camera_color_optical_frame',
                 'publish_tag_tf': True,
                 'tag_family': 'tag36h11',
@@ -207,7 +209,7 @@ def generate_launch_description():
                 'use_sim_time': False
             }],
             remappings=[
-                ('image_rect', '/camera/color/image_raw'),
+                ('image_raw', '/camera/color/image_raw'),
                 ('camera_info', '/camera/color/camera_info')
             ]
   )
