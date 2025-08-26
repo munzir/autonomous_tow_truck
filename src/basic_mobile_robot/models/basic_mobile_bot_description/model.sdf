@@ -146,7 +146,7 @@
   </link>
 
   <!-- ****************************** LIDAR *****************************    -->
-  <link name="lidar_link">    
+  <!-- <link name="lidar_link">    
     <inertial>
       <pose>0.215 0 0.8 0 0 0</pose>
       <inertia>
@@ -219,10 +219,10 @@
         <frame_name>lidar_link</frame_name>
       </plugin>
     </sensor>
-  </link>
+  </link> -->
 
     <!-- ****************************** LIDAR 2*****************************    -->
-  <link name="lidar_link_2">    
+  <!-- <link name="lidar_link_2">    
     <inertial>
       <pose>0.215 0 0.8 0 0 0</pose>
       <inertia>
@@ -295,7 +295,68 @@
         <frame_name>lidar_link_2</frame_name>
       </plugin>
     </sensor>
-  </link>
+  </link> -->
+
+    <!-- ****************************** 3D LIDAR *****************************    -->
+<link name="lidar_link">
+  <pose>0.215 0 0.15 0 0 0</pose>
+  
+  <!-- Visual representation of LiDAR -->
+  <visual name="lidar_visual">
+    <geometry>
+      <cylinder>
+        <radius>0.05</radius>   <!-- 5 cm radius -->
+        <length>0.1</length>    <!-- 10 cm height -->
+      </cylinder>
+    </geometry>
+<material>
+  <!-- Base purple color -->
+  <ambient>0.7 0.0 0.7 1</ambient>
+  <diffuse>0.7 0.0 0.7 1</diffuse>
+  <!-- Glossiness (shininess highlights) -->
+  <specular>1.0 1.0 1.0 1</specular> <!-- White specular light for shiny effect -->
+  <!-- Slight glow to make it pop -->
+  <emissive>0.2 0.0 0.2 1</emissive>
+</material>
+  </visual>
+  
+  <!-- LiDAR sensor -->
+  <sensor name='gpu_lidar' type='gpu_lidar'>
+    <pose>0 0 0 0 0 0</pose>
+    <topic>lidar</topic>
+    <update_rate>10</update_rate>
+    <ray> <!-- defines how many rays, in what angles, and at what range -->
+      <scan> 
+        <horizontal> <!-- Settings for the horizontal scanning axis. -->
+          <samples>1024</samples>
+          <resolution>1</resolution>
+          <min_angle>-1.047196667</min_angle> <!--start-->
+          <max_angle>1.047196667</max_angle> <!--end-->
+        </horizontal>
+        <vertical>
+          <samples>32</samples>
+          <resolution>1</resolution>
+          <min_angle>-0.261795</min_angle>
+          <max_angle>0.261795</max_angle>
+        </vertical>
+      </scan>
+      <range>
+        <min>0.08</min>
+        <max>5.0</max>
+        <resolution>0.01</resolution>
+      </range>
+    </ray>
+    <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>lidar_link</frame_name>
+      </plugin>
+    <always_on>1</always_on>
+    <visualize>true</visualize>
+  </sensor>
+</link>
 
 
   <!-- *********************** DRIVE WHEELS ******************************  -->
@@ -469,11 +530,11 @@
     <pose>0 0 0 0 0 0</pose>
   </joint>
 
-  <joint name="lidar_joint_2" type="fixed">
+  <!-- <joint name="lidar_joint_2" type="fixed">
     <parent>base_link</parent>
     <child>lidar_link_2</child>
     <pose>0 0 0 0 0 0</pose>
-  </joint>
+  </joint> -->
 
   <!-- *********************** WHEEL ODOMETRY ***************************    -->
   <plugin name="gazebo_ros_ackermann_drive" filename="libgazebo_ros_ackermann_drive_debug.so">
