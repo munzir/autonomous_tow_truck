@@ -248,10 +248,10 @@
   </link>
 
   <!--*********************** LIDAR SETUP 2 ********************************** -->
-  <!--joint name="lidar_joint_2" type="fixed">
+  <joint name="lidar_joint_2" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link_2"/>
-    <origin xyz="0.215 0 0.13" rpy="0 0 0"/>
+    <origin xyz="0.215 0 0.13" rpy="0 0 3.14159"/>
   </joint>
 
   <link name="lidar_link_2">
@@ -278,6 +278,6 @@
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
     </inertial>
-  </link> -->
+  </link>
 
 </robot>
