@@ -170,7 +170,7 @@ def generate_launch_description():
   lidar_launch_path = os.path.join(
     FindPackageShare('sllidar_ros2').find('sllidar_ros2'),
     'launch',
-    'sllidar_a3_launch.py'
+    'sllidar_s3_launch.py'
   )
 
   # Include the LiDAR launch file only if AMCL is enabled
