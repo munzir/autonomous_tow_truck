@@ -94,7 +94,7 @@ def main():
   #     print(f'Failed to load goal_poses: {e}')
   # ==================================================
   temp_node = rclpy.create_node('nav_through_poses_param_node')
-  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_to_AS.csv').get_parameter_value().string_value
+  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv').get_parameter_value().string_value
   temp_node.destroy_node()
   file_path = csv_filename
   goal_poses = []
@@ -149,7 +149,7 @@ def main():
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   # Go through the goal poses
-  navigator.goThroughPoses(goal_poses[0:24])
+  navigator.goThroughPoses(goal_poses[0:])
  
   i = 0
   # Keep doing stuff as long as the robot is moving towards the goal poses

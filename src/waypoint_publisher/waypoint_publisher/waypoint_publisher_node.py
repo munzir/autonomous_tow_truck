@@ -17,7 +17,7 @@ class WaypointPublisher(Node):
         super().__init__('waypoint_publisher')
 
         # Declare parameter
-        self.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints_to_AS.csv')
+        self.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv')
         csv_filename = self.get_parameter('csv_filename').get_parameter_value().string_value
 
         self.publisher_markers = self.create_publisher(MarkerArray, '/waypoints', 10)
