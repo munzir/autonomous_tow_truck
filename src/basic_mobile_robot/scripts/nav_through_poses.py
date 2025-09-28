@@ -36,7 +36,7 @@ def main():
   # Launch the ROS 2 Navigation Stack
   navigator = BasicNavigator()
   temp_node = rclpy.create_node('nav_through_poses_param_node')
-  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv').get_parameter_value().string_value
+  csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/all_waypoints.csv').get_parameter_value().string_value
   temp_node.destroy_node()
   file_path = csv_filename
   goal_poses = []

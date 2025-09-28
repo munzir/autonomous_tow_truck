@@ -19,7 +19,7 @@ class PathPlanner(Node):
         self.current_pose.header.frame_id = 'map'
         
         # Load waypoints from the CSV file
-        self.waypoints = self.load_waypoints('/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv')
+        self.waypoints = self.load_waypoints('/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/all_waypoints.csv')
         
         # Initialize the current pose (robot's initial pose)
         self.current_pose.pose.position.x = self.waypoints[0][0]
