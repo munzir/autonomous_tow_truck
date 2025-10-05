@@ -99,9 +99,9 @@ def main():
   for idx, goal_pose in enumerate(goal_poses):
 
     # Publish current waypoint index BEFORE moving
-    # msg = Int32()
-    # msg.data = idx
-    # waypoint_pub.publish(msg)
+    msg = Int32()
+    msg.data = idx
+    waypoint_pub.publish(msg)
     # print(f"📍 Published waypoint index {idx} (x={goal_pose.pose.position.x:.2f}, y={goal_pose.pose.position.y:.2f})")
 
     navigator.goThroughPoses([goal_pose])
