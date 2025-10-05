@@ -16,13 +16,13 @@
 # Modified by AutomaticAddison.com
  
 import time # Time library
- 
 from geometry_msgs.msg import PoseStamped # Pose with ref frame and timestamp
 from rclpy.duration import Duration # Handles time for ROS 2
 import rclpy # Python client library for ROS 2
 import csv
 
 from robot_navigator import BasicNavigator, NavigationResult
+from std_msgs.msg import Int32
  
 '''
 Navigates a robot through goal poses.
@@ -30,72 +30,16 @@ Navigates a robot through goal poses.
 def main():
  
   # Start the ROS 2 Python Client Library
-  rclpy.init()
- 
+  rclpy.init() 
  
   # Launch the ROS 2 Navigation Stack
   navigator = BasicNavigator()
-  # Set the robot's initial pose if necessary
-  # ==================================================
-  # initial_pose = PoseStamped()
-  # initial_pose.header.frame_id = 'map'
-  # initial_pose.header.stamp = navigator.get_clock().now().to_msg()
-  # initial_pose.pose.position.x = 291.5
-  # initial_pose.pose.position.y = -14.61
-  # initial_pose.pose.position.z = 0.0
-  # initial_pose.pose.orientation.x = 0.0
-  # initial_pose.pose.orientation.y = 0.0
-  # initial_pose.pose.orientation.z = 0.99992
-  # initial_pose.pose.orientation.w = 0.012665
-  # navigator.setInitialPose(initial_pose)
-  # ======================================================
+
  
-  # Activate navigation, if not autostarted. This should be called after setInitialPose()
-  # or this will initialize at the origin of the map and update the costmap with bogus readings.
-  # If autostart, you should `waitUntilNav2Active()` instead.
-  # navigator.lifecycleStartup()
- 
-  # Wait for navigation to fully activate. Use this line if autostart is set to true.
-  # navigator.waitUntilNav2Active()
- 
-  # If desired, you can change or load the map as well
-  # navigator.changeMap('/path/to/map.yaml')
- 
-  # You may use the navigator to clear or obtain costmaps
-  # navigator.clearAllCostmaps()  # also have clearLocalCostmap() and clearGlobalCostmap()
-  # global_costmap = navigator.getGlobalCostmap()
-  # local_costmap = navigator.getLocalCostmap()
- 
-  # Set the robot's goal poses
-  # current comment
-  # ========================================================
-  # file_path='/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv'
-  # goal_poses = []
-  # try:
-  #     with open(file_path, mode='r') as file:
-  #         reader = csv.reader(file)
-  #         for row in reader:
-  #             if len(row) == 4:
-  #                 x, y, w, z = map(float, row)
-  #                 goal_pose = PoseStamped()
-  #                 goal_pose.header.frame_id = 'map'
-  #                 goal_pose.header.stamp = navigator.get_clock().now().to_msg()
-  #                 goal_pose.pose.position.x = x
-  #                 goal_pose.pose.position.y = y
-  #                 goal_pose.pose.position.z = 0.0
-  #                 goal_pose.pose.orientation.x = 0.0
-  #                 goal_pose.pose.orientation.y = 0.0
-  #                 goal_pose.pose.orientation.z = z
-  #                 goal_pose.pose.orientation.w = w
-  #                 goal_poses.append(goal_pose)
-  #             print(goal_pose)
-  #     print(f'Loaded {len(goal_poses)} goal_poses from {file_path}')
-  # except Exception as e:
-  #     print(f'Failed to load goal_poses: {e}')
-  # ==================================================
   temp_node = rclpy.create_node('nav_through_poses_param_node')
+  waypoint_pub = temp_node.create_publisher(Int32, '/current_waypoint', 10)  # publisher here
   csv_filename = temp_node.declare_parameter('csv_filename', '/root/autonomous_tow_truck/src/waypoint_publisher/waypoint_publisher/waypoints.csv').get_parameter_value().string_value
-  temp_node.destroy_node()
+  #temp_node.destroy_node()
   file_path = csv_filename
   goal_poses = []
   try:
@@ -149,78 +93,80 @@ def main():
   # path = navigator.getPathThroughPoses(initial_pose, goal_poses)
  
   # Go through the goal poses
-  navigator.goThroughPoses(goal_poses[0:])
+  #navigator.goThroughPoses(goal_poses[0:]) #sending all goals at once
+
+  # Send the robot through each goal pose one by one
+  for idx, goal_pose in enumerate(goal_poses):
+
+    # Publish current waypoint index BEFORE moving
+    # msg = Int32()
+    # msg.data = idx
+    # waypoint_pub.publish(msg)
+    # print(f"📍 Published waypoint index {idx} (x={goal_pose.pose.position.x:.2f}, y={goal_pose.pose.position.y:.2f})")
+
+    navigator.goThroughPoses([goal_pose])
+
+
  
-  i = 0
-  # Keep doing stuff as long as the robot is moving towards the goal poses
-  while not navigator.isNavComplete():
-    ################################################
-    #
-    # Implement some code here for your application!
-    #
-    ################################################
- 
-    # Do something with the feedback
-    i = i + 1
-    feedback = navigator.getFeedback()
-    if feedback and i % 5 == 0:
-      print('Distance remaining: ' + '{:.2f}'.format(
-            feedback.distance_remaining) + ' meters.')
- 
-      # Some navigation timeout to demo cancellation
-      if Duration.from_msg(feedback.navigation_time) > Duration(seconds=1000000.0):
-        navigator.cancelNav()
- 
-      # Some navigation request change to demo preemption
-      if Duration.from_msg(feedback.navigation_time) > Duration(seconds=500000.0):
-        goal_pose_alt = PoseStamped()
-        goal_pose_alt.header.frame_id = 'map'
-        goal_pose_alt.header.stamp = navigator.get_clock().now().to_msg()
-        goal_pose_alt.pose.position.x = -6.5
-        goal_pose_alt.pose.position.y = -4.2
-        goal_pose_alt.pose.position.z = 0.0
-        goal_pose_alt.pose.orientation.x = 0.0
-        goal_pose_alt.pose.orientation.y = 0.0  
-        goal_pose_alt.pose.orientation.z = 0.0
-        goal_pose_alt.pose.orientation.w = 1.0
-        navigator.goThroughPoses([goal_pose_alt])
- 
-  # Do something depending on the return code
-  result = navigator.getResult()
-  # if result == TaskResult.SUCCEEDED:
-  #   print('Goal succeeded!')
-  # elif result == TaskResult.CANCELED:
-  #   print('Goal was canceled!')
-  # elif result == TaskResult.FAILED:
-  #   print('Goal failed!')
-  # else:
-  #   print('Goal has an invalid return status!')
-  
-  
-  if result == 0:  # SUCCEEDED
-    print('Goal succeeded!')
-    navigator.last_reached_index += 1
-  elif result == 1:  # CANCELED
-    print('Goal was canceled!')
-  elif result == 2:  # FAILED
-    print('Goal failed!')
-    # Add here which was the last waypoint executed and what is next
-  else:
-    print('Goal has an invalid return status!')
-    if navigator.last_reached_index >= 0 and navigator.last_reached_index < len(goal_poses):
-        last_pose = goal_poses[navigator.last_reached_index]
-        print(f"Last successfully reached waypoint index: {navigator.last_reached_index}")
-        print(f"Coordinates: x={last_pose.pose.position.x:.2f}, y={last_pose.pose.position.y:.2f}")
-        if navigator.last_reached_index + 1 < len(goal_poses):
-            next_pose = goal_poses[navigator.last_reached_index + 1]
-            print(f"Next intended waypoint index: {navigator.last_reached_index + 1}")
-            print(f"Coordinates: x={next_pose.pose.position.x:.2f}, y={next_pose.pose.position.y:.2f}")
+    i = 0
+    # Keep doing stuff as long as the robot is moving towards the goal poses
+    while not navigator.isNavComplete():
+
+      # Do something with the feedback
+      i = i + 1
+      feedback = navigator.getFeedback()
+      if feedback and i % 5 == 0:
+        print('Distance remaining: ' + '{:.2f}'.format(
+              feedback.distance_remaining) + ' meters.')
+
+        # Some navigation timeout to demo cancellation
+        if Duration.from_msg(feedback.navigation_time) > Duration(seconds=1000000.0):
+          navigator.cancelNav()
+
+        # Some navigation request change to demo preemption
+        if Duration.from_msg(feedback.navigation_time) > Duration(seconds=500000.0):
+          goal_pose_alt = PoseStamped()
+          goal_pose_alt.header.frame_id = 'map'
+          goal_pose_alt.header.stamp = navigator.get_clock().now().to_msg()
+          goal_pose_alt.pose.position.x = -6.5
+          goal_pose_alt.pose.position.y = -4.2
+          goal_pose_alt.pose.position.z = 0.0
+          goal_pose_alt.pose.orientation.x = 0.0
+          goal_pose_alt.pose.orientation.y = 0.0  
+          goal_pose_alt.pose.orientation.z = 0.0
+          goal_pose_alt.pose.orientation.w = 1.0
+          navigator.goThroughPoses([goal_pose_alt])
+
+    # Do something depending on the return code
+    result = navigator.getResult()
+      
+    if result == 0:  # SUCCEEDED
+      print('Goal succeeded!')
+      navigator.last_reached_index += 1
+    elif result == 1:  # CANCELED
+      print('Goal was canceled!')
+    elif result == 2:  # FAILED
+      print('Goal failed!')
+      # Add here which was the last waypoint executed and what is next
+    else:
+      print('Goal has an invalid return status!')
+      if navigator.last_reached_index >= 0 and navigator.last_reached_index < len(goal_poses):
+          last_pose = goal_poses[navigator.last_reached_index]
+          print(f"Last successfully reached waypoint index: {navigator.last_reached_index}")
+          print(f"Coordinates: x={last_pose.pose.position.x:.2f}, y={last_pose.pose.position.y:.2f}")
+          if navigator.last_reached_index + 1 < len(goal_poses):
+              next_pose = goal_poses[navigator.last_reached_index + 1]
+              print(f"Next intended waypoint index: {navigator.last_reached_index + 1}")
+              print(f"Coordinates: x={next_pose.pose.position.x:.2f}, y={next_pose.pose.position.y:.2f}")
 
  
   # Close the ROS 2 Navigation Stack
   # navigator.lifecycleShutdown()
  
   exit(0)
+  nav_node.destroy_node()
+  rclpy.shutdown()
+
  
 if __name__ == '__main__':
   main()
