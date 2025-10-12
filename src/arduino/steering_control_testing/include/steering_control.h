@@ -16,8 +16,8 @@ int dutyCycle = 0;
 
 
 const float Kp = -8.68368161935867; // Proportional gain
-// const float Ki = -3.8004976592663; // Integral gain
-const float Ki = 0; // Integral gain
+const float Ki = -3.8004976592663; // Integral gain
+// const float Ki = 0; // Integral gain
 const float Kd = -0.178015473196853; // Derivative gain
 // const float N = 14.908;    // Filter coefficient
 
