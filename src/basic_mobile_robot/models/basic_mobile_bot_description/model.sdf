@@ -1,33 +1,72 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="basic_mobile_bot">  
+  <model name="basic_mobile_bot" xmlns:xacro="http://ros.org/wiki/xacro">  
   <static>false</static>
+
+  <!-- ****************** ROBOT CONSTANTS *******************************  -->
+  <xacro:property name="base_width" value="0.76"/>
+  <xacro:property name="base_length" value="1.63"/>
+  <xacro:property name="base_height" value="1.90"/>
 
   <!-- ****************** ROBOT BASE FOOTPRINT ***************************  -->
   <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
   <link name="base_footprint"/>
 
   <!-- ********************** ROBOT BASE *********************************  -->
+
+    <!-- <link name="base_link"> -->
+    <!-- Visual -->
+    <!-- <visual>
+      <origin xyz="0 0 ${base_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual> -->
+
+    <!-- Collision -->
+    <!-- <collision>
+      <origin xyz="0 0 ${base_height/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+    </collision> -->
+
+    <!-- Inertial -->
+    <!-- <xacro:box_inertia m="360.0" w="${base_width}" d="${base_length}" h="${base_height}"/>
+  </link>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Red</material>
+  </gazebo> -->
+
   <link name="base_link">
 
     <collision name="base_collision">
-      <pose>0 0 0.1 0 0 0</pose>
+       <pose>0 0 0.85 0 0 0</pose>
       <geometry>
         <box>
-          <size>0.70 0.39 0.20</size>
+          <size>1.63 0.76 1.90</size>
         </box>
       </geometry>
     </collision>
 
     <visual name="base_visual">
-      <pose>0 0 -0.05 1.5707963267949 0 3.141592654</pose>
+        <pose>0 0 0.85 0 0 0</pose>
       <geometry>
-        <mesh>
+        <box>
+          <size>1.63 0.76 1.90</size>
+        </box>
+        <!-- <mesh>
           <uri>model://basic_mobile_bot_description/meshes/robot_base.stl</uri>
           <scale>1.0 1.0 1.0</scale>
-        </mesh>
+        </mesh> -->
       </geometry>
-      <material>
+
+      <material name="Red">
+        <color rgba="1 0 0 1"/>
         <ambient>1.0 0.0 0.0 1.0</ambient>
         <diffuse>1.0 0.0 0.0 1.0</diffuse>
         <specular>0.0 0.0 0.0 1.0</specular>
@@ -224,7 +263,7 @@
     <!-- ****************************** LIDAR 2*****************************    -->
   <link name="lidar_link_2">    
     <inertial>
-      <pose>0.215 0 0.8 0 0 3.14159</pose>
+      <pose>0.65 0 1.90 0 0 3.14159</pose>
       <inertia>
         <ixx>0.001</ixx>
         <ixy>0.000</ixy>
@@ -237,7 +276,7 @@
     </inertial>
 
     <collision name="lidar_collision">
-      <pose>0.215 0 0.13 0 0 3.14159</pose>
+      <pose>0.65 0 1.90 0 0 3.14159</pose>
       <geometry>
         <cylinder>
           <radius>0.0508</radius>
@@ -247,7 +286,7 @@
     </collision>
 
     <visual name="lidar_visual">
-      <pose>0.215 0 0.13 0 0 3.14159</pose>
+      <pose>0.65 0 1.90 0 0 3.14159</pose>
       <geometry>
         <cylinder>
           <radius>0.0508</radius>
@@ -263,7 +302,7 @@
     </visual>
 
     <sensor name="lidar" type="ray">
-      <pose>0.215 0 0.215 0 0 3.14159</pose>
+      <pose>0.65 0 1.90 0 0 3.14159</pose>
       <always_on>true</always_on>
       <visualize>true</visualize>
       <update_rate>5</update_rate>
@@ -299,7 +338,7 @@
 
       <!-- ****************************** 3D LIDAR *****************************    -->
 <link name="lidar_link">
-  <pose>0.215 0 0.15 0 0 0</pose>
+  <pose>0.815 0.38 1.7 0 0 0</pose>
   
   <visual name="lidar_visual">
     <geometry>
@@ -357,17 +396,17 @@
   
   <!-- *********************** DRIVE WHEELS ******************************  -->
   <link name="rear_axle_link">
-    <pose>-0.221 0 -0.05 0 1.570796 1.570796</pose>
+    <pose>-0.635 0 -0.05 0 1.570796 1.570796</pose>
   </link>
 
   <link name="drivewhl_l_link">
-    <pose>-0.221 0.23 -0.05 0 1.570796 1.570796</pose>
+    <pose>-0.635 0.3781 -0.05 0 1.570796 1.570796</pose>
     
     <collision name="drivewhl_l_collision">
       <geometry>
         <cylinder>
-          <radius>0.14</radius>
-          <length>0.06</length>
+          <radius>0.2</radius>
+          <length>0.09</length>
         </cylinder>
       </geometry>
     </collision>
@@ -375,21 +414,21 @@
     <visual name="drivewhl_l_visual">
       <geometry>
         <cylinder>
-          <radius>0.14</radius>
-          <length>0.06</length>
+          <radius>0.2</radius>
+          <length>0.09</length>
         </cylinder>
       </geometry>
     </visual>
   </link>
 
   <link name="drivewhl_r_link">
-    <pose>-0.221 -0.23 -0.05 0 1.570796 1.570796</pose>
+    <pose>-0.635 -0.3781 -0.05 0 1.570796 1.570796</pose>
     
     <collision name="drivewhl_r_collision">
       <geometry>
         <cylinder>
-          <radius>0.14</radius>
-          <length>0.06</length>
+          <radius>0.2</radius>
+          <length>0.09</length>
         </cylinder>
       </geometry>
     </collision>
@@ -397,8 +436,8 @@
     <visual name="drivewhl_r_visual">
       <geometry>
         <cylinder>
-          <radius>0.14</radius>
-          <length>0.06</length>
+          <radius>0.2</radius>
+          <length>0.09</length>
         </cylinder>
       </geometry>
     </visual>
@@ -406,27 +445,27 @@
  
   <!-- *********************** STEERING WHEEL ******************************  -->
   <link name="steering_link">
-    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
+    <pose>0.55 0 -0.05 0 0 0</pose>
   </link>
 
   <link name="steering_wheel_link">
-    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
+    <pose>0.55 0 -0.05 0 1.570796 1.570796</pose>
     <geometry>
       <cylinder>
-        <radius>0.14</radius>
-        <length>0.06</length>
+        <radius>0.2</radius>
+        <length>0.09</length>
       </cylinder>
     </geometry>
   </link>
   
   <link name="front_steering_wheel_link">
-    <pose>0.217 0 -0.05 0 1.570796 1.570796</pose>
+    <pose>0.55 0 -0.05 0 1.570796 1.570796</pose>
     
     <collision name="front_steering_wheel_collision">
       <geometry>
         <cylinder>
-          <radius>0.14</radius>
-          <length>0.06</length>
+          <radius>0.2</radius>
+          <length>0.09</length>
         </cylinder>
       </geometry>
     </collision>
@@ -434,8 +473,8 @@
     <visual name="front_steering_wheel_visual">
       <geometry>
         <cylinder>
-          <radius>0.14</radius>
-          <length>0.06</length>
+          <radius>0.2</radius>
+          <length>0.09</length>
         </cylinder>
       </geometry>
     </visual>
